@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">VMS</string>
+    <string name="title_activity_sign_in">SignInActivity</string>
+
+    <string-array name="numVisitor">
+        <item>1</item>
+        <item>2</item>
+        <item>Click to enter number of visitor</item>
+    </string-array>
+    <string name="title_activity_sign_out">SignOutActivity</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+</resources>
