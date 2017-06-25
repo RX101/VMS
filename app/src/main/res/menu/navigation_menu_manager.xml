@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_user_info"
+        android:title="Sign In"/>
+
+    <item
+        android:id="@+id/nav_summary"
+        android:title="Sign Out"/>
+
+    <item
+        android:id="@+id/nav_evacuation"
+        android:title="Register"/>
+
+    <item
+        android:id="@+id/nav_add_user"
+        android:title="Change Password"/>
+
+    <item
+        android:id="@+id/nav_edit_user"
+        android:title="Change Password"/>
+
+    <item
+        android:id="@+id/log_out"
+        android:title="Log Out"/>
+
+</menu>

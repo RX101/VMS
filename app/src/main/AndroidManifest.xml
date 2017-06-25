@@ -9,29 +9,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
-            android:label="Login">
-
-        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="Login" />
         <activity
             android:name=".SignInActivity"
             android:label="Sign In"
-            android:theme="@style/AppTheme.NoActionBar" >
-
-            </activity>
-        <activity android:name=".RegisterActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".RegisterActivity"
             android:label="Register">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            </activity>
+        </activity>
         <activity
             android:name=".SignOutActivity"
             android:label="Sign Out"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".UserInfoActivity" />
+        <activity android:name=".VisitorInfoActivity" />
+        <activity android:name=".AddUserActivity" />
+        <activity android:name=".EvacuationActivity" />
+        <activity android:name=".SummaryActivity"></activity>
     </application>
 
 </manifest>
