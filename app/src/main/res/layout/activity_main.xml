@@ -11,33 +11,33 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:orientation="horizontal"
-        android:weightSum="1">
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Email: "
-            android:layout_marginTop="100dp"/>
-
-        <EditText
-            android:id="@+id/editTextloginEmail"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="100dp"
-            android:ems="10"
-            android:inputType="text" />
+            android:orientation="horizontal"
+            android:weightSum="1">
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:text="Email: " />
 
-    <LinearLayout
+            <EditText
+                android:id="@+id/editTextloginEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="100dp"
+                android:ems="10"
+                android:inputType="text" />
+
+        </LinearLayout>
+
+        <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -49,16 +49,16 @@
             android:layout_height="wrap_content"
             android:text="Password: " />
 
-        <EditText
-            android:id="@+id/editTextloginPassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
-            android:layout_weight="0.94"
-            android:ems="10"
-            android:inputType="textPassword" />
+            <EditText
+                android:id="@+id/editTextloginPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="50dp"
+                android:layout_weight="0.94"
+                android:ems="10"
+                android:inputType="textPassword" />
 
-    </LinearLayout>
+        </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"

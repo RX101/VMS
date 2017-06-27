@@ -70,12 +70,12 @@ public class SignOutActivity extends AppCompatActivity {
                         startActivity(i);
                         break;
                     case(R.id.nav_register):
-                        i= new Intent(getApplicationContext(),SignInActivity.class);
+                        i= new Intent(getApplicationContext(),RegisterActivity.class);
                         startActivity(i);
                         break;
                     case(R.id.nav_change_password):
-                        i= new Intent(getApplicationContext(),SignInActivity.class);
-                        startActivity(i);
+//                        i= new Intent(getApplicationContext(),SignInActivity.class);
+//                        startActivity(i);
                         break;
                 }
                 return true;
