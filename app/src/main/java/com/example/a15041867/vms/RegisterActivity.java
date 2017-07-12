@@ -126,6 +126,7 @@ public class RegisterActivity extends AppCompatActivity {
                         String jsonString = requestVisitorDetails.getResponse();
 //                        Log.i("response", jsonString);
                         JSONArray jsonArray = new JSONArray(jsonString);
+                        boolean recordFound = false;
                         for(int i=0; i< jsonArray.length();i++){
                             JSONObject jsonObj = (JSONObject) jsonArray.get(i);
                             visitor_email = jsonObj.getString("visitor_email");
@@ -133,82 +134,61 @@ public class RegisterActivity extends AppCompatActivity {
                             handphone_number = jsonObj.getString("handphone_number");
 
                             if(name.equals(visitor_name)){
+                                recordFound=true;
                                 etRegisterName.setError("Visitor name already exist,Please try another one");
+                                Toast.makeText(RegisterActivity.this,"testing AA :"+ i,Toast.LENGTH_SHORT).show();
 
-                            }else if(visitor_name.equals(name)) {
-                                Toast.makeText(RegisterActivity.this,"Exisit",Toast.LENGTH_LONG).show();
-                            }
-                            else if (hp.equals(handphone_number)){
+                            } else if (hp.equals(handphone_number)){
+                                recordFound=true;
                                 etRegisterHP.setError("Handphone Number has been registered in database,Please try another one");
+                                Toast.makeText(RegisterActivity.this,"testing BB"+ i,Toast.LENGTH_SHORT).show();
                             } else if(email.equals(visitor_email)){
+                                recordFound=true;
                                 etRegisterEmail.setError("Email already exist,Please try another one");
-                            } else{
-                                HttpRequest requestRegisterVisitor = new HttpRequest(" https://ruixian-ang97.000webhostapp.com/doRegister.php");
-                                requestRegisterVisitor.setMethod("POST");
-                                requestRegisterVisitor.addData("apikey",apikey);
-                                requestRegisterVisitor.addData("visitor_email", email);
-                                requestRegisterVisitor.addData("visitor_name", name);
-                                requestRegisterVisitor.addData("handphone_number", hp);
-                                requestRegisterVisitor.execute();
-
-                                try{
-                                    String jsonString1 = requestVisitorDetails.getResponse();
-//                        Log.i("response", jsonString);
-                                    JSONObject jsonObject1 = new JSONObject(jsonString);
-                                     msg = jsonObject1.getString("message");
-
-//                                    finish();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-//                                etRegisterName.setText("");
-//                                etRegisterHP.setText("");
-//                                etRegisterEmail.setText("");
-                                Toast.makeText(RegisterActivity.this,msg,Toast.LENGTH_LONG).show();
-
-                                //Create the Dialog Builder
-//                                AlertDialog.Builder myBuilder = new AlertDialog.Builder(RegisterActivity.this);
-//                                //Set the dialog details
-//                                myBuilder.setTitle("Confirmation visitor information:");
-//                                myBuilder.setMessage("Visitor Details: \nName: " + name + "\nHandphone Number: "+ hp +"\nEmail: " + email);
-//                                myBuilder.setPositiveButton("ADD", new DialogInterface.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(DialogInterface dialogInterface, int i) {
-//
-//                                        HttpRequest requestRegisterVisitor = new HttpRequest(" https://ruixian-ang97.000webhostapp.com/doRegister.php?apikey=" + apikey);
-//                                        requestRegisterVisitor.setMethod("POST");
-//                                        requestRegisterVisitor.addData("visitor_email", email);
-//                                        requestRegisterVisitor.addData("visitor_name", name);
-//                                        requestRegisterVisitor.addData("handphone_number", hp);
-//                                        requestRegisterVisitor.execute();
-//
-//                                                try{
-//                                                    String jsonString1 = requestRegisterVisitor.getResponse();
-////                        Log.i("response", jsonString);
-//                                                    JSONObject jsonObject1 = new JSONObject(jsonString1);
-//                                                    String msg = jsonObject1.getString("message");
-//                                                    etRegisterName.setText("");
-//                                                    etRegisterHP.setText("");
-//                                                    etRegisterEmail.setText("");
-//                                                    Toast.makeText(RegisterActivity.this,msg,Toast.LENGTH_LONG).show();
-////                                                  finish();
-//                                                } catch (Exception e) {
-//                                                    e.printStackTrace();
-//                                                }
-//
-//                                    }
-//                                });
-//                                myBuilder.setNeutralButton("Cancel", null);
-//                                //Create and display the Dialog
-//                                AlertDialog myDialog = myBuilder.create();
-//                                myDialog.show();
-
+                                Toast.makeText(RegisterActivity.this,"testing CC"+ i,Toast.LENGTH_SHORT).show();
+                            }
                         }
 
+                        if(recordFound == false){
+                            //insert
+                            //Create the Dialog Builder
+                                AlertDialog.Builder myBuilder = new AlertDialog.Builder(RegisterActivity.this);
+                                //Set the dialog details
+                                myBuilder.setTitle("Confirmation visitor information:");
+                                myBuilder.setMessage("Visitor Details: \nName: " + name + "\nHandphone Number: "+ hp +"\nEmail: " + email);
+                                myBuilder.setPositiveButton("ADD", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
 
+                                        HttpRequest requestRegisterVisitor = new HttpRequest(" https://ruixian-ang97.000webhostapp.com/doRegister.php");
+                                        requestRegisterVisitor.setMethod("POST");
+                                        requestRegisterVisitor.addData("apikey",apikey);
+                                        requestRegisterVisitor.addData("visitor_email", email);
+                                        requestRegisterVisitor.addData("visitor_name", name);
+                                        requestRegisterVisitor.addData("handphone_number", hp);
+                                        requestRegisterVisitor.execute();
 
+                                                try{
+                                                    String jsonString1 = requestRegisterVisitor.getResponse();
+//                                                  Log.i("response", jsonString);
+                                                    JSONObject jsonObject1 = new JSONObject(jsonString1);
+                                                    String msg = jsonObject1.getString("message");
+                                                    etRegisterName.setText("");
+                                                    etRegisterHP.setText("");
+                                                    etRegisterEmail.setText("");
+                                                    Toast.makeText(RegisterActivity.this,msg,Toast.LENGTH_LONG).show();
+                                                  finish();
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
+
+                                    }
+                                });
+                                myBuilder.setNeutralButton("Cancel", null);
+                                //Create and display the Dialog
+                                AlertDialog myDialog = myBuilder.create();
+                                myDialog.show();
                         }
-
                     }catch(Exception e){
                         e.printStackTrace();
                     }
