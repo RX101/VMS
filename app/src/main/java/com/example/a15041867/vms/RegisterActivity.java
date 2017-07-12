@@ -116,9 +116,10 @@ public class RegisterActivity extends AppCompatActivity {
                 }else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
                     etRegisterEmail.setError("Invalid Email, Please try again.");
                 }else{
-                    HttpRequest requestVisitorDetails= new HttpRequest("https://ruixian-ang97.000webhostapp.com/getVisitor.php?apikey=" + apikey);
+                    HttpRequest requestVisitorDetails= new HttpRequest("https://ruixian-ang97.000webhostapp.com/getVisitor.php");
 //                    HttpRequest request= new HttpRequest("https://ruixian-ang97.000webhostapp.com/getVisitor.php?apikey=d2bfa8e8b749d2772a21edee7b70a2b3");
-                    requestVisitorDetails.setMethod("GET");
+                    requestVisitorDetails.setMethod("POST");
+                    requestVisitorDetails.addData("apikey",apikey);
                     requestVisitorDetails.execute();
                     boolean condition = true;
                     try{
@@ -142,8 +143,9 @@ public class RegisterActivity extends AppCompatActivity {
                             } else if(email.equals(visitor_email)){
                                 etRegisterEmail.setError("Email already exist,Please try another one");
                             } else{
-                                HttpRequest requestRegisterVisitor = new HttpRequest(" https://ruixian-ang97.000webhostapp.com/doRegister.php?apikey=" + apikey);
+                                HttpRequest requestRegisterVisitor = new HttpRequest(" https://ruixian-ang97.000webhostapp.com/doRegister.php");
                                 requestRegisterVisitor.setMethod("POST");
+                                requestRegisterVisitor.addData("apikey",apikey);
                                 requestRegisterVisitor.addData("visitor_email", email);
                                 requestRegisterVisitor.addData("visitor_name", name);
                                 requestRegisterVisitor.addData("handphone_number", hp);
