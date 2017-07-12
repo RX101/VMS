@@ -161,9 +161,9 @@ public class RegisterActivity extends AppCompatActivity {
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
-                                etRegisterName.setText("");
-                                etRegisterHP.setText("");
-                                etRegisterEmail.setText("");
+//                                etRegisterName.setText("");
+//                                etRegisterHP.setText("");
+//                                etRegisterEmail.setText("");
                                 Toast.makeText(RegisterActivity.this,msg,Toast.LENGTH_LONG).show();
 
                                 //Create the Dialog Builder
