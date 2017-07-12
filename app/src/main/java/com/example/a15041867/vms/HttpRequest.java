@@ -22,7 +22,7 @@ public class HttpRequest {
 	private HttpRequestConnection hrc = new HttpRequestConnection();
 
 	public HttpRequest(String url){
-		this.url = url+"?";
+		this.url = url;
 		this.paramString = new StringBuffer();
 		this.hrc = new HttpRequestConnection();
 

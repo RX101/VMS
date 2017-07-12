@@ -9,12 +9,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONObject;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -27,7 +31,8 @@ public class SignInActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mToggle;
     private Toolbar mToolbar;
     private NavigationView nv;
-    Intent i;
+    private String apikey;
+    private Intent i, intentAPI, intentRegister;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +50,9 @@ public class SignInActivity extends AppCompatActivity {
 
         session = new Session(this);
 
+        intentAPI = getIntent();
+        apikey = intentAPI.getStringExtra("api");
+        Log.i("Sign In Activity","" + apikey);
         //        if(!session.loggedin()){
 //            logout();
 //        }
@@ -67,14 +75,17 @@ public class SignInActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()) {
                     case(R.id.nav_sign_in):
                         i = new Intent(getApplicationContext(),SignInActivity.class);
+                        i.putExtra("api",apikey);
                         startActivity(i);
                         break;
                     case(R.id.nav_sign_out):
                         i= new Intent(getApplicationContext(),SignOutActivity.class);
+                        i.putExtra("api",apikey);
                         startActivity(i);
                         break;
                     case(R.id.nav_register):
                         i= new Intent(getApplicationContext(),RegisterActivity.class);
+                        i.putExtra("api",apikey);
                         startActivity(i);
                         break;
                     case(R.id.nav_change_password):
@@ -89,8 +100,9 @@ public class SignInActivity extends AppCompatActivity {
         tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(SignInActivity.this,RegisterActivity.class);
-                startActivity(i);
+                intentRegister = new Intent(SignInActivity.this,RegisterActivity.class);
+                intentRegister.putExtra("api",apikey);
+                startActivity(intentRegister);
             }
         });
 
@@ -100,6 +112,33 @@ public class SignInActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+            }
+        });
+
+        btnSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String visitor_email = etSignInEmail.getText().toString();
+                String visit_block = etSignInVisitBlock.getText().toString();
+                String visit_unit = etSignInVisitUnit.getText().toString();
+                String sub_visitor = "v1";
+
+                HttpRequest requestUserEmail= new HttpRequest("https://ruixian-ang97.000webhostapp.com/checkUserByBlockUnit.php?apikey=" + apikey);
+//                    HttpRequest request= new HttpRequest("https://ruixian-ang97.000webhostapp.com/getVisitor.php?apikey=d2bfa8e8b749d2772a21edee7b70a2b3");
+                requestUserEmail.setMethod("GET");
+                requestUserEmail.execute();
+                try{
+                    String jsonString1 = requestUserEmail.getResponse();
+//                        Log.i("response", jsonString);
+                    JSONObject jsonObject1 = new JSONObject(jsonString1);
+                    String msg = jsonObject1.getString("user_email");
+
+                    Toast.makeText(SignInActivity.this,msg,Toast.LENGTH_LONG).show();
+//                                                 finish();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                                                }
+
             }
         });
     }
@@ -113,4 +152,11 @@ public class SignInActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        intentAPI = getIntent();
+        apikey = intentAPI.getStringExtra("api");
+        Log.i("Sign In Activity","" + apikey);
+    }
 }

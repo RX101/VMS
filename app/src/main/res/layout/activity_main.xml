@@ -11,19 +11,14 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:orientation="horizontal"
-            android:weightSum="1">
-
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
-                android:text="Email: " />
+                android:layout_marginTop="90dp"
+                android:text="Email: "
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                android:textSize="20dp"/>
 
             <EditText
                 android:id="@+id/editTextloginEmail"
@@ -31,44 +26,47 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="100dp"
                 android:ems="10"
                 android:inputType="text" />
 
-        </LinearLayout>
-
-        <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginLeft="5dp" >
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Password: " />
+            android:text="Password: "
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            android:textSize="20dp"/>
 
             <EditText
                 android:id="@+id/editTextloginPassword"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="50dp"
-                android:layout_weight="0.94"
+                android:layout_marginBottom="30dp"
                 android:ems="10"
                 android:inputType="textPassword" />
 
-        </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Forget Password ?"
         android:layout_gravity="center"
-        android:layout_marginBottom="50dp"
-        android:id="@+id/textViewForgetPassword"/>
+        android:layout_marginBottom="25dp"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+        android:id="@+id/textViewForgetPassword"
+        android:textSize="20dp"/>
 
-    <Button
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="25dp"
+            android:id="@+id/textViewErrorMessage"
+            android:textSize="20dp"/>
+
+
+        <Button
         android:id="@+id/buttonLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

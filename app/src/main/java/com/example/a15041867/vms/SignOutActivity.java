@@ -9,6 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
@@ -20,7 +21,8 @@ public class SignOutActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mToggle;
     private Toolbar mToolbar;
     private NavigationView nv;
-    private Intent i;
+    private String apikey;
+    private Intent i, intentAPI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,10 @@ public class SignOutActivity extends AppCompatActivity {
 
         lvCurrentVisitor = (ListView)findViewById(R.id.lvCurrentVisitor);
         session = new Session(this);
+
+        intentAPI = getIntent();
+        apikey = intentAPI.getStringExtra("api");
+        Log.i("Sign Out Activity","" + apikey);
 //        if(!session.loggedin()){
 //            logout();
 //        }
@@ -63,14 +69,17 @@ public class SignOutActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()) {
                     case(R.id.nav_sign_in):
                         i = new Intent(getApplicationContext(),SignInActivity.class);
+                        i.putExtra("api",apikey);
                         startActivity(i);
                         break;
                     case(R.id.nav_sign_out):
                         i= new Intent(getApplicationContext(),SignOutActivity.class);
+                        i.putExtra("api",apikey);
                         startActivity(i);
                         break;
                     case(R.id.nav_register):
                         i= new Intent(getApplicationContext(),RegisterActivity.class);
+                        i.putExtra("api",apikey);
                         startActivity(i);
                         break;
                     case(R.id.nav_change_password):
@@ -94,4 +103,11 @@ public class SignOutActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        intentAPI = getIntent();
+        apikey = intentAPI.getStringExtra("api");
+        Log.i("Sign Out Activity","" + apikey);
+    }
 }

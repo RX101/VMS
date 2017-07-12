@@ -25,21 +25,23 @@ public class MainActivity extends AppCompatActivity {
 
     private Button btnLogin;
     private EditText etLoginEmail, etLoginPassword;
-    private TextView tvForgetPassword;
+    private TextView tvForgetPassword, tvErrorMessage;
     private Session session;
-    Intent i;
+    Intent i, intentLogin;
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("Login");
         setContentView(R.layout.activity_main);
 
         btnLogin =(Button)findViewById(R.id.buttonLogin);
         etLoginEmail = (EditText)findViewById(R.id.editTextloginEmail);
         etLoginPassword = (EditText)findViewById(R.id.editTextloginPassword);
         tvForgetPassword = (TextView) findViewById(R.id.textViewForgetPassword);
+        tvErrorMessage = (TextView) findViewById(R.id.textViewErrorMessage);
         session = new Session(this);
         //               if(session.loggedin()) {
 //                    startActivity(i);
@@ -47,47 +49,71 @@ public class MainActivity extends AppCompatActivity {
 //
 //                }
 
+        etLoginEmail.setText("security@gmail.com");
+        etLoginPassword.setText("security1234");
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Check if there is network access
                 ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+                String email = etLoginEmail.getText().toString();
+                String password = etLoginPassword.getText().toString();
+
                 if (networkInfo != null && networkInfo.isConnected()) {
 
-                    //TODO 01 Insert/modify code here to send a HttpRequest to doLogin.php
-                    //HttpRequest request = new HttpRequest("http://10.0.2.2/ruixian-ang97/public_html/doLogin.php");
-                    HttpRequest request = new HttpRequest("https://ruixian-ang97.000webhostapp.com/doLogin.php");
+                    if(email.equals("")){
+                        etLoginEmail.setError("Email field is required");
+                    }else if(password.equals("")){
+                        etLoginPassword.setError("Password field is required");
+                    }else {
+                        //TODO 01 Insert/modify code here to send a HttpRequest to doLogin.php
+                        //HttpRequest request = new HttpRequest("http://10.0.2.2/ruixian-ang97/public_html/doLogin.php");
+                        HttpRequest request = new HttpRequest("https://ruixian-ang97.000webhostapp.com/doLogin.php");
 
-                    request.setMethod("POST");
-                    request.addData("email",etLoginEmail.getText().toString());
-                    request.addData("password",etLoginPassword.getText().toString());
-                    request.execute();
-                    /******************************/
-                    try{
+                        request.setMethod("POST");
+                        request.addData("email", etLoginEmail.getText().toString());
+                        request.addData("password", etLoginPassword.getText().toString());
+                        request.execute();
+                        /******************************/
 
-                        String jsonString = request.getResponse();
-                        Log.d("info",jsonString);
+                        try {
 
-                        Toast.makeText(MainActivity.this,jsonString,Toast.LENGTH_LONG).show();
-                        JSONObject jsonObj = (JSONObject) new JSONTokener(jsonString).nextValue();
-                        if (jsonObj.getBoolean("authenticated")){
-                            // When authentication is successful
-                            //TODO 02 Extract the API Key from the JSON object and assign it to the following variable
-                            String apiKey = jsonObj.getString("apikey");
-                            Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
-                            intent.putExtra("com.example.MAIN_MESSAGE", apiKey);
-                            startActivity(intent);
-                        }else{
-                            Toast.makeText(MainActivity.this,"Authentication failed, please login again",Toast.LENGTH_SHORT).show();
+                            String jsonString = request.getResponse();
+                            Log.d("info", jsonString);
 
+                            JSONObject jsonObj = (JSONObject) new JSONTokener(jsonString).nextValue();
+                            if (jsonObj.getBoolean("authenticated")) {
+
+                                // When authentication is successful
+                                //TODO 02 Extract the API Key from the JSON object and assign it to the following variable
+                                String apiKey = jsonObj.getString("apikey");
+                                String position = jsonObj.getString("position");
+                                if(position.equals("security staff")){
+                                    intentLogin = new Intent(getApplicationContext(), SignInActivity.class);
+
+                                }else if(position.equals("manager")){
+                                    intentLogin = new Intent(getApplicationContext(), AddUserActivity.class);
+
+                                }else if(position.equals("host")) {
+                                    intentLogin = new Intent(getApplicationContext(), RegisterActivity.class);
+
+                                }
+                                intentLogin.putExtra("api", apiKey);
+                                startActivity(intentLogin);
+
+                            } else {
+                                tvErrorMessage.setText("Incorrect email or Password, please try again");
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
-                    catch (Exception e){
-                        e.printStackTrace();
-                    }
+
+
                 } else {
-                    Toast.makeText(MainActivity.this,"No network connection available.",Toast.LENGTH_SHORT).show();
+                    tvErrorMessage.setText("No network connection available.");
                 }
             }
         });
