@@ -9,6 +9,8 @@ import android.widget.Button;
 public class HostHomePage extends AppCompatActivity {
 
     Button btnPreregister, btnCancel, btnChange;
+    private String apikey, visitor_name,visitor_email,handphone_number, msg;
+    private Intent i, intentAPI;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,6 +19,12 @@ public class HostHomePage extends AppCompatActivity {
         btnPreregister = (Button)findViewById(R.id.buttonPreregister);
         btnCancel = (Button)findViewById(R.id.buttonCancel);
         btnChange = (Button)findViewById(R.id.buttonChangePassword);
+
+        HttpRequest requestVisitorDetails= new HttpRequest("https://ruixian-ang97.000webhostapp.com/getVisitor.php");
+//                    HttpRequest request= new HttpRequest("https://ruixian-ang97.000webhostapp.com/getVisitor.php?apikey=d2bfa8e8b749d2772a21edee7b70a2b3");
+        requestVisitorDetails.setMethod("POST");
+        requestVisitorDetails.addData("apikey",apikey);
+        requestVisitorDetails.execute();
 
         btnPreregister.setOnClickListener(new View.OnClickListener() {
             @Override
