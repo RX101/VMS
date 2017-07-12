@@ -90,7 +90,7 @@ public class HostPreRegister extends AppCompatActivity {
                 }
             }
         });
-    }
+    } //yo
 
     protected void onStart(){
         super.onStart();

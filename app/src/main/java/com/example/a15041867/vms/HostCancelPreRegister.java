@@ -100,7 +100,7 @@ public class HostCancelPreRegister extends AppCompatActivity {
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                }
+                } //push
                 final VisitorArrayAdapter arrayAdapter = new VisitorArrayAdapter(this, R.layout.row_visitor_info, alVisitor);
                 lv.setAdapter(arrayAdapter);
                 arrayAdapter.notifyDataSetChanged();

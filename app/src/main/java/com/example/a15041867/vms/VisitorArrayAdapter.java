@@ -30,7 +30,7 @@ public class VisitorArrayAdapter extends ArrayAdapter<Visitor> {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+//d
         View rowView = inflater.inflate(resource, parent, false);
 
         //Match the UI components with Java variables

@@ -25,7 +25,7 @@ public class HostHomePage extends AppCompatActivity {
         requestVisitorDetails.setMethod("POST");
         requestVisitorDetails.addData("apikey",apikey);
         requestVisitorDetails.execute();
-
+//ps
         btnPreregister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -26,7 +26,7 @@ public class Visitor {
     public void setVisitor_email(String visitor_email) {
         this.visitor_email = visitor_email;
     }
-
+//a
 
     public String getVisitor_name(){
         return visitor_name;
