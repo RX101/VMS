@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/nav_pre_register"
+        android:title="Pre-Register"/>
+
+
+    <item
+        android:id="@+id/nav_cancel_pre_register"
+        android:title="Cancel Pre-Register"/>
+
+
+    <item
+        android:id="@+id/nav_change_password"
+        android:title="Change Password"/>
+
+
+    <item
+        android:id="@+id/log_out"
+        android:title="Log Out"/>
+
+
+
+</menu>
