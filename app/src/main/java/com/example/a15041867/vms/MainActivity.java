@@ -49,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
 //
 //                }
 
-        etLoginEmail.setText("security@gmail.com");
-        etLoginPassword.setText("security1234");
+        etLoginEmail.setText("host@gmail.com");
+        etLoginPassword.setText("host1234");
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                                     intentLogin = new Intent(getApplicationContext(), AddUserActivity.class);
 
                                 }else if(position.equals("host")) {
-                                    intentLogin = new Intent(getApplicationContext(), RegisterActivity.class);
+                                    intentLogin = new Intent(getApplicationContext(), HostHomePage.class);
 
                                 }
                                 intentLogin.putExtra("api", apiKey);

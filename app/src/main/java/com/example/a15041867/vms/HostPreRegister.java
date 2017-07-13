@@ -19,7 +19,8 @@ public class HostPreRegister extends AppCompatActivity {
     private ActionBarDrawerToggle mToggle;
     private NavigationView nv;
     Intent i;
-    EditText etNumber, etName, etEmail, etTime, etDate;
+    EditText etNumber, etName, etEmail, etTime, etDate, etHostEmail;
+
     Button btnSubmit;
 
     @Override
@@ -67,6 +68,7 @@ public class HostPreRegister extends AppCompatActivity {
                 etEmail = (EditText)findViewById(R.id.editTextEmail);
                 etTime = (EditText)findViewById(R.id.editTextTime);
                 etDate = (EditText)findViewById(R.id.editTextDate);
+                etHostEmail = (EditText)findViewById(R.id.editTextHostEmail);
                 HttpRequest request = new HttpRequest("http://ruixian-ang97.000webhostapp.com/insertVisitor.php");
                 request.setMethod("POST");
                 request.addData("visitor_email",etEmail.getText().toString());
@@ -74,13 +76,21 @@ public class HostPreRegister extends AppCompatActivity {
                 request.addData("handphone_number",etNumber.getText().toString());
                 request.execute();
                 try{
+                    HttpRequest request1 = new HttpRequest("http://ruixian-ang97.000webhostapp.com/insertVisitorInfo.php");
+                    request1.setMethod("POST");
+                    request1.addData("visitor_email",etEmail.getText().toString());
+                    request1.addData("date_in",etDate.getText().toString());
+                    request1.addData("time_in",etTime.getText().toString());
+                    request1.addData("user_email",etHostEmail.getText().toString());
+                    request1.execute();
+                    Toast.makeText(HostPreRegister.this,"Visitor inserted",Toast.LENGTH_SHORT).show();
                     finish();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
-    }
+    } //yo
 
     protected void onStart(){
         super.onStart();

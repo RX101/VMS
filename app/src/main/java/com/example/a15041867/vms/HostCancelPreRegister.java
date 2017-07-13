@@ -1,6 +1,8 @@
 package com.example.a15041867.vms;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -13,7 +15,9 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -70,16 +74,15 @@ public class HostCancelPreRegister extends AppCompatActivity {
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
 
-            //TODO 03 Extract the loginId and API Key from the intent object
+
             i = getIntent();
-            apikey = i.getStringExtra("apikey");
-            /******************************/
+           apikey = i.getStringExtra("apikey");
+
             if (apikey != null) {
                 HttpRequest request = new HttpRequest("http://ruixian-ang97.000webhostapp.com/getVisitor.php");
                 request.setMethod("POST");
                 request.addData("apikey", apikey);
                 request.execute();
-
                 try {
                     String jsonString = request.getResponse();
 
@@ -97,12 +100,44 @@ public class HostCancelPreRegister extends AppCompatActivity {
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                }
-                VisitorArrayAdapter arrayAdapter = new VisitorArrayAdapter(this, R.layout.row_visitor_info, alVisitor);
+                } //push
+                final VisitorArrayAdapter arrayAdapter = new VisitorArrayAdapter(this, R.layout.row_visitor_info, alVisitor);
                 lv.setAdapter(arrayAdapter);
-                arrayAdapter.setNotifyOnChange(true);
+                arrayAdapter.notifyDataSetChanged();
+                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View arg1, final int position, long arg3) {
 
-            }
+                        AlertDialog.Builder alertdialog = new AlertDialog.Builder(
+                                HostCancelPreRegister.this);
+                        alertdialog.setTitle("Selected Visitor");
+                        alertdialog.setMessage(""+parent.getItemAtPosition(position));
+                        alertdialog.setPositiveButton("Cancel", null);
+                        alertdialog.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                HttpRequest request = new HttpRequest("http://ruixian-ang97.000webhostapp.com/deleteVisitor.php");
+                                request.setMethod("POST");
+                                request.addData("user_email","user_email");
+                                request.execute();
+
+                                /******************************/
+                                try{
+                                    String jsonString = request.getResponse();
+                                    finish();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                alVisitor.remove(alVisitor.get(position));
+                                arrayAdapter.notifyDataSetChanged();
+                                Toast.makeText(HostCancelPreRegister.this,"Visitor Deleted",Toast.LENGTH_SHORT).show();
+                                arrayAdapter.notifyDataSetChanged();
+                            }
+                        });
+                        alertdialog.show();
+                    }
+                });
+
+           }
         }
     }
 }
