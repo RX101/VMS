@@ -115,32 +115,33 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
-//        btnSignIn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                String visitor_email = etSignInEmail.getText().toString();
-//                String visit_block = etSignInVisitBlock.getText().toString();
-//                String visit_unit = etSignInVisitUnit.getText().toString();
-//                String sub_visitor = "v1";
-//
-//                HttpRequest requestUserEmail= new HttpRequest("https://ruixian-ang97.000webhostapp.com/checkUserByBlockUnit.php?apikey=" + apikey);
-////                    HttpRequest request= new HttpRequest("https://ruixian-ang97.000webhostapp.com/getVisitor.php?apikey=d2bfa8e8b749d2772a21edee7b70a2b3");
-//                requestUserEmail.setMethod("GET");
-//                requestUserEmail.execute();
-//                try{
-//                    String jsonString1 = requestUserEmail.getResponse();
-////                        Log.i("response", jsonString);
-//                    JSONObject jsonObject1 = new JSONObject(jsonString1);
-//                    String msg = jsonObject1.getString("user_email");
-//
-//                    Toast.makeText(SignInActivity.this,msg,Toast.LENGTH_LONG).show();
-////                                                 finish();
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//        });
+        btnSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String visitor_email = etSignInEmail.getText().toString();
+                String visit_block = etSignInVisitBlock.getText().toString();
+                String visit_unit = etSignInVisitUnit.getText().toString();
+                String sub_visitor = "v1";
+
+                HttpRequest requestUserEmail= new HttpRequest("https://ruixian-ang97.000webhostapp.com/checkUserByBlockUnit.php");
+//                    HttpRequest request= new HttpRequest("https://ruixian-ang97.000webhostapp.com/getVisitor.php?apikey=d2bfa8e8b749d2772a21edee7b70a2b3");
+                requestUserEmail.setMethod("POST");
+                requestUserEmail.addData("apikey",apikey);
+                requestUserEmail.addData("user_block",visit_block);
+                requestUserEmail.addData("unit",visit_unit);
+                requestUserEmail.execute();
+                try{
+                    String jsonString1 = requestUserEmail.getResponse();
+                        Log.i("response", jsonString1);
+                    JSONObject jsonObject1 = new JSONObject(jsonString1);
+                    String msg = jsonObject1.getString("user_email");
+                    Toast.makeText(SignInActivity.this,msg,Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -55,6 +55,7 @@
         android:layout_marginBottom="25dp"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
         android:id="@+id/textViewForgetPassword"
+        android:textColor="@color/colorPrimary"
         android:textSize="20dp"/>
 
         <TextView
@@ -63,7 +64,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="25dp"
             android:id="@+id/textViewErrorMessage"
-            android:textSize="20dp"/>
+            android:textSize="18dp"/>
 
 
         <Button
