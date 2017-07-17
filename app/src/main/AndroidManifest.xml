@@ -2,23 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.a15041867.vms">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="Visitor Management System"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".MainActivity"
-            android:label="Login" />
-        <activity
-            android:name=".SignInActivity"
-            android:label="Sign In"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".RegisterActivity"
-            android:label="Register">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,14 +20,44 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".SignInActivity"
+            android:label="Sign In"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".RegisterActivity"
+            android:label="Register"></activity>
+        <activity
             android:name=".SignOutActivity"
             android:label="Sign Out"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".UserInfoActivity" />
-        <activity android:name=".VisitorInfoActivity" />
-        <activity android:name=".AddUserActivity" />
-        <activity android:name=".EvacuationActivity" />
-        <activity android:name=".SummaryActivity"></activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".AddUserActivity"
+            android:label="Add User" />
+        <activity
+            android:name=".EvacuationActivity"
+            android:label="Evacuation" />
+        <activity
+            android:name=".SummaryActivity"
+            android:label="Summary" />
+        <activity
+            android:name=".UserInfoActivity"
+            android:label="User Info" />
+        <activity
+            android:name=".VisitorInfoActivity"
+            android:label="Summary" />
+        <activity
+            android:name=".HostHomePage"
+            android:label="Host" />
+        <activity
+            android:name=".HostCancelPreRegister"
+            android:label="Cancel Pre-Register" />
+        <activity
+            android:name=".HostChangePassword"
+            android:label="Change Password" />
+        <activity
+        android:name=".HostPreRegister"
+        android:label="Pre Register" />
+
     </application>
 
 </manifest>

@@ -17,10 +17,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+
         android:layout_marginTop="20dp"
         android:text="Email"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="20dp"/>
 
     <EditText
         android:layout_marginTop="0dp"
@@ -33,8 +34,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Block"
-        android:layout_gravity="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="20dp"/>
 
     <EditText
         android:layout_marginTop="0dp"
@@ -47,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Visit Unit"
-        android:layout_gravity="center"
+        android:textSize="20dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
 
     <EditText
@@ -61,7 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Number of Visitor"
-        android:layout_gravity="center"
+        android:textSize="20dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
 
     <Spinner
@@ -79,7 +80,9 @@
         android:text="Register?"
         android:layout_gravity="center"
         android:layout_marginBottom="20dp"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+        android:textSize="20dp"
+        android:textColor="@color/colorPrimary"
         android:id="@+id/textViewRegister"/>
 
 
