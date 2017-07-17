@@ -44,20 +44,28 @@ public class UserInfoActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
-                    case(R.id.nav_sign_in):
-                        i = new Intent(getApplicationContext(),SignInActivity.class);
+                    case(R.id.nav_visitor_info):
+                        i = new Intent(getApplicationContext(),VisitorInfoActivity.class);
                         startActivity(i);
                         break;
-                    case(R.id.nav_sign_out):
-                        i= new Intent(getApplicationContext(),SignOutActivity.class);
+                    case(R.id.nav_summary):
+                        i= new Intent(getApplicationContext(),SummaryActivity.class);
                         startActivity(i);
                         break;
-                    case(R.id.nav_register):
-                        i= new Intent(getApplicationContext(),SignInActivity.class);
+                    case(R.id.nav_evacuation):
+                        i= new Intent(getApplicationContext(),EvacuationActivity.class);
                         startActivity(i);
                         break;
-                    case(R.id.nav_change_password):
-                        i= new Intent(getApplicationContext(),SignInActivity.class);
+                    case(R.id.nav_add_user):
+                        i= new Intent(getApplicationContext(),AddUserActivity.class);
+                        startActivity(i);
+                        break;
+                    case(R.id.nav_edit_user):
+                        i= new Intent(getApplicationContext(),UserInfoActivity.class);
+                        startActivity(i);
+                        break;
+                    case(R.id.log_out):
+                        i= new Intent(getApplicationContext(),MainActivity.class);
                         startActivity(i);
                         break;
                 }
