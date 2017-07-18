@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                                     intentLogin = new Intent(getApplicationContext(), SignInActivity.class);
 
                                 }else if(position.equals("manager")){
-                                    intentLogin = new Intent(getApplicationContext(), AddUserActivity.class);
+                                    intentLogin = new Intent(getApplicationContext(), UserInfoActivity.class);
 
                                 }else if(position.equals("host")) {
                                     intentLogin = new Intent(getApplicationContext(), HostHomePage.class);
