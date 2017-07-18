@@ -121,9 +121,9 @@ public class SignInActivity extends AppCompatActivity {
                 String visitor_email = etSignInEmail.getText().toString();
                 String visit_block = etSignInVisitBlock.getText().toString();
                 String visit_unit = etSignInVisitUnit.getText().toString();
-                String sub_visitor = "v1";
+                String sub_visitor = "v2";
 
-                HttpRequest requestUserEmail= new HttpRequest("https://ruixian-ang97.000webhostapp.com/checkUserByBlockUnit.php");
+                HttpRequest requestUserEmail= new HttpRequest("https://ruixian-ang97.000webhostapp.com/doSignIn.php");
 //                    HttpRequest request= new HttpRequest("https://ruixian-ang97.000webhostapp.com/getVisitor.php?apikey=d2bfa8e8b749d2772a21edee7b70a2b3");
                 requestUserEmail.setMethod("POST");
                 requestUserEmail.addData("apikey",apikey);
