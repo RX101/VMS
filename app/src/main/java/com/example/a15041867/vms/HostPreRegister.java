@@ -18,6 +18,7 @@ public class HostPreRegister extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
     private NavigationView nv;
+    private String block,unit;
     Intent i;
     EditText etNumber, etName, etEmail, etTime, etDate, etHostEmail;
 
@@ -27,6 +28,10 @@ public class HostPreRegister extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host_pre_register);
+
+        i = getIntent();
+        block = i.getStringExtra("block");
+        unit =  i.getStringExtra("unit");
 
         nv = (NavigationView) findViewById(R.id.nvPreRegister);
 

@@ -90,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
                                 //TODO 02 Extract the API Key from the JSON object and assign it to the following variable
                                 String apiKey = jsonObj.getString("apikey");
                                 String position = jsonObj.getString("position");
+                                String block = jsonObj.getString("block");
+                                String unit = jsonObj.getString("unit");
                                 if(position.equals("security staff")){
                                     intentLogin = new Intent(getApplicationContext(), SignInActivity.class);
 
@@ -98,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
 
                                 }else if(position.equals("host")) {
                                     intentLogin = new Intent(getApplicationContext(), HostHomePage.class);
+                                    intentLogin.putExtra("block",block);
+                                    intentLogin.putExtra("unit",unit);
 
                                 }
                                 intentLogin.putExtra("api", apiKey);
