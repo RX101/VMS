@@ -74,7 +74,6 @@ public class HostCancelPreRegister extends AppCompatActivity {
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
 
-
             i = getIntent();
            apikey = i.getStringExtra("apikey");
 
@@ -130,14 +129,15 @@ public class HostCancelPreRegister extends AppCompatActivity {
                                 alVisitor.remove(alVisitor.get(position));
                                 arrayAdapter.notifyDataSetChanged();
                                 Toast.makeText(HostCancelPreRegister.this,"Visitor Deleted",Toast.LENGTH_SHORT).show();
-                                arrayAdapter.notifyDataSetChanged();
                             }
                         });
                         alertdialog.show();
                     }
                 });
 
-           }
+           }else{
+                Toast.makeText(HostCancelPreRegister.this,"API is null",Toast.LENGTH_LONG).show();
+            }
         }
     }
 }
