@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class HostHomePage extends AppCompatActivity {
 
@@ -20,23 +21,32 @@ public class HostHomePage extends AppCompatActivity {
         btnCancel = (Button)findViewById(R.id.buttonCancel);
         btnChange = (Button)findViewById(R.id.buttonChangePassword);
 
-        HttpRequest requestVisitorDetails= new HttpRequest("https://ruixian-ang97.000webhostapp.com/getVisitor.php");
-//                    HttpRequest request= new HttpRequest("https://ruixian-ang97.000webhostapp.com/getVisitor.php?apikey=d2bfa8e8b749d2772a21edee7b70a2b3");
-        requestVisitorDetails.setMethod("POST");
-        requestVisitorDetails.addData("apikey",apikey);
-        requestVisitorDetails.execute();
+//        HttpRequest requestVisitorDetails= new HttpRequest("https://ruixian-ang97.000webhostapp.com/getVisitor.php");
+////                    HttpRequest request= new HttpRequest("https://ruixian-ang97.000webhostapp.com/getVisitor.php?apikey=d2bfa8e8b749d2772a21edee7b70a2b3");
+//        requestVisitorDetails.setMethod("POST");
+//        requestVisitorDetails.addData("apikey",apikey);
+//        requestVisitorDetails.execute();
+
+        intentAPI = getIntent();
+        apikey = intentAPI.getStringExtra("api");
+
+        Toast.makeText(HostHomePage.this,apikey,Toast.LENGTH_LONG).show();
 //ps
         btnPreregister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(HostHomePage.this, HostPreRegister.class));
+                i = new Intent(HostHomePage.this, HostPreRegister.class);
+                i.putExtra("apikey",apikey);
+                startActivity(i);
             }
         });
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(HostHomePage.this, HostCancelPreRegister.class));
+                i = new Intent(HostHomePage.this, HostCancelPreRegister.class);
+                i.putExtra("apikey",apikey);
+                startActivity(i);
             }
         });
 
