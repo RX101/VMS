@@ -10,13 +10,9 @@ public class Visitor {
     private String visitor_email;
 
     public Visitor(){
+        super();
     }
 
-    public Visitor(String visitor_name, String visitor_phone_number, String visitor_email){
-        this.visitor_email = visitor_email;
-        this.visitor_name = visitor_name;
-        this.visitor_phone_number = visitor_phone_number;
-    }
     public void setVisitor_name(String visitor_name) {
         this.visitor_name = visitor_name;
     }
