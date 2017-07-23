@@ -75,10 +75,6 @@ public class AddUserActivity extends AppCompatActivity {
                         i= new Intent(getApplicationContext(),AddUserActivity.class);
                         startActivity(i);
                         break;
-                    case(R.id.nav_edit_user):
-                        i= new Intent(getApplicationContext(),UserInfoActivity.class);
-                        startActivity(i);
-                        break;
                     case(R.id.log_out):
                         i= new Intent(getApplicationContext(),MainActivity.class);
                         startActivity(i);

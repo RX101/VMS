@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.a15041867.vms.VisitorInfoActivity">
+    tools:context="com.example.a15041867.vms.VisitorInfoActivity"
+    android:id="@+id/drawerLayoutVisitorInfo">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,7 +17,9 @@
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:text="Information of visitors"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textColor="@android:color/background_dark"
+            android:textStyle="bold|italic" />
 
         <ListView
             android:id="@+id/lvVisitorInfo"
@@ -24,4 +27,14 @@
             android:layout_height="match_parent" />
 
     </LinearLayout>
+
+    <android.support.design.widget.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:menu="@menu/navigation_menu_visitor_info"
+        android:id="@+id/nvVisitorInfo"
+        android:layout_gravity="start">
+
+    </android.support.design.widget.NavigationView>
+
 </android.support.v4.widget.DrawerLayout>

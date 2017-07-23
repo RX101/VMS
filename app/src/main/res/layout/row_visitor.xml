@@ -13,19 +13,31 @@
             android:id="@+id/tvVisName"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1.02" />
+            android:layout_weight="1.02"
+            android:textAlignment="viewStart"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textColor="@android:color/background_dark"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/tvVisHandPhone"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:textAlignment="viewStart"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textColor="@android:color/background_dark"
+            android:textSize="18sp" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/tvVisEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.06" />
+        android:layout_weight="0.06"
+        android:textAlignment="viewStart"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textColor="@android:color/background_dark"
+        android:textSize="18sp" />
 
 </LinearLayout>
