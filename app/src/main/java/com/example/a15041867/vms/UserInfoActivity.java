@@ -30,6 +30,7 @@ public class UserInfoActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mToggle;
     private Toolbar mToolbar;
     private NavigationView nv;
+
     Intent i;
     String loginId, apikey;
 
@@ -46,7 +47,7 @@ public class UserInfoActivity extends AppCompatActivity {
 //            logout();
 //        }
 
-        nv = (NavigationView) findViewById(R.id.nvManager);
+        nv = (NavigationView) findViewById(R.id.nvUserInfo);
 //        mToolbar = (Toolbar)findViewById(R.id.nav_action);
 //        setSupportActionBar(mToolbar);
 
@@ -62,28 +63,30 @@ public class UserInfoActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
+
                     case (R.id.nav_visitor_info):
                         i = new Intent(getApplicationContext(), VisitorInfoActivity.class);
+                        i.putExtra("api", apikey);
                         startActivity(i);
                         break;
                     case (R.id.nav_summary):
                         i = new Intent(getApplicationContext(), SummaryActivity.class);
+                        i.putExtra("api", apikey);
                         startActivity(i);
                         break;
                     case (R.id.nav_evacuation):
                         i = new Intent(getApplicationContext(), EvacuationActivity.class);
+                        i.putExtra("api", apikey);
                         startActivity(i);
                         break;
                     case (R.id.nav_add_user):
                         i = new Intent(getApplicationContext(), AddUserActivity.class);
-                        startActivity(i);
-                        break;
-                    case (R.id.nav_edit_user):
-                        i = new Intent(getApplicationContext(), UserInfoActivity.class);
+                        i.putExtra("api", apikey);
                         startActivity(i);
                         break;
                     case (R.id.log_out):
                         i = new Intent(getApplicationContext(), MainActivity.class);
+                        i.putExtra("api", apikey);
                         startActivity(i);
                         break;
                 }
@@ -101,7 +104,7 @@ public class UserInfoActivity extends AppCompatActivity {
             //TODO 03 Extract the loginId and API Key from the intent object
             i = getIntent();
             loginId = i.getStringExtra("loginId");
-            apikey = i.getStringExtra("apikey");
+            apikey = i.getStringExtra("api");
             /******************************/
             if (apikey != null) {
                 HttpRequest request = new HttpRequest("https://ruixian-ang97.000webhostapp.com/getUser.php");
@@ -165,6 +168,15 @@ public class UserInfoActivity extends AppCompatActivity {
 
         // show it
         alertDialog.show();
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(mToggle.onOptionsItemSelected(item)){
+            return true;
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
 

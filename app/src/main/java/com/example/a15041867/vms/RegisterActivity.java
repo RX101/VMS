@@ -121,7 +121,6 @@ public class RegisterActivity extends AppCompatActivity {
                     requestVisitorDetails.setMethod("POST");
                     requestVisitorDetails.addData("apikey",apikey);
                     requestVisitorDetails.execute();
-                    boolean condition = true;
                     try{
                         String jsonString = requestVisitorDetails.getResponse();
 //                        Log.i("response", jsonString);
@@ -136,16 +135,16 @@ public class RegisterActivity extends AppCompatActivity {
                             if(name.equals(visitor_name)){
                                 recordFound=true;
                                 etRegisterName.setError("Visitor name already exist,Please try another one");
-                                Toast.makeText(RegisterActivity.this,"testing AA :"+ i,Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this,"Record: "+ i,Toast.LENGTH_SHORT).show();
 
                             } else if (hp.equals(handphone_number)){
                                 recordFound=true;
                                 etRegisterHP.setError("Handphone Number has been registered in database,Please try another one");
-                                Toast.makeText(RegisterActivity.this,"testing BB"+ i,Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this,"Record: "+ i,Toast.LENGTH_SHORT).show();
                             } else if(email.equals(visitor_email)){
                                 recordFound=true;
                                 etRegisterEmail.setError("Email already exist,Please try another one");
-                                Toast.makeText(RegisterActivity.this,"testing CC"+ i,Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this,"Record: "+ i,Toast.LENGTH_SHORT).show();
                             }
                         }
 

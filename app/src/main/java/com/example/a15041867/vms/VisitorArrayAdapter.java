@@ -14,6 +14,7 @@ import java.util.ArrayList;
  */
 
 public class VisitorArrayAdapter extends ArrayAdapter<Visitor> {
+
     Context context;
     ArrayList<Visitor> visitors;
     TextView tvNRIC, tvName, tvPhoneNumber, tvEmail;
