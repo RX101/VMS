@@ -36,7 +36,7 @@ public class HostHomePage extends AppCompatActivity {
         intentAPI = getIntent();
         apikey = intentAPI.getStringExtra("api");
 
-        Toast.makeText(HostHomePage.this,apikey,Toast.LENGTH_LONG).show();
+        //Toast.makeText(HostHomePage.this,apikey,Toast.LENGTH_LONG).show();
 //ps
         btnPreregister.setOnClickListener(new View.OnClickListener() {
             @Override
