@@ -14,6 +14,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import org.json.JSONArray;
@@ -103,7 +105,6 @@ public class UserInfoActivity extends AppCompatActivity {
 
             //TODO 03 Extract the loginId and API Key from the intent object
             i = getIntent();
-            loginId = i.getStringExtra("loginId");
             apikey = i.getStringExtra("api");
             /******************************/
             if (apikey != null) {
@@ -140,6 +141,19 @@ public class UserInfoActivity extends AppCompatActivity {
                 UserArrayAdapter arrayAdapter = new UserArrayAdapter(this, R.layout.row_user, userList);
                 lv = (ListView) findViewById(R.id.lvUserInfo);
                 lv.setAdapter(arrayAdapter);
+                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View arg1, int arg2, long arg3) {
+
+                        User user = (User) parent.getItemAtPosition(arg2);
+
+                        i = new Intent(getApplicationContext(), DisplayUserInfoActivity.class);
+                        i.putExtra("apikey", apikey);
+                        i.putExtra("user_email", user.getUser_email());
+
+                        startActivity(i);
+                    }
+                });
 
             } else {
                 // AlertBox
