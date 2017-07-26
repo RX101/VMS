@@ -23,12 +23,13 @@ public class HostChangePassword extends AppCompatActivity {
         nv = (NavigationView)findViewById(R.id.nvHostChangePassword);
 
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawerLayoutChangePassword);
-        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
-
+//        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
+        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.close, R.string.close);
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
