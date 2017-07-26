@@ -43,6 +43,7 @@ public class HostPreRegister extends AppCompatActivity {
     TextView tvSubVisitor;
 
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host_pre_register);
@@ -65,7 +66,7 @@ public class HostPreRegister extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         intentAPI = getIntent();
-        apikey = intentAPI.getStringExtra("api");
+        apikey = intentAPI.getStringExtra("apikey");
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {

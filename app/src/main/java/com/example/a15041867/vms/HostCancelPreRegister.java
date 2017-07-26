@@ -30,7 +30,7 @@ public class HostCancelPreRegister extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
     private NavigationView nv;
-    Intent i;
+    Intent i,intentAPI;
     ListView lv;
     String apikey;
     Visitor visitor;
@@ -48,9 +48,9 @@ public class HostCancelPreRegister extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        i = getIntent();
-        apikey = i.getStringExtra("apikey");
-        Log.i("Sign Out Activity","" + apikey);
+        intentAPI = getIntent();
+        apikey = intentAPI.getStringExtra("apikey");
+        Log.i("Sign In Activity","" + apikey);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,8 +95,8 @@ public class HostCancelPreRegister extends AppCompatActivity {
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
 
-            i = getIntent();
-           apikey = i.getStringExtra("apikey");
+            intentAPI = getIntent();
+           apikey = intentAPI.getStringExtra("apikey");
           //  useremail = i.getStringExtra("user_email");
 
             if (apikey != null) {
