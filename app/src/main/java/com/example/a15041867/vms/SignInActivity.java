@@ -76,7 +76,7 @@ public class SignInActivity extends AppCompatActivity {
 //        setSupportActionBar(mToolbar);
 
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawerLayoutSignIn);
-        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
+        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.close, R.string.close);
 
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
