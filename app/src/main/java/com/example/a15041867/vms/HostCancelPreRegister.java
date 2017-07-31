@@ -106,6 +106,7 @@ public class HostCancelPreRegister extends AppCompatActivity {
                 request.execute();
                 try {
                     String jsonString = request.getResponse();
+                    Log.d("testing",jsonString);
                     JSONArray jsonArray = new JSONArray(jsonString);
                     // Populate the arraylist personList
                     for (int i = 0; i < jsonArray.length(); i++) {

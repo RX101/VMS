@@ -15,17 +15,21 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class SignOutActivity extends AppCompatActivity {
     private Session session;
@@ -34,7 +38,7 @@ public class SignOutActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mToggle;
     private Toolbar mToolbar;
     private NavigationView nv;
-    private String apikey, visitor_email;
+    private String apikey, visitor_email,userEmail, date,time;
     private Intent i, intentAPI;
     private ArrayList<CurrentVisitor> al;
     private  ArrayAdapter aa;
@@ -51,9 +55,10 @@ public class SignOutActivity extends AppCompatActivity {
 
         intentAPI = getIntent();
         apikey = intentAPI.getStringExtra("api");
+        userEmail = intentAPI.getStringExtra("user_email");
         al = new ArrayList<CurrentVisitor>();
         lvCurrentVisitor = (ListView) findViewById(R.id.lvCurrentVisitor);
-        Log.i("Sign Out Activity","" + apikey);
+        Log.i("Sign Out Activity","" + apikey + userEmail);
 //        if(!session.loggedin()){
 //            logout();
 //        }
@@ -88,27 +93,53 @@ public class SignOutActivity extends AppCompatActivity {
                     case(R.id.nav_sign_in):
                         i = new Intent(getApplicationContext(),SignInActivity.class);
                         i.putExtra("api",apikey);
+                        i.putExtra("user_email",userEmail);
                         startActivity(i);
                         break;
                     case(R.id.nav_sign_out):
                         i= new Intent(getApplicationContext(),SignOutActivity.class);
                         i.putExtra("api",apikey);
+                        i.putExtra("user_email",userEmail);
                         startActivity(i);
                         break;
                     case(R.id.nav_register):
                         i= new Intent(getApplicationContext(),RegisterActivity.class);
                         i.putExtra("api",apikey);
+                        i.putExtra("user_email",userEmail);
                         startActivity(i);
                         break;
                     case(R.id.nav_change_password):
-//                        i= new Intent(getApplicationContext(),SignInActivity.class);
-//                        startActivity(i);
+                        i= new Intent(getApplicationContext(),ChangePasswordActivity.class);
+                        i.putExtra("api",apikey);
+                        i.putExtra("user_email",userEmail);
+                        startActivity(i);
                         break;
                 }
                 return true;
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_search, menu);
+        MenuItem item = menu.findItem(R.id.menuSearch);
+        SearchView searchView = (SearchView) item.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                aa.getFilter().filter(newText);
+                return false;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -126,8 +157,11 @@ public class SignOutActivity extends AppCompatActivity {
         super.onResume();
         intentAPI = getIntent();
         apikey = intentAPI.getStringExtra("api");
-        Log.i("Sign Out Activity","" + apikey);
-
+        userEmail = intentAPI.getStringExtra("user_email");
+        Log.i("Sign Out Activity","" + apikey + userEmail);
+        al.clear();
+        aa = new ArrayAdapter(this, android.R.layout.simple_list_item_1, al);
+        lvCurrentVisitor.setAdapter(aa);
         // Check if there is network access
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -166,7 +200,15 @@ public class SignOutActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View arg1, int position, long arg3) {
 
-//                        CurrentVisitor current1 = (CurrentVisitor) parent.getItemAtPosition(position);
+                        final CurrentVisitor current1 = (CurrentVisitor) parent.getItemAtPosition(position);
+                        final String currentVisitor = current1.getVisitor_email();
+                        Calendar now = Calendar.getInstance(); //Create a Calendar object with current date/time
+                        date = now.get(Calendar.YEAR)+ "/"+
+                                (now.get(Calendar.MONTH)+1) + "/" +
+                                now.get(Calendar.DAY_OF_MONTH);
+                        time  = now.get(Calendar.HOUR_OF_DAY)+":"+
+                                now.get(Calendar.MINUTE)+":"+now.get(Calendar.SECOND);
+
 //                        Toast.makeText(SignOutActivity.this,current1.getVisitor_email() + "", Toast.LENGTH_SHORT).show();
                         //Create the Dialog Builder
                         AlertDialog.Builder myBuilder = new AlertDialog.Builder(SignOutActivity.this);
@@ -179,7 +221,9 @@ public class SignOutActivity extends AppCompatActivity {
                                 HttpRequest requestSignOut= new HttpRequest("https://ruixian-ang97.000webhostapp.com/signOutVisitor.php");
                                 requestSignOut.setMethod("POST");
                                 requestSignOut.addData("apikey",apikey);
-                                requestSignOut.addData("visitor_email",visitor_email);
+                                requestSignOut.addData("visitor_email",currentVisitor);
+                                requestSignOut.addData("date_out",date);
+                                requestSignOut.addData("time_out",time);
                                 requestSignOut.execute();
                                 try{
                                     String jsonString1 = requestSignOut.getResponse();
@@ -187,9 +231,12 @@ public class SignOutActivity extends AppCompatActivity {
                                     JSONObject jsonObject1 = new JSONObject(jsonString1);
                                     String msg = jsonObject1.getString("message");
                                     Toast.makeText(SignOutActivity.this,msg,Toast.LENGTH_LONG).show();
-                                    Intent iSignIn = new Intent(SignOutActivity.this,SignInActivity.class);
-                                    iSignIn.putExtra("api",apikey);
-                                    startActivity(iSignIn);
+//                                    Intent iSignIn = new Intent(SignOutActivity.this,SignInActivity.class);
+//                                    iSignIn.putExtra("api",apikey);
+//                                    startActivity(iSignIn);
+                                    al.remove(current1);
+                                    aa.notifyDataSetChanged();
+
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -209,8 +256,7 @@ public class SignOutActivity extends AppCompatActivity {
         } else {
             Toast.makeText(SignOutActivity.this,"No Network Connection! ",Toast.LENGTH_SHORT).show();
         }
-        aa = new ArrayAdapter(this, android.R.layout.simple_list_item_1, al);
-        lvCurrentVisitor.setAdapter(aa);
+
 
     }
 }
