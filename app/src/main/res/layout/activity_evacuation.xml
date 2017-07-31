@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.a15041867.vms.EvacuationActivity">
+    tools:context="com.example.a15041867.vms.EvacuationActivity"
+    android:id="@+id/drawerLayoutEvacuation">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,12 +13,30 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/textView"
             android:layout_width="match_parent"
-            android:layout_height="54dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.00"
+            android:fontFamily="sans-serif"
             android:text="Evacuation Report"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textColor="@android:color/background_dark"
+            android:textStyle="bold|italic" />
+
+        <ListView
+            android:id="@+id/lvEvacuation"
+            android:layout_width="match_parent"
+            android:layout_height="463dp" />
 
     </LinearLayout>
+
+    <android.support.design.widget.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:menu="@menu/navigation_menu_evacuation"
+        android:id="@+id/nvEvacuation"
+        android:layout_gravity="start">
+
+    </android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>

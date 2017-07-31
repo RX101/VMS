@@ -33,7 +33,8 @@ public class UserInfoActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private NavigationView nv;
 
-    Intent i;
+
+    Intent i,intentAPI;
     String loginId, apikey;
 
     ListView lv;
@@ -97,6 +98,25 @@ public class UserInfoActivity extends AppCompatActivity {
         });
 
 
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(mToggle.onOptionsItemSelected(item)){
+            return true;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        intentAPI = getIntent();
+        apikey = intentAPI.getStringExtra("api");
+        Log.i("Register Activity API","" + apikey);
         userList.clear();
         // Check if there is network access
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -164,7 +184,6 @@ public class UserInfoActivity extends AppCompatActivity {
             showAlert("No network connection!");
         }
     }
-
     private void showAlert(String msg){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -182,15 +201,6 @@ public class UserInfoActivity extends AppCompatActivity {
 
         // show it
         alertDialog.show();
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if(mToggle.onOptionsItemSelected(item)){
-            return true;
-
-        }
-        return super.onOptionsItemSelected(item);
     }
 }
 

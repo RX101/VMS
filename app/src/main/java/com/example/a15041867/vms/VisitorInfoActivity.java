@@ -14,6 +14,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import org.json.JSONArray;
@@ -133,6 +135,21 @@ public class VisitorInfoActivity extends AppCompatActivity {
                 VisitorInfoArrayAdapter arrayAdapter = new VisitorInfoArrayAdapter(this, R.layout.row_visitor, visitorList);
                 lv = (ListView) findViewById(R.id.lvVisitorInfo);
                 lv.setAdapter(arrayAdapter);
+                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View arg1, int arg2, long arg3) {
+
+                        Visitor visitor = (Visitor) parent.getItemAtPosition(arg2);
+
+                        i = new Intent(getApplicationContext(), DisplayVisitorInfoActivity.class);
+                        i.putExtra("apikey", apikey);
+                        i.putExtra("visitor_email", visitor.getVisitor_email());
+                        i.putExtra("visitor_name", visitor.getVisitor_name());
+                        i.putExtra("handphone_number", visitor.getVisitor_phone_number());
+
+                        startActivity(i);
+                    }
+                });
 
             } else {
                 // AlertBox

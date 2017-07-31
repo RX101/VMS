@@ -29,6 +29,26 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/textView12"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Email :            " />
+
+            <TextView
+                android:id="@+id/tvEmail"
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                android:textAlignment="center"
+                android:textColor="@android:color/black" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
                 android:id="@+id/textView10"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -39,27 +59,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textView12"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Email :            " />
-
-            <EditText
-                android:id="@+id/etEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textEmailAddress" />
+                android:inputType="textPersonName"
+                android:textAlignment="center" />
 
         </LinearLayout>
 
@@ -79,7 +80,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="phone" />
+                android:inputType="phone"
+                android:textAlignment="center" />
 
         </LinearLayout>
 
@@ -99,7 +101,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:textAlignment="center" />
 
         </LinearLayout>
 
@@ -119,7 +122,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="numberSigned" />
+                android:inputType="numberSigned"
+                android:textAlignment="center" />
 
         </LinearLayout>
 
@@ -177,11 +181,11 @@
                 android:text="Delete User" />
 
             <Button
-                android:id="@+id/btnDelete"
+                android:id="@+id/btnUpdate"
                 android:layout_width="195dp"
                 android:layout_height="wrap_content"
-                android:text="Update User"
-                android:layout_weight="0.07" />
+                android:layout_weight="0.07"
+                android:text="Update User" />
         </LinearLayout>
 
     </LinearLayout>
