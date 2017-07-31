@@ -8,17 +8,13 @@
     android:id="@+id/drawerLayoutPreRegister"
     tools:context="com.example.a15041867.vms.HostPreRegister">
 
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="368dp"
-        android:layout_height="wrap_content"
-        android:text="Pre-Register"
-        android:textAlignment="center"
-        android:textSize="40dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -123,9 +119,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:editable="false"
                 android:ems="10"
-                android:focusable="false"
                 android:inputType="textMultiLine" />
 
         </LinearLayout>
@@ -142,6 +136,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="6"
+
                 android:text="Time:" />
 
             <EditText
@@ -151,10 +146,27 @@
                 android:layout_marginBottom="5dp"
                 android:editable="false"
                 android:ems="10"
-                android:focusable="false"
                 android:inputType="textMultiLine" />
 
         </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Number of Visitor"
+            android:textSize="20dp" />
+
+        <Spinner
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinnerNumVisitor"
+            android:entries="@array/numVisitor"
+            android:layout_marginBottom="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewSubVisitor"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -169,7 +181,10 @@
             android:layout_weight="0.71" />
     </LinearLayout>
 
+
+
     </LinearLayout>
+    </ScrollView>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nvPreRegister"
@@ -179,5 +194,7 @@
         app:menu="@menu/navigation_menu_host">
 
     </android.support.design.widget.NavigationView>
+
+
 
 </android.support.v4.widget.DrawerLayout>

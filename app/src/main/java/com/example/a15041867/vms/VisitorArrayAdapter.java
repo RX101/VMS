@@ -17,7 +17,7 @@ public class VisitorArrayAdapter extends ArrayAdapter<Visitor> {
 
     Context context;
     ArrayList<Visitor> visitors;
-    TextView tvNRIC, tvName, tvPhoneNumber, tvEmail;
+    TextView tvNRIC, tvName, tvPhoneNumber, tvEmail, tvDate, tvTime;
     int resource;
 
     public VisitorArrayAdapter(Context context, int resource, ArrayList<Visitor> visitors) {
@@ -38,6 +38,8 @@ public class VisitorArrayAdapter extends ArrayAdapter<Visitor> {
         tvName = (TextView) rowView.findViewById(R.id.tvName);
         tvPhoneNumber = (TextView) rowView.findViewById(R.id.tvPhoneNumber);
         tvEmail = (TextView) rowView.findViewById(R.id.tvEmail);
+        tvTime = (TextView) rowView.findViewById(R.id.tvTimeIn);
+        tvDate = (TextView) rowView.findViewById(R.id.tvDateIn);
 
         Visitor visitor1 = visitors.get(position);
         String name = visitor1.getVisitor_name();
@@ -46,6 +48,11 @@ public class VisitorArrayAdapter extends ArrayAdapter<Visitor> {
         tvPhoneNumber.setText(phoneNumber);
         String email = visitor1.getVisitor_email();
         tvEmail.setText(email);
+        String datein = visitor1.getDate_in();
+        tvDate.setText(datein);
+        String timein = visitor1.getTime_in();
+        tvTime.setText(timein);
+
         return rowView;
     }
 

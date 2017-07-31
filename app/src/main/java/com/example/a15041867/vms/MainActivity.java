@@ -49,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
 //
 //                }
 
-        etLoginEmail.setText("manager@gmail.com");
-        etLoginPassword.setText("manager1234");
+        etLoginEmail.setText("security@gmail.com");
+        etLoginPassword.setText("security1234");
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +89,10 @@ public class MainActivity extends AppCompatActivity {
                                 // When authentication is successful
                                 //TODO 02 Extract the API Key from the JSON object and assign it to the following variable
                                 String apiKey = jsonObj.getString("apikey");
+                                String useremail = jsonObj.getString("user_email");
                                 String position = jsonObj.getString("position");
+                                String block = jsonObj.getString("block");
+                                String unit = jsonObj.getString("unit");
                                 if(position.equals("security staff")){
                                     intentLogin = new Intent(getApplicationContext(), SignInActivity.class);
 
@@ -98,6 +101,9 @@ public class MainActivity extends AppCompatActivity {
 
                                 }else if(position.equals("host")) {
                                     intentLogin = new Intent(getApplicationContext(), HostHomePage.class);
+                                    intentLogin.putExtra("block",block);
+                                    intentLogin.putExtra("unit",unit);
+                                    intentLogin.putExtra("user_email",useremail);
 
                                 }
                                 intentLogin.putExtra("api", apiKey);

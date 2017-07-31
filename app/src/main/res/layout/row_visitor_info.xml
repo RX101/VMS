@@ -6,7 +6,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="1">
 
@@ -46,7 +46,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <TextView
@@ -65,7 +65,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="36dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <TextView
@@ -82,9 +82,10 @@
             android:layout_weight="1.11" />
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="36dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <TextView
@@ -92,8 +93,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.24"
-            android:text="Date In : " />
-<!--//test-->
+            android:text="Time In : " />
+        <!--//test-->
         <TextView
             android:id="@+id/tvTimeIn"
             android:layout_width="wrap_content"

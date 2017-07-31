@@ -10,18 +10,24 @@ import android.widget.Toast;
 public class HostHomePage extends AppCompatActivity {
 
     Button btnPreregister, btnCancel, btnChange;
-    private String apikey, visitor_name,visitor_email,handphone_number, msg;
+    private String apikey, visitor_name,visitor_email,handphone_number, msg,block,unit,useremail;
     private Intent i, intentAPI;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host_home_page);
 
+        intentAPI = getIntent();
+        block = intentAPI.getStringExtra("block");
+        unit = intentAPI.getStringExtra("unit");
+        useremail = intentAPI.getStringExtra("user_email");
+
+
         btnPreregister = (Button)findViewById(R.id.buttonPreregister);
         btnCancel = (Button)findViewById(R.id.buttonCancel);
         btnChange = (Button)findViewById(R.id.buttonChangePassword);
 
-//        HttpRequest requestVisitorDetails= new HttpRequest("https://ruixian-ang97.000webhostapp.com/getVisitor.php");
+        //        HttpRequest requestVisitorDetails= new HttpRequest("https://ruixian-ang97.000webhostapp.com/getVisitor.php");
 ////                    HttpRequest request= new HttpRequest("https://ruixian-ang97.000webhostapp.com/getVisitor.php?apikey=d2bfa8e8b749d2772a21edee7b70a2b3");
 //        requestVisitorDetails.setMethod("POST");
 //        requestVisitorDetails.addData("apikey",apikey);
@@ -30,7 +36,7 @@ public class HostHomePage extends AppCompatActivity {
         intentAPI = getIntent();
         apikey = intentAPI.getStringExtra("api");
 
-        Toast.makeText(HostHomePage.this,apikey,Toast.LENGTH_LONG).show();
+        //Toast.makeText(HostHomePage.this,apikey,Toast.LENGTH_LONG).show();
 //ps
         btnPreregister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,6 +52,7 @@ public class HostHomePage extends AppCompatActivity {
             public void onClick(View view) {
                 i = new Intent(HostHomePage.this, HostCancelPreRegister.class);
                 i.putExtra("apikey",apikey);
+               // i.putExtra("user_email",useremail);
                 startActivity(i);
             }
         });

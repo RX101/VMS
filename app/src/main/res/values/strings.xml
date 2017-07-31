@@ -5,7 +5,9 @@
     <string-array name="numVisitor">
         <item>1</item>
         <item>2</item>
-        <item>Click to enter number of visitor</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
     </string-array>
     <string name="title_activity_sign_out">SignOutActivity</string>
     <string name="open">Open</string>
