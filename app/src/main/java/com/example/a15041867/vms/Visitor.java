@@ -5,6 +5,7 @@ package com.example.a15041867.vms;
  */
 
 public class Visitor {
+    private String user_email;
     private String visitor_name;
     private String visitor_phone_number;
     private String visitor_email;
@@ -15,6 +16,7 @@ public class Visitor {
         super();
     }
 
+    public void setUser_email(String user_email){this.user_email=user_email;}
     public void setVisitor_name(String visitor_name) {
         this.visitor_name = visitor_name;
     }
@@ -24,6 +26,7 @@ public class Visitor {
     public void setVisitor_email(String visitor_email) {
         this.visitor_email = visitor_email;
     }
+
     public void setTime_in(String time_in){this.time_in=time_in;}
     public void setDate_in(String date_in){this.date_in=date_in;}
 //a
@@ -40,6 +43,7 @@ public class Visitor {
         return visitor_email;
     }
 
+    public String getUser_email(){ return user_email; }
     public String getTime_in(){ return time_in; }
     public String getDate_in() {return date_in; }
 
