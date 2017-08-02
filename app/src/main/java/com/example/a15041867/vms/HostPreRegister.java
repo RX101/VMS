@@ -1,18 +1,25 @@
 package com.example.a15041867.vms;
 
 
+import android.Manifest;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.icu.util.Calendar;
+
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.telephony.SmsManager;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -22,11 +29,21 @@ import android.widget.Button;
 
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
+import java.util.Calendar;
+
+import static android.R.id.message;
 
 
 public class HostPreRegister extends AppCompatActivity {
@@ -39,9 +56,11 @@ public class HostPreRegister extends AppCompatActivity {
     Intent i,intentAPI;
     EditText etNumber, etName, etEmail, etTime, etDate, etHostEmail,etSignInEmail, etSignInVisitUnit, etSignInVisitBlock, etSv2Sub1,etSv2Sub2,
             etSv3Sub1,etSv3Sub2, etSv3Sub3, etSv4Sub1, etSv4Sub2, etSv4Sub3, etSv4Sub4,
-            etSv5Sub1, etSv5Sub2, etSv5Sub3, etSv5Sub4, etSv5Sub5;;
+            etSv5Sub1, etSv5Sub2, etSv5Sub3, etSv5Sub4, etSv5Sub5 , TESTINGONLY;
     Spinner spnNumVisitor;
-    Button btnSubmit;
+    Button btnSubmit,buttonGenerate;
+    ImageView iv;
+    private static final int MY_PERMISSIONS_REQUEST_SEND_SMS =0 ;
 
 
     @Override
@@ -52,7 +71,12 @@ public class HostPreRegister extends AppCompatActivity {
 
         tvSubVisitor = (TextView) findViewById(R.id.textViewSubVisitor);
         spnNumVisitor = (Spinner) findViewById(R.id.spinnerNumVisitor);
+        etTime = (EditText)findViewById(R.id.editTextTime);
+        etDate = (EditText)findViewById(R.id.editTextDate);
+        buttonGenerate = (Button)findViewById(R.id.buttonGeneragte);
+        TESTINGONLY = (EditText)findViewById(R.id.TESTINGONLY);
 
+        final ImageView iv = (ImageView)findViewById(R.id.imageView);
 
         i = getIntent();
         block = i.getStringExtra("block");
@@ -94,29 +118,62 @@ public class HostPreRegister extends AppCompatActivity {
             }
         });
 
-//        etDate.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    //To show current date in the datepicker
-//                    java.util.Calendar mcurrentDate = java.util.Calendar.getInstance();
-//                    int mYear = mcurrentDate.get(java.util.Calendar.YEAR);
-//                    int mMonth = mcurrentDate.get(java.util.Calendar.MONTH);
-//                    int mDay = mcurrentDate.get(java.util.Calendar.DAY_OF_MONTH);
-//
-//                    DatePickerDialog mDatePicker;
-//                    mDatePicker = new DatePickerDialog(HostPreRegister.this, new DatePickerDialog.OnDateSetListener() {
-//                        public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
-//                            // TODO Auto-generated method stub
-//                    /*      Your code   to get date and time    */
-//                            selectedmonth = selectedmonth + 1;
-//                            etDate.setText("" + selectedday + "/" + selectedmonth + "/" + selectedyear);
-//                        }
-//                    }, mYear, mMonth, mDay);
-//                    mDatePicker.setTitle("Select Date");
-//                    mDatePicker.show();
-//                }
-//
-//        });
+        buttonGenerate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+                try {
+                    BitMatrix bitMatrix = multiFormatWriter.encode(String.valueOf(TESTINGONLY), BarcodeFormat.QR_CODE, 200, 200);
+                    BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+                    Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+                    iv.setImageBitmap(bitmap);
+                }
+                catch(WriterException e){
+                    e.printStackTrace();
+                }
+            }
+        });
+        etDate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //To show current date in the datepicker
+                    java.util.Calendar mcurrentDate = java.util.Calendar.getInstance();
+                    int mYear = mcurrentDate.get(java.util.Calendar.YEAR);
+                    int mMonth = mcurrentDate.get(java.util.Calendar.MONTH);
+                    int mDay = mcurrentDate.get(java.util.Calendar.DAY_OF_MONTH);
+
+                    DatePickerDialog mDatePicker;
+                    mDatePicker = new DatePickerDialog(HostPreRegister.this, new DatePickerDialog.OnDateSetListener() {
+                        public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
+                            // TODO Auto-generated method stub
+                    /*      Your code   to get date and time    */
+                            selectedmonth = selectedmonth + 1;
+                            etDate.setText("" + selectedyear + "/" + selectedmonth + "/" + selectedday);
+                        }
+                    }, mYear, mMonth, mDay);
+                    mDatePicker.setTitle("Select Date");
+                    mDatePicker.show();
+                }
+
+        });
+
+        etTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar mcurrentTime = Calendar.getInstance();
+                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = mcurrentTime.get(Calendar.MINUTE);
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(HostPreRegister.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        etTime.setText( selectedHour + ":" + selectedMinute);
+                    }
+                }, hour, minute, true);//Yes 24 hour time
+                mTimePicker.setTitle("Select Time");
+                mTimePicker.show();
+            }
+        });
 
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
@@ -129,12 +186,16 @@ public class HostPreRegister extends AppCompatActivity {
                 etDate = (EditText) findViewById(R.id.editTextDate);
                 etHostEmail = (EditText) findViewById(R.id.editTextHostEmail);
                 tvSubVisitor = (TextView) findViewById(R.id.textViewSubVisitor);
+
                 String number=etNumber.getText().toString();
                 String name =etName.getText().toString();
                 String email = etEmail.getText().toString();
                 String time = etTime.getText().toString();
                 String date = etDate.getText().toString();
                 String hostEmail = etHostEmail.getText().toString();
+
+                i = i.putExtra("user_email", hostEmail);
+                sub_visitor = tvSubVisitor.getText().toString();
                 if(!Patterns.EMAIL_ADDRESS.matcher(hostEmail).matches()){
                     etHostEmail.setError("Invalid Email, Please try again.");
                 }else if (name.equals("")){
@@ -148,6 +209,7 @@ public class HostPreRegister extends AppCompatActivity {
                 } else if(time.equals("")){
                     etTime.setError("Date field is empty");
                 }else {
+
                     HttpRequest request = new HttpRequest("http://ruixian-ang97.000webhostapp.com/insertVisitor.php");
                     request.setMethod("POST");
                     request.addData("visitor_email", etEmail.getText().toString());
@@ -164,6 +226,7 @@ public class HostPreRegister extends AppCompatActivity {
                         request1.addData("sub_visitor",sub_visitor);
                         request1.execute();
                         Toast.makeText(HostPreRegister.this, "Visitor inserted", Toast.LENGTH_SHORT).show();
+                        sendSMSMessage();
                         finish();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -181,7 +244,7 @@ public class HostPreRegister extends AppCompatActivity {
                     View viewDialog = inflater.inflate(R.layout.sub_visitor2, null);
 
                     //Obtain th UI component in the input.xml layout
-                    etSv2Sub2 = (EditText) viewDialog.findViewById(R.id.editTextSv2Sub1);
+                    etSv2Sub1 = (EditText) viewDialog.findViewById(R.id.editTextSv2Sub1);
                     etSv2Sub2 = (EditText) viewDialog.findViewById(R.id.editTextSv2Sub2);
 
                     AlertDialog.Builder myBuilder = new AlertDialog.Builder(HostPreRegister.this
@@ -412,5 +475,63 @@ public class HostPreRegister extends AppCompatActivity {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+    protected void sendSMSMessage() {
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.SEND_SMS)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.SEND_SMS)) {
+                etNumber = (EditText) findViewById(R.id.editTextPhoneNumber);
+                etName = (EditText) findViewById(R.id.editTextName);
+                etEmail = (EditText) findViewById(R.id.editTextEmail);
+                etTime = (EditText) findViewById(R.id.editTextTime);
+                etDate = (EditText) findViewById(R.id.editTextDate);
+                etHostEmail = (EditText) findViewById(R.id.editTextHostEmail);
+                tvSubVisitor = (TextView) findViewById(R.id.textViewSubVisitor);
+                String number=etNumber.getText().toString();
+                String name =etName.getText().toString();
+                String email = etEmail.getText().toString();
+                String time = etTime.getText().toString();
+                String date = etDate.getText().toString();
+                String hostEmail = etHostEmail.getText().toString();
+                MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+                try{
+                    BitMatrix bitMatrix = multiFormatWriter.encode(number+"\n"+name+"\n"+email+"\n"+time+"\n"+date+"\n"+hostEmail, BarcodeFormat.QR_CODE,200,200);
+                    BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+                    Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+                    SmsManager smsManager = SmsManager.getDefault();
+                    smsManager.sendTextMessage(number, null, String.valueOf(bitmap), null, null);
+//                    iv.setImageBitmap(bitmap);
+                    Toast.makeText(getApplicationContext(), "SMS sent.",
+                            Toast.LENGTH_LONG).show();
+                } catch(WriterException e){
+                    e.printStackTrace();
+                }
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.SEND_SMS},
+                        MY_PERMISSIONS_REQUEST_SEND_SMS);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_SEND_SMS: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "SMS faild, please try again.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+            }
+        }
+
     }
 }

@@ -24,6 +24,24 @@
         android:weightSum="1">
 
 
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="100dp" />
+
+        <EditText
+            android:id="@+id/TESTINGONLY"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textMultiLine" />
+
+        <Button
+            android:id="@+id/buttonGeneragte"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button" />
+
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
@@ -120,6 +138,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:ems="10"
+                android:editable="false"
+                android:focusable="false"
                 android:inputType="textMultiLine" />
 
         </LinearLayout>
@@ -145,6 +165,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:editable="false"
+                android:focusable="false"
                 android:ems="10"
                 android:inputType="textMultiLine" />
 

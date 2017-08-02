@@ -52,8 +52,8 @@ public class MainActivity extends AppCompatActivity {
 //
 //                }
 
-        etLoginEmail.setText("security@gmail.com");
-        etLoginPassword.setText("security1234");
+        etLoginEmail.setText("host@gmail.com");
+        etLoginPassword.setText("host1234");
 
 
 
