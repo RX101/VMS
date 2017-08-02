@@ -368,6 +368,10 @@ public class SignInActivity extends AppCompatActivity {
                 visit_unit = etSignInVisitUnit.getText().toString();
                 sub_visitor = tvSubVisitor.getText().toString();
 
+                visitorEmailFound = false;
+                unitFound = false;
+                blockFound = false;
+
                 Calendar now = Calendar.getInstance(); //Create a Calendar object with current date/time
                 date = now.get(Calendar.YEAR)+ "/"+
                         (now.get(Calendar.MONTH)+1) + "/" +

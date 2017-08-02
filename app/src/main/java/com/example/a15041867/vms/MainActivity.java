@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvForgetPassword, tvErrorMessage;
     private Session session;
     Intent i, intentLogin;
-    boolean userFound = false;
+    boolean userFound;
 
 
 
@@ -60,7 +60,8 @@ public class MainActivity extends AppCompatActivity {
         tvForgetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                intentLogin = new Intent(getApplicationContext(),)
+                intentLogin = new Intent(getApplicationContext(),ForgetPasswordActivity.class);
+                startActivity(intentLogin);
             }
         });
 
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                userFound = false;
                 // Check if there is network access
                 ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -88,12 +90,13 @@ public class MainActivity extends AppCompatActivity {
                     }else if(password.equals("")){
                         etLoginPassword.setError("Password field is required");
                     }else {
+
                         HttpRequest requestCheckUser = new HttpRequest("https://ruixian-ang97.000webhostapp.com/checkUser.php");
                         requestCheckUser.setMethod("POST");
                         requestCheckUser.execute();
                         try{
                             String jsonString = requestCheckUser.getResponse();
-                            Log.d("fucking annoying ", jsonString);
+                            Log.d(" requestCheckUser ", jsonString);
                             JSONArray jsonArray = new JSONArray(jsonString);
                             for(int i=0; i< jsonArray.length();i++) {
                                 JSONObject jsonObj = (JSONObject) jsonArray.get(i);

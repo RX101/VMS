@@ -57,7 +57,8 @@
         <activity
             android:name=".HostPreRegister"
             android:label="Pre Register" />
-        <activity android:name=".ChangePasswordActivity"></activity>
+        <activity android:name=".ChangePasswordActivity" />
+        <activity android:name=".ForgetPasswordActivity"></activity>
     </application>
 
 </manifest>
