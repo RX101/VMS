@@ -110,7 +110,6 @@ public class MainActivity extends AppCompatActivity {
                         }catch (Exception e){
                             e.printStackTrace();
                         }
-                        Toast.makeText(MainActivity.this," " + userFound, Toast.LENGTH_LONG).show();
 
                         if(userFound == true){
                             HttpRequest request = new HttpRequest("https://ruixian-ang97.000webhostapp.com/doLogin.php");

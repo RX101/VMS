@@ -48,13 +48,13 @@ public class ChangePasswordActivity extends AppCompatActivity {
         intentAPI = getIntent();
         apikey = intentAPI.getStringExtra("api");
         userEmail = intentAPI.getStringExtra("user_email");
-        Log.i("Register Activity ","" + apikey + userEmail);
+        Log.i("ChangePasswordActivity ","" + apikey + userEmail);
 
         //        if(!session.loggedin()){
 //            logout();
 //        }
 
-        nv = (NavigationView)findViewById(R.id.nvRegister);
+        nv = (NavigationView)findViewById(R.id.nvChangePassword);
 //        mToolbar = (Toolbar)findViewById(R.id.nav_action);
 //        setSupportActionBar(mToolbar);
 
@@ -161,6 +161,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
                         } else {
                             Toast.makeText(ChangePasswordActivity.this, "Login Failed, API Key is wrong.", Toast.LENGTH_SHORT).show();
                         }
+                    }else {
+                        Toast.makeText(ChangePasswordActivity.this,"No Network Connection! ",Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -186,6 +188,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
         intentAPI = getIntent();
         apikey = intentAPI.getStringExtra("api");
         userEmail = intentAPI.getStringExtra("user_email");
-        Log.i("Register Activity ","" + apikey + userEmail);
+        Log.i("ChangePasswordActivity ","" + apikey + userEmail);
     }
 }
