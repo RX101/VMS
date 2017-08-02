@@ -7,6 +7,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.a15041867.vms.SignInActivity"
     tools:showIn="@layout/activity_sign_in"
+    android:background="#FBF8EF"
     android:id="@+id/drawerLayoutSignIn">
 
     <ScrollView

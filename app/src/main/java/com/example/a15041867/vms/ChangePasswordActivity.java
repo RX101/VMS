@@ -33,11 +33,12 @@ public class ChangePasswordActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private NavigationView nv;
     private Intent i, intentAPI;
-    private String apikey, userEmail;
+    private String apikey, userEmail, oldPassword,newPassword,confirmPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("Change Password");
         setContentView(R.layout.activity_change_password);
         etOldPassword = (EditText)findViewById(R.id.etOldPassword);
         etNewPassword = (EditText)findViewById(R.id.etNewPassword);
@@ -101,89 +102,69 @@ public class ChangePasswordActivity extends AppCompatActivity {
         btnChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                String oldPassword = etOldPassword.getText().toString();
-//                String newPassword = etNewPassword.getText().toString();
-//                String confirmPassword = etConfirmPassword.getText().toString();
-//
-//                // Check if there is network access
-//                ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-//                NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-//                if (networkInfo != null && networkInfo.isConnected()) {
-//
-//                    /******************************/
-//                    if (apikey != null) {
-//                        final HttpRequest request = new HttpRequest("https://ruixian-ang97.000webhostapp.com/changePassword.php");
-//                        request.setMethod("POST");
-//                        request.addData("apikey", apikey);
-//                        request.addData("new", newPassword);
-//                        request.addData("old", oldPassword);
-//                        request.addData("email", userEmail);
-//                        request.execute();
-//
-//                        try {
-//                            String jsonString = request.getResponse();
-//                            Log.d("js", "jsonString: " + jsonString);
-//
-//                            JSONArray jsonArray = new JSONArray(jsonString);
-//                            // Populate the arraylist personList
-//                            for (int i = 0; i < jsonArray.length(); i++) {
-//                                JSONObject jObj = jsonArray.getJSONObject(i);
-//                                visitor_email = jObj.getString("visitor_email");
-//                                CurrentVisitor current = new CurrentVisitor();
-//                                current.setDate_in(jObj.getString("date_in"));
-//                                current.setSub_visitor(jObj.getString("sub_visitor"));
-//                                current.setTime_in(jObj.getString("time_in"));
-//                                current.setVisitor_email(visitor_email);
-//                                al.add(current);
-//                            }
-//
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//
-//
-//                        lvCurrentVisitor.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                            @Override
-//                            public void onItemClick(AdapterView<?> parent, View arg1, int position, long arg3) {
-//
-////                        CurrentVisitor current1 = (CurrentVisitor) parent.getItemAtPosition(position);
-////                        Toast.makeText(SignOutActivity.this,current1.getVisitor_email() + "", Toast.LENGTH_SHORT).show();
-//                                //Create the Dialog Builder
-//                                AlertDialog.Builder myBuilder = new AlertDialog.Builder(SignOutActivity.this);
-//                                //Set the dialog details
-//                                myBuilder.setTitle("Confirmation Sign Out information:");
-//                                myBuilder.setMessage("Are you sure to sign out ? ");
-//                                myBuilder.setPositiveButton("Sign Out", new DialogInterface.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(DialogInterface dialogInterface, int i) {
-//                                        HttpRequest requestSignOut= new HttpRequest("https://ruixian-ang97.000webhostapp.com/signOutVisitor.php");
-//                                        requestSignOut.setMethod("POST");
-//                                        requestSignOut.addData("apikey",apikey);
-//                                        requestSignOut.addData("visitor_email",visitor_email);
-//                                        requestSignOut.execute();
-//                                        try{
-//                                            String jsonString1 = requestSignOut.getResponse();
-//                                            Log.i("response", jsonString1);
-//                                            JSONObject jsonObject1 = new JSONObject(jsonString1);
-//                                            String msg = jsonObject1.getString("message");
-//                                            Toast.makeText(ChangePasswordActivity.this,msg,Toast.LENGTH_LONG).show();
-//                                        } catch (Exception e) {
-//                                            e.printStackTrace();
-//                                        }
-//                                    }
-//                                });
-//                                myBuilder.setNeutralButton("Cancel",null);
-//                                AlertDialog myDialog = myBuilder.create();
-//                                myDialog = myBuilder.create();
-//                                myDialog.show();
-//
-//
-//                            }
-//                        });
-//                    }else {
-//                        Toast.makeText(ChangePasswordActivity.this,"Login Failed, API Key is wrong.",Toast.LENGTH_SHORT).show();
-//                    }
-//                }
+                 oldPassword = etOldPassword.getText().toString();
+                 newPassword = etNewPassword.getText().toString();
+                 confirmPassword = etConfirmPassword.getText().toString();
+                if(oldPassword.equals("")){
+                    etOldPassword.setError("Please enter your old password.");
+                }else if(newPassword.equals("")){
+                    etNewPassword.setError("Please enter your new password");
+                }else if(confirmPassword.equals("")){
+                    etConfirmPassword.setError("Please enter the confirm password.");
+                }else if(!confirmPassword.equals(newPassword)){
+                    etConfirmPassword.setError("New password and confirm password is not matches.");
+                }else {
+
+                    // Check if there is network access
+                    ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                    NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+                    if (networkInfo != null && networkInfo.isConnected()) {
+
+                        /******************************/
+                        if (apikey != null) {
+
+
+                            //Create the Dialog Builder
+                            AlertDialog.Builder myBuilder = new AlertDialog.Builder(ChangePasswordActivity.this);
+                            //Set the dialog details
+                            myBuilder.setTitle("Change Password:");
+                            myBuilder.setMessage("Are you sure to change password ? ");
+                            myBuilder.setPositiveButton("Change Password", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    HttpRequest request = new HttpRequest("https://ruixian-ang97.000webhostapp.com/changePassword.php");
+                                    request.setMethod("POST");
+                                    request.addData("apikey", apikey);
+                                    request.addData("new", newPassword);
+                                    request.addData("old", oldPassword);
+                                    request.addData("email", userEmail);
+                                    request.execute();
+
+                                    try {
+                                        String jsonString = request.getResponse();
+                                        Log.d("jsonString: ",jsonString);
+                                        JSONObject jsonObj = new JSONObject(jsonString);
+                                        String message = jsonObj.getString("message");
+                                        Toast.makeText(ChangePasswordActivity.this, message, Toast.LENGTH_LONG).show();
+                                        finish();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                            myBuilder.setNeutralButton("Cancel", null);
+                            AlertDialog myDialog = myBuilder.create();
+                            myDialog = myBuilder.create();
+                            myDialog.show();
+
+
+                        } else {
+                            Toast.makeText(ChangePasswordActivity.this, "Login Failed, API Key is wrong.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+
+
 
             }
         });
