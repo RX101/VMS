@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -162,9 +163,10 @@ public class UserInfoActivity extends AppCompatActivity {
                 lv = (ListView) findViewById(R.id.lvUserInfo);
                 lv.setAdapter(arrayAdapter);
                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
                     @Override
                     public void onItemClick(AdapterView<?> parent, View arg1, int arg2, long arg3) {
-
+                       // Toast.makeText(UserInfoActivity.this,"ddwedwe",Toast.LENGTH_LONG).show();
                         User user = (User) parent.getItemAtPosition(arg2);
 
                         i = new Intent(getApplicationContext(), DisplayUserInfoActivity.class);
