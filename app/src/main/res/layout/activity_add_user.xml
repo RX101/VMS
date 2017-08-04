@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.a15041867.vms.AddUserActivity">
+    tools:context="com.example.a15041867.vms.AddUserActivity"
+    android:id="@+id/drawerLayoutAddUser">
 
 
     <LinearLayout
@@ -19,7 +20,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.02"
             android:text="Add User"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textColor="@android:color/black" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -160,6 +163,12 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Manager" />
+
+                <TextView
+                    android:id="@+id/tvError"
+                    android:layout_width="match_parent"
+                    android:layout_height="28dp"
+                    android:textColor="@android:color/holo_red_dark" />
             </RadioGroup>
 
         </LinearLayout>
@@ -176,8 +185,8 @@
     <android.support.design.widget.NavigationView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        app:menu="@menu/navigation_menu_user_info"
-        android:id="@+id/nvManager"
+        app:menu="@menu/navigation_menu_adduser"
+        android:id="@+id/nvAddUser"
         android:layout_gravity="start">
 
     </android.support.design.widget.NavigationView>

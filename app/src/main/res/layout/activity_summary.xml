@@ -4,115 +4,133 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.a15041867.vms.SummaryActivity">
+    tools:context="com.example.a15041867.vms.SummaryActivity"
+    android:id="@+id/drawerLayoutSummary">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="1">
-
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.14"
-            android:text="Choose the summary type:"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
-
-        <RadioGroup
-            android:layout_width="match_parent"
-            android:layout_height="151dp"
-            android:orientation="vertical"
-            android:weightSum="1">
-
-            <RadioButton
-                android:id="@+id/radioButton5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.07"
-                android:text="Number of visitors" />
-
-            <RadioButton
-                android:id="@+id/radioButton4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.08"
-                android:text="Busiest time span" />
-
-            <RadioButton
-                android:id="@+id/radioButton3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.11"
-                android:text="Frequency of visitors" />
-
-            <RadioButton
-                android:id="@+id/radioButton2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.10"
-                android:text="Details of visitors based on time span" />
-
-        </RadioGroup>
-
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.19"
-            android:text="Choose the time span"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
-
-        <TextView
-            android:id="@+id/textView9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Start Date"
-            android:textAppearance="@style/TextAppearance.AppCompat" />
-
-        <EditText
-            android:id="@+id/editText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.00"
-            android:ems="10"
-            android:inputType="textPersonName" />
-
-        <TextView
-            android:id="@+id/textView15"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="End Date"
-            android:textAppearance="@style/TextAppearance.AppCompat" />
-
-        <EditText
-            android:id="@+id/editText2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.00"
-            android:ems="10"
-            android:inputType="textPersonName" />
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="47dp"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="1">
 
-            <Button
-                android:id="@+id/button4"
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.14"
+                android:text="Choose the summary type:"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+            <RadioGroup
+                android:id="@+id/rgSummary"
+                android:layout_width="match_parent"
+                android:layout_height="151dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+                <RadioButton
+                    android:id="@+id/radioButton5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.07"
+                    android:text="Number of visitors" />
+
+                <RadioButton
+                    android:id="@+id/radioButton4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.08"
+                    android:text="Busiest time span" />
+
+                <RadioButton
+                    android:id="@+id/radioButton3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.11"
+                    android:text="Frequency of visitors" />
+
+                <RadioButton
+                    android:id="@+id/radioButton2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.10"
+                    android:text="Details of visitors based on time span" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.19"
+                android:text="Choose the time span"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+            <TextView
+                android:id="@+id/textView9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Submit" />
+                android:text="Start Date"
+                android:textAppearance="@style/TextAppearance.AppCompat" />
 
-            <Button
-                android:id="@+id/button2"
+            <EditText
+                android:id="@+id/etStartDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.00"
+                android:ems="10"
+                android:inputType="textPersonName" />
+
+            <TextView
+                android:id="@+id/textView15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Reset" />
+                android:text="End Date"
+                android:textAppearance="@style/TextAppearance.AppCompat" />
+
+            <EditText
+                android:id="@+id/etEndDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.00"
+                android:ems="10"
+                android:inputType="textPersonName" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="47dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnSubmit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Submit" />
+
+                <Button
+                    android:id="@+id/btnReset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Reset" />
+            </LinearLayout>
+
         </LinearLayout>
 
-    </LinearLayout>
+    </ScrollView>
+
+    <android.support.design.widget.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:menu="@menu/navigation_menu_summary"
+        android:id="@+id/nvSummary"
+        android:layout_gravity="start">
+
+    </android.support.design.widget.NavigationView>
+
 </android.support.v4.widget.DrawerLayout>

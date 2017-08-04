@@ -48,10 +48,7 @@ public class MainActivity extends AppCompatActivity {
 //                    finish();
 //
 //                }
-
-        etLoginEmail.setText("security@gmail.com");
-        etLoginPassword.setText("security1234");
-
+        
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

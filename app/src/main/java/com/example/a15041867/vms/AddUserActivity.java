@@ -1,5 +1,7 @@
 package com.example.a15041867.vms;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -8,13 +10,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.Random;
 
@@ -25,13 +32,16 @@ public class AddUserActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mToggle;
     private Toolbar mToolbar;
     private NavigationView nv;
+    private String apikey, db_email;
     Intent i;
+    private boolean EmailFound=false;
 
     private static final String TAG = "AddUserActivity";
 
     EditText etName, etEmail, etHandphone, etBlock, etUnit;
     Button btnAddUser;
     RadioGroup rgRoles;
+    TextView tvError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +53,11 @@ public class AddUserActivity extends AppCompatActivity {
 //            logout();
 //        }
 
-        nv = (NavigationView)findViewById(R.id.nvManager);
+        nv = (NavigationView)findViewById(R.id.nvAddUser);
 //        mToolbar = (Toolbar)findViewById(R.id.nav_action);
 //        setSupportActionBar(mToolbar);
 
-        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawerLayoutUserInfo);
+        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawerLayoutAddUser);
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
 
         mDrawerLayout.addDrawerListener(mToggle);
@@ -63,16 +73,16 @@ public class AddUserActivity extends AppCompatActivity {
                         i = new Intent(getApplicationContext(),VisitorInfoActivity.class);
                         startActivity(i);
                         break;
+                    case(R.id.nav_user_info):
+                        i= new Intent(getApplicationContext(),UserInfoActivity.class);
+                        startActivity(i);
+                        break;
                     case(R.id.nav_summary):
                         i= new Intent(getApplicationContext(),SummaryActivity.class);
                         startActivity(i);
                         break;
                     case(R.id.nav_evacuation):
                         i= new Intent(getApplicationContext(),EvacuationActivity.class);
-                        startActivity(i);
-                        break;
-                    case(R.id.nav_add_user):
-                        i= new Intent(getApplicationContext(),AddUserActivity.class);
                         startActivity(i);
                         break;
                     case(R.id.log_out):
@@ -91,6 +101,7 @@ public class AddUserActivity extends AppCompatActivity {
         etBlock = (EditText)findViewById(R.id.etBlock);
         etUnit = (EditText)findViewById(R.id.etUnit);
         rgRoles = (RadioGroup)findViewById(R.id.rgRole);
+        tvError = (TextView)findViewById(R.id.tvError);
 
         btnAddUser.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,6 +111,7 @@ public class AddUserActivity extends AppCompatActivity {
                 String handphone = etHandphone.getText().toString();
                 String block = etBlock.getText().toString();
                 String unit = etUnit.getText().toString();
+
 
                 // Get the Id of the selected radio button in the RadioGroup
                 int selectedButtonId = rgRoles.getCheckedRadioButtonId();
@@ -118,33 +130,103 @@ public class AddUserActivity extends AppCompatActivity {
                     sb.append(c);
                 }
                 String password = sb.toString();
+                String userapikey = name + password;
 
-                HttpRequest request = new HttpRequest("http://10.0.2.2/C302_p08_SecureCloudAddressBook/createNewEntry.php");
-                request.setMethod("POST");
-                request.addData("user_email", email);
-                request.addData("name", name);
-                request.addData("handphone_number", handphone);
-                request.addData("position", selectedPosition);
-                request.addData("block", block);
-                request.addData("unit",unit);
-                request.addData("password", password);
-                request.execute();
-                Toast.makeText(AddUserActivity.this, "Contact Added Successfully", Toast.LENGTH_SHORT).show();
+                i = getIntent();
+                apikey = i.getStringExtra("apikey");
 
-                /******************************/
-
-
+                HttpRequest requestUserDetails= new HttpRequest("https://ruixian-ang97.000webhostapp.com/getUser.php");
+                requestUserDetails.setMethod("POST");
+                requestUserDetails.addData("apikey",apikey);
+                requestUserDetails.execute();
                 try{
-                    String jsonString = request.getResponse();
-                    Log.d(TAG, "jsonString: " + jsonString);
+                    String jsonString2 = requestUserDetails.getResponse();
+                    Log.i("response", jsonString2);
+                    JSONArray jsonArray = new JSONArray(jsonString2);
 
-                    finish();
-                } catch (Exception e) {
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObj = (JSONObject) jsonArray.get(i);
+                        db_email = jsonObj.getString("user_email");
+
+                        if(email.equalsIgnoreCase(db_email)){
+                            EmailFound = true;
+                        }
+                    }
+
+                }catch(Exception e){
                     e.printStackTrace();
                 }
+
+                if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                    etEmail.setError("Invalid Email, Please try again.");
+                }else if (name.equals("")){
+                    etName.setError("Name field is empty");
+                }else if (handphone.equals("")){
+                    etHandphone.setError("Handphone Number field is empty");
+                }else if(block.equals("")) {
+                    etBlock.setError("Block is empty");
+                } else if(unit.equals("")) {
+                    etUnit.setError("Unit is empty");
+                } else if(selectedPosition.equals("")){
+                    tvError.setError("Please select your role");
+                }else if(EmailFound == true) {
+                    etEmail.setError("Please use a different email address");
+                }else {
+                    HttpRequest request = new HttpRequest("https://ruixian-ang97.000webhostapp.com/addUser.php");
+                    request.setMethod("POST");
+                    request.addData("user_email", email);
+                    request.addData("name", name);
+                    request.addData("handphone_number", handphone);
+                    request.addData("position", selectedPosition);
+                    request.addData("block", block);
+                    request.addData("unit",unit);
+                    request.addData("password", password);
+                    request.addData("apikey", userapikey);
+                    request.execute();
+                    showAlert("User Added Successfully");
+                    //Toast.makeText(AddUserActivity.this, "Contact Added Successfully", Toast.LENGTH_SHORT).show();
+
+                    /******************************/
+
+
+                    try{
+                        String jsonString = request.getResponse();
+                        Log.d(TAG, "jsonString: " + jsonString);
+
+                        finish();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-
         });
+    }
+    private void showAlert(String msg){
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(msg)
+                .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, close
+                        // current activity
+                        AddUserActivity.this.finish();
+                    }
+                });
+
+        // create alert dialog
+        AlertDialog alertDialog = builder.create();
+
+        // show it
+        alertDialog.show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(mToggle.onOptionsItemSelected(item)){
+            return true;
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

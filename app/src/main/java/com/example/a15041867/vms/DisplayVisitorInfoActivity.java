@@ -56,7 +56,7 @@ public class DisplayVisitorInfoActivity extends AppCompatActivity {
             tvUserEmail.setText(" Host Email : " + jsonObj.getString("user_email"));
             TextView tvSubVisitors = (TextView) findViewById(R.id.tvSubVisitor);
             String subVisitors = jsonObj.getString("sub_visitor");
-            Toast.makeText(DisplayVisitorInfoActivity.this,subVisitors, Toast.LENGTH_LONG).show();
+            //Toast.makeText(DisplayVisitorInfoActivity.this,subVisitors, Toast.LENGTH_LONG).show();
             if(subVisitors.equals("")){
                 tvSubVisitors.setText(" Sub Visitors : Nil");
             }else{

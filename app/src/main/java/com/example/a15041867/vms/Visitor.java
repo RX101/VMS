@@ -10,6 +10,8 @@ public class Visitor {
     private String visitor_email;
     private String time_in;
     private String date_in;
+    private String user_email;
+    private String sub_visitors;
 
     public Visitor(){
         super();
@@ -26,6 +28,8 @@ public class Visitor {
     }
     public void setTime_in(String time_in){this.time_in=time_in;}
     public void setDate_in(String date_in){this.date_in=date_in;}
+    public void setUser_email(String user_email){this.user_email=user_email;}
+    public void setSub_visitors(String sub_visitors){this.sub_visitors=sub_visitors;}
 //a
 
     public String getVisitor_name(){
@@ -42,6 +46,8 @@ public class Visitor {
 
     public String getTime_in(){ return time_in; }
     public String getDate_in() {return date_in; }
+    public String getUser_email() {return user_email; }
+    public String getSub_visitors() {return sub_visitors; }
 
 
 

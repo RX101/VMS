@@ -31,14 +31,14 @@ public class VisitorInfoArrayAdapter  extends ArrayAdapter<Visitor> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
-        UserArrayAdapter.UserHolder holder = null;
+        visitorHolder holder = null;
 
         if(row == null)
         {
             LayoutInflater inflater = ((Activity)context).getLayoutInflater();
             row = inflater.inflate(layoutResourceId, parent, false);
 
-            holder = new UserArrayAdapter.UserHolder();
+            holder = new visitorHolder();
             holder.Name = (TextView)row.findViewById(R.id.tvVisName);
             holder.HandPhone = (TextView)row.findViewById(R.id.tvVisHandPhone);
             holder.Email = (TextView)row.findViewById(R.id.tvVisEmail);
@@ -47,7 +47,7 @@ public class VisitorInfoArrayAdapter  extends ArrayAdapter<Visitor> {
         }
         else
         {
-            holder = (UserArrayAdapter.UserHolder) row.getTag();
+            holder = (visitorHolder) row.getTag();
         }
 
         Visitor visitor = visitorList.get(position);
@@ -57,7 +57,7 @@ public class VisitorInfoArrayAdapter  extends ArrayAdapter<Visitor> {
         return row;
     }
 
-    static class UserHolder
+    static class visitorHolder
     {
         TextView Name;
         TextView HandPhone;
