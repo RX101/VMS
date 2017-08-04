@@ -57,6 +57,16 @@ public class HostHomePage extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        btnChange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                i = new Intent(HostHomePage.this, HostChangePassword.class);
+                i.putExtra("apikey",apikey);
+                i.putExtra("user_email",useremail);
+                startActivity(i);
+
+            }
+        });
 
 
 

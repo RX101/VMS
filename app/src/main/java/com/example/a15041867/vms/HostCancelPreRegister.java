@@ -32,11 +32,11 @@ public class HostCancelPreRegister extends AppCompatActivity {
     private NavigationView nv;
     Intent i,intentAPI;
     ListView lv;
-    String apikey;
+    String apikey, db_host_email;
     Visitor visitor;
-    User user;
+    User usermail;
     Boolean found = false;
-
+    Boolean host_found = false;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -61,6 +61,7 @@ public class HostCancelPreRegister extends AppCompatActivity {
 
         i = getIntent();
         String useremail = i.getStringExtra("user_email");
+        //i.putExtra("useremail",useremail);
         Toast.makeText(HostCancelPreRegister.this,useremail,Toast.LENGTH_SHORT).show();
 
         lv = (ListView) findViewById(R.id.lvCancel);
@@ -93,6 +94,11 @@ public class HostCancelPreRegister extends AppCompatActivity {
                         i.putExtra("apikey",apikey);
                         startActivity(i);
                         break;
+                    case (R.id.log_out):
+                        i = new Intent(getApplicationContext(), MainActivity.class);
+                        i.putExtra("apikey",apikey);
+                        startActivity(i);
+                        break;
                 }
                 return true;
             }
@@ -105,12 +111,11 @@ public class HostCancelPreRegister extends AppCompatActivity {
            apikey = intentAPI.getStringExtra("apikey");
           //  useremail = i.getStringExtra("user_email");
        //    if(useremail==user.getUser_email()) {
-               HttpRequest request3 = new HttpRequest("httpL//ruixian-ang97.000webhostapp.com/getUserByEmail.php");
-               request3.setMethod("POST");
-               request3.addData("apikey",apikey);
-               request3.addData("user_email",useremail);
-               request3.execute();
-
+//               HttpRequest request3 = new HttpRequest("http//ruixian-ang97.000webhostapp.com/getUserByEmail.php");
+//               request3.setMethod("POST");
+//               request3.addData("apikey",apikey);
+//               request3.addData("user_email",useremail);
+//               request3.execute();
 //               try {
 //                   String jsonString = request3.getResponse();
 //                   JSONObject jsonObject = new JSONObject(jsonString);
@@ -121,12 +126,35 @@ public class HostCancelPreRegister extends AppCompatActivity {
 //                   e.printStackTrace();
 //               }
 
-               if (apikey != null) {
 
-                   HttpRequest request = new HttpRequest("http://ruixian-ang97.000webhostapp.com/getCurrentVisitors.php");
-                   request.setMethod("POST");
-                   request.addData("apikey", apikey);
-                   request.execute();
+               if (apikey != null) {
+                   host_found = false;
+
+                   HttpRequest requestHostEmail = new HttpRequest("https://ruixian-ang97.000webhostapp.com/getUser.php");
+                   requestHostEmail.setMethod("POST");
+                   requestHostEmail.addData("apikey",apikey);
+                   requestHostEmail.execute();
+                   try {
+                       String jsonStringUser = requestHostEmail.getResponse();
+                       JSONArray jsonArrayUser = new JSONArray(jsonStringUser);
+                       for(int i = 0; i<jsonArrayUser.length(); i++){
+                           JSONObject jsonObject = (JSONObject) jsonArrayUser.get(i);
+                           db_host_email = jsonObject.getString("user_email");
+
+                           if(useremail.equalsIgnoreCase(db_host_email)){
+                               host_found = true;
+
+                           }
+                       }
+                   } catch (Exception e) {
+                       e.printStackTrace();
+                   }
+                   if(host_found==true) {
+
+                       HttpRequest request = new HttpRequest("http://ruixian-ang97.000webhostapp.com/getVisitorInfo.php");
+                       request.setMethod("POST");
+                       request.addData("apikey", apikey);
+                       request.execute();
 //                   try {
 //                       String jsonString = request.getResponse();
 //                       JSONArray jsonArray = new JSONArray(jsonString);
@@ -159,7 +187,6 @@ public class HostCancelPreRegister extends AppCompatActivity {
                                visitor.setDate_in(jObj.getString("date_in"));
                                visitor.setTime_in(jObj.getString("time_in"));
                                alVisitor.add(visitor);
-
                            }
 //                       HttpRequest request1 = new HttpRequest("http://ruixian-ang97.000webhostapp.com/getSignInVisitor.php");
 //                       request1.setMethod("POST");
@@ -177,48 +204,51 @@ public class HostCancelPreRegister extends AppCompatActivity {
                        } //push
 
 
-                   final VisitorArrayAdapter arrayAdapter = new VisitorArrayAdapter(this, R.layout.row_visitor_info, alVisitor);
-                   lv.setAdapter(arrayAdapter);
-                   arrayAdapter.notifyDataSetChanged();
-                   lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                       @Override
-                       public void onItemClick(AdapterView<?> parent, View arg1, final int position, long arg3) {
-                           final Visitor todelete = alVisitor.get(position);
-                           AlertDialog.Builder alertdialog = new AlertDialog.Builder(
-                                   HostCancelPreRegister.this);
-                           alertdialog.setTitle("Selected Visitor \n" + todelete);
-                           alertdialog.setMessage("" + todelete);
-                           alertdialog.setPositiveButton("Cancel", null);
-                           alertdialog.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
-                               public void onClick(DialogInterface dialog, int id) {
-                                   HttpRequest request = new HttpRequest("http://ruixian-ang97.000webhostapp.com/deleteVisitor.php");
-                                   request.setMethod("POST");
-                                   request.addData("visitor_email", todelete.getVisitor_email());
-                                   request.execute();
+                       final VisitorArrayAdapter arrayAdapter = new VisitorArrayAdapter(this, R.layout.row_visitor_info, alVisitor);
+                       lv.setAdapter(arrayAdapter);
+                       arrayAdapter.notifyDataSetChanged();
+                       lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                           @Override
+                           public void onItemClick(AdapterView<?> parent, View arg1, final int position, long arg3) {
+                               final Visitor todelete = alVisitor.get(position);
+                               AlertDialog.Builder alertdialog = new AlertDialog.Builder(
+                                       HostCancelPreRegister.this);
+                               alertdialog.setTitle("Selected Visitor \n" + todelete);
+                               alertdialog.setMessage("" + todelete);
+                               alertdialog.setPositiveButton("Cancel", null);
+                               alertdialog.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+                                   public void onClick(DialogInterface dialog, int id) {
+                                       HttpRequest request = new HttpRequest("http://ruixian-ang97.000webhostapp.com/deleteVisitor.php");
+                                       request.setMethod("POST");
+                                       request.addData("visitor_email", todelete.getVisitor_email());
+                                       request.execute();
 
-                                   /******************************/
-                                   try {
-                                       HttpRequest request1 = new HttpRequest("http://ruixian-ang97.000webhostapp.com/deleteVisitorInfo.php");
-                                       request1.setMethod("POST");
-                                       request1.addData("visitor_email", todelete.getVisitor_email());
-                                       request1.execute();
-                                       //String jsonString = request.getResponse();
-                                       //finish();
-                                   } catch (Exception e) {
-                                       e.printStackTrace();
+                                       /******************************/
+                                       try {
+                                           HttpRequest request1 = new HttpRequest("http://ruixian-ang97.000webhostapp.com/deleteVisitorInfo.php");
+                                           request1.setMethod("POST");
+                                           request1.addData("visitor_email", todelete.getVisitor_email());
+                                           request1.execute();
+                                           //String jsonString = request.getResponse();
+                                           //finish();
+                                       } catch (Exception e) {
+                                           e.printStackTrace();
+                                       }
+                                       alVisitor.remove(alVisitor.get(position));
+                                       arrayAdapter.notifyDataSetChanged();
+                                       Toast.makeText(HostCancelPreRegister.this, "Visitor Deleted " + todelete.getVisitor_email(), Toast.LENGTH_SHORT).show();
                                    }
-                                   alVisitor.remove(alVisitor.get(position));
-                                   arrayAdapter.notifyDataSetChanged();
-                                   Toast.makeText(HostCancelPreRegister.this, "Visitor Deleted " + todelete.getVisitor_email(), Toast.LENGTH_SHORT).show();
-                               }
-                           });
-                           alertdialog.show();
-                       }
-                   });
+                               });
+                               alertdialog.show();
+                           }
+
+                       });
+                   }
 
                } else {
                    Toast.makeText(HostCancelPreRegister.this, "API is null", Toast.LENGTH_LONG).show();
                }
+
          //  }
         }
 
