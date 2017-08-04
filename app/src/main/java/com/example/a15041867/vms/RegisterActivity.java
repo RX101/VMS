@@ -31,7 +31,7 @@ public class RegisterActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mToggle;
     private Toolbar mToolbar;
     private NavigationView nv;
-    private String apikey, visitor_name,visitor_email,handphone_number, msg;
+    private String apikey, visitor_name,visitor_email,handphone_number, msg, userEmail;
     private Intent i, intentAPI;
 
 
@@ -48,7 +48,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         intentAPI = getIntent();
         apikey = intentAPI.getStringExtra("api");
-        Log.i("Register Activity API","" + apikey);
+        userEmail = intentAPI.getStringExtra("user_email");
+        Log.i("Register Activity :","" + apikey + userEmail);
 
 //        if(!session.loggedin()){
 //            logout();
@@ -73,21 +74,26 @@ public class RegisterActivity extends AppCompatActivity {
                     case(R.id.nav_sign_in):
                         i = new Intent(getApplicationContext(),SignInActivity.class);
                         i.putExtra("api",apikey);
+                        i.putExtra("user_email",userEmail);
                         startActivity(i);
                         break;
                     case(R.id.nav_sign_out):
                         i= new Intent(getApplicationContext(),SignOutActivity.class);
                         i.putExtra("api",apikey);
+                        i.putExtra("user_email",userEmail);
                         startActivity(i);
                         break;
                     case(R.id.nav_register):
                         i= new Intent(getApplicationContext(),RegisterActivity.class);
                         i.putExtra("api",apikey);
+                        i.putExtra("user_email",userEmail);
                         startActivity(i);
                         break;
                     case(R.id.nav_change_password):
-//                        i= new Intent(getApplicationContext(),SignInActivity.class);
-//                        startActivity(i);
+                        i= new Intent(getApplicationContext(),ChangePasswordActivity.class);
+                        i.putExtra("api",apikey);
+                        i.putExtra("user_email",userEmail);
+                        startActivity(i);
                         break;
                 }
                 return true;
@@ -97,9 +103,7 @@ public class RegisterActivity extends AppCompatActivity {
         String email = etRegisterEmail.getText().toString();
         String hp = etRegisterHP.getText().toString();
         String name = etRegisterName.getText().toString();
-        etRegisterEmail.setText("visitor@gmail.com");
-        etRegisterName.setText("visitor");
-        etRegisterHP.setText("87981651");
+
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -217,6 +221,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onResume();
         intentAPI = getIntent();
         apikey = intentAPI.getStringExtra("api");
-        Log.i("Register Activity API","" + apikey);
+        userEmail = intentAPI.getStringExtra("user_email");
+        Log.i("Register Activity :","" + apikey + userEmail);
     }
 }

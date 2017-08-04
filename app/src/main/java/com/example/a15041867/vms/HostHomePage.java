@@ -38,6 +38,7 @@ public class HostHomePage extends AppCompatActivity {
 
         //Toast.makeText(HostHomePage.this,apikey,Toast.LENGTH_LONG).show();
 //ps
+        Toast.makeText(HostHomePage.this,useremail,Toast.LENGTH_SHORT).show();
         btnPreregister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,8 +53,18 @@ public class HostHomePage extends AppCompatActivity {
             public void onClick(View view) {
                 i = new Intent(HostHomePage.this, HostCancelPreRegister.class);
                 i.putExtra("apikey",apikey);
-               // i.putExtra("user_email",useremail);
+                i.putExtra("user_email",useremail);
                 startActivity(i);
+            }
+        });
+        btnChange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                i = new Intent(HostHomePage.this, HostChangePassword.class);
+                i.putExtra("apikey",apikey);
+                i.putExtra("user_email",useremail);
+                startActivity(i);
+
             }
         });
 

@@ -42,7 +42,7 @@ public class SignInActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mToggle;
     private Toolbar mToolbar;
     private NavigationView nv;
-    private String apikey, visitor_email,visit_block,visit_unit,sub_visitor,date,time, db_visitor_email,db_block,db_unit;
+    private String apikey, visitor_email,visit_block,visit_unit,sub_visitor,date,time, db_visitor_email,db_block,db_unit, userEmail;
     private Intent i, intentAPI, intentRegister;
     private boolean visitorEmailFound, unitFound, blockFound;
 
@@ -67,6 +67,7 @@ public class SignInActivity extends AppCompatActivity {
 
         intentAPI = getIntent();
         apikey = intentAPI.getStringExtra("api");
+        userEmail = intentAPI.getStringExtra("user_email");
         Log.i("Sign In Activity","" + apikey);
         //        if(!session.loggedin()){
 //            logout();
@@ -91,21 +92,26 @@ public class SignInActivity extends AppCompatActivity {
                     case(R.id.nav_sign_in):
                         i = new Intent(getApplicationContext(),SignInActivity.class);
                         i.putExtra("api",apikey);
+                        i.putExtra("user_email",userEmail);
                         startActivity(i);
                         break;
                     case(R.id.nav_sign_out):
                         i= new Intent(getApplicationContext(),SignOutActivity.class);
                         i.putExtra("api",apikey);
+                        i.putExtra("user_email",userEmail);
                         startActivity(i);
                         break;
                     case(R.id.nav_register):
                         i= new Intent(getApplicationContext(),RegisterActivity.class);
                         i.putExtra("api",apikey);
+                        i.putExtra("user_email",userEmail);
                         startActivity(i);
                         break;
                     case(R.id.nav_change_password):
-//                        i= new Intent(getApplicationContext(),SignInActivity.class);
-//                        startActivity(i);
+                        i= new Intent(getApplicationContext(),ChangePasswordActivity.class);
+                        i.putExtra("api",apikey);
+                        i.putExtra("user_email",userEmail);
+                        startActivity(i);
                         break;
                 }
                 return true;
@@ -362,6 +368,10 @@ public class SignInActivity extends AppCompatActivity {
                 visit_unit = etSignInVisitUnit.getText().toString();
                 sub_visitor = tvSubVisitor.getText().toString();
 
+                visitorEmailFound = false;
+                unitFound = false;
+                blockFound = false;
+
                 Calendar now = Calendar.getInstance(); //Create a Calendar object with current date/time
                 date = now.get(Calendar.YEAR)+ "/"+
                         (now.get(Calendar.MONTH)+1) + "/" +
@@ -378,44 +388,6 @@ public class SignInActivity extends AppCompatActivity {
                 }else if(visit_unit.equals("")){
                     etSignInVisitUnit.setError("Unit field is empty");
                 }else{
-//                    //Create the Dialog Builder
-//                            AlertDialog.Builder myBuilder = new AlertDialog.Builder(SignInActivity.this);
-//                            //Set the dialog details
-//                            myBuilder.setTitle("Confirmation Sign In information:");
-//                            myBuilder.setMessage("Visitor Details: \nEmail: " + visitor_email + "\nVisit Unit: "+ visit_block + " " + visit_unit +"\nSub-visitor: " + sub_visitor);
-//                            myBuilder.setPositiveButton("ADD", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialogInterface, int i) {
-//                                    HttpRequest requestSignIn= new HttpRequest("https://ruixian-ang97.000webhostapp.com/doSignIn.php");
-//                                    requestSignIn.setMethod("POST");
-//                                    requestSignIn.addData("apikey",apikey);
-//                                    requestSignIn.addData("user_block",visit_block);
-//                                    requestSignIn.addData("visitor_email",visitor_email);
-//                                    requestSignIn.addData("sub_visitor",sub_visitor);
-//                                    requestSignIn.addData("date_in",date);
-//                                    requestSignIn.addData("time_in",time);
-//                                    requestSignIn.addData("unit",visit_unit);
-//                                    requestSignIn.addData("isSignIn","1");
-//                                    requestSignIn.execute();
-//                                    try{
-//                                        String jsonString1 = requestSignIn.getResponse();
-//                  Log.i("response", jsonString1);
-//                                        JSONObject jsonObject1 = new JSONObject(jsonString1);
-//                                        String msg = jsonObject1.getString("message");
-//                                        Toast.makeText(SignInActivity.this,msg,Toast.LENGTH_LONG).show();
-//                                        finish();
-//                                    } catch (Exception e) {
-//                                        e.printStackTrace();
-//                                    }
-//                                }
-//                            });
-//                    myBuilder.setNeutralButton("Cancel",null);
-//                    AlertDialog myDialog = myBuilder.create();
-//                    myDialog = myBuilder.create();
-//                    myDialog.show();
-
-
-
                     HttpRequest requestVisitorEmail= new HttpRequest("https://ruixian-ang97.000webhostapp.com/getVisitor.php");
                     requestVisitorEmail.setMethod("POST");
                     requestVisitorEmail.addData("apikey",apikey);
@@ -444,7 +416,7 @@ public class SignInActivity extends AppCompatActivity {
                     requestUserDetails.execute();
                     try{
                         String jsonString2 = requestUserDetails.getResponse();
-                        Log.i("response", jsonString2);
+//                        Log.i("response", jsonString2);
                         JSONArray jsonArray = new JSONArray(jsonString2);
 
                         for (int i = 0; i < jsonArray.length(); i++) {
@@ -481,14 +453,19 @@ public class SignInActivity extends AppCompatActivity {
                                 requestSignIn.addData("date_in",date);
                                 requestSignIn.addData("time_in",time);
                                 requestSignIn.addData("unit",visit_unit);
+                                requestSignIn.addData("isSignIn","1");
                                 requestSignIn.execute();
                                 try{
                                     String jsonString1 = requestSignIn.getResponse();
-//                  Log.i("response", jsonString);
+                  Log.i("response", jsonString1);
                                     JSONObject jsonObject1 = new JSONObject(jsonString1);
                                     String msg = jsonObject1.getString("message");
                                     Toast.makeText(SignInActivity.this,msg,Toast.LENGTH_LONG).show();
-                                    finish();
+                                    etSignInEmail.setText("");
+                                    etSignInVisitUnit.setText("");
+                                    tvSubVisitor.setText("");
+                                    etSignInVisitBlock.setText("");
+                                    spnNumVisitor.setSelection(0);
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -501,24 +478,15 @@ public class SignInActivity extends AppCompatActivity {
                     myDialog.show();
                     }else if(visitorEmailFound == false){
                         etSignInEmail.setError("Email address have not register yet,Please register.");
-//                        Toast.makeText(SignInActivity.this,"Record: "+ i + " "+ db_visitor_email,Toast.LENGTH_SHORT).show();
                     }else if(blockFound == false){
                         etSignInVisitBlock.setError("Block does not exist.");
-//                        Toast.makeText(SignInActivity.this,"Record: "+ i,Toast.LENGTH_SHORT).show();
                     }else if(unitFound == false){
                         etSignInVisitUnit.setError("Unit does not exist.");
-//                        Toast.makeText(SignInActivity.this,"Record: "+ i,Toast.LENGTH_SHORT).show();
                     }else{
                         Toast.makeText(SignInActivity.this,"False",Toast.LENGTH_SHORT).show();
                     }
 
-
-
-
                 }
-
-
-
             }
         });
     }
@@ -537,7 +505,8 @@ public class SignInActivity extends AppCompatActivity {
         super.onResume();
         intentAPI = getIntent();
         apikey = intentAPI.getStringExtra("api");
-        Log.i("Sign In Activity","" + apikey);
+        userEmail = intentAPI.getStringExtra("user_email");
+        Log.i("Sign In Activity","" + apikey + userEmail);
     }
 
 
