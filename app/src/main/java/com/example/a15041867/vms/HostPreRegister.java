@@ -41,6 +41,9 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.Calendar;
 
 import static android.R.id.message;
@@ -54,12 +57,14 @@ public class HostPreRegister extends AppCompatActivity {
     private String block,unit, apikey, sub_visitor;
     TextView tvSubVisitor;
     Intent i,intentAPI;
+    String db_visitor_email, db_host_email;
     EditText etNumber, etName, etEmail, etTime, etDate, etHostEmail,etSignInEmail, etSignInVisitUnit, etSignInVisitBlock, etSv2Sub1,etSv2Sub2,
             etSv3Sub1,etSv3Sub2, etSv3Sub3, etSv4Sub1, etSv4Sub2, etSv4Sub3, etSv4Sub4,
             etSv5Sub1, etSv5Sub2, etSv5Sub3, etSv5Sub4, etSv5Sub5 , TESTINGONLY;
     Spinner spnNumVisitor;
     Button btnSubmit,buttonGenerate;
     ImageView iv;
+    Boolean visitor_found, host_found;
     private static final int MY_PERMISSIONS_REQUEST_SEND_SMS =0 ;
 
 
@@ -79,6 +84,7 @@ public class HostPreRegister extends AppCompatActivity {
         final ImageView iv = (ImageView)findViewById(R.id.imageView);
 
         i = getIntent();
+        String useremail = i.getStringExtra("useremail");
         block = i.getStringExtra("block");
         unit = i.getStringExtra("unit");
 
@@ -187,6 +193,9 @@ public class HostPreRegister extends AppCompatActivity {
                 etHostEmail = (EditText) findViewById(R.id.editTextHostEmail);
                 tvSubVisitor = (TextView) findViewById(R.id.textViewSubVisitor);
 
+                visitor_found = false;
+                host_found = false;
+
                 String number=etNumber.getText().toString();
                 String name =etName.getText().toString();
                 String email = etEmail.getText().toString();
@@ -209,27 +218,78 @@ public class HostPreRegister extends AppCompatActivity {
                 } else if(time.equals("")){
                     etTime.setError("Date field is empty");
                 }else {
-
-                    HttpRequest request = new HttpRequest("http://ruixian-ang97.000webhostapp.com/insertVisitor.php");
-                    request.setMethod("POST");
-                    request.addData("visitor_email", etEmail.getText().toString());
-                    request.addData("visitor_name", etName.getText().toString());
-                    request.addData("handphone_number", etNumber.getText().toString());
-                    request.execute();
+                    HttpRequest requestHostEmail = new HttpRequest("https://ruixian-ang97.000webhostapp.com/getUser.php");
+                    requestHostEmail.setMethod("POST");
+                    requestHostEmail.addData("apikey",apikey);
+                    requestHostEmail.execute();
                     try {
-                        HttpRequest request1 = new HttpRequest("http://ruixian-ang97.000webhostapp.com/insertVisitorInfo.php");
-                        request1.setMethod("POST");
-                        request1.addData("visitor_email", etEmail.getText().toString());
-                        request1.addData("date_in", etDate.getText().toString());
-                        request1.addData("time_in", etTime.getText().toString());
-                        request1.addData("user_email", etHostEmail.getText().toString());
-                        request1.addData("sub_visitor",sub_visitor);
-                        request1.execute();
-                        Toast.makeText(HostPreRegister.this, "Visitor inserted", Toast.LENGTH_SHORT).show();
-                        sendSMSMessage();
-                        finish();
+                        String jsonStringUser = requestHostEmail.getResponse();
+                        JSONArray jsonArrayUser = new JSONArray(jsonStringUser);
+                        for(int i = 0; i<jsonArrayUser.length(); i++){
+                            JSONObject jsonObject = (JSONObject) jsonArrayUser.get(i);
+                            db_host_email = jsonObject.getString("user_email");
+
+                            if(hostEmail.equalsIgnoreCase(db_host_email)){
+                                host_found = true;
+
+                            }
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
+                    }
+
+                    HttpRequest requestVisitorEmail= new HttpRequest("https://ruixian-ang97.000webhostapp.com/getVisitor.php");
+                    requestVisitorEmail.setMethod("POST");
+                    requestVisitorEmail.addData("apikey",apikey);
+                    requestVisitorEmail.execute();
+                    try {
+                        String jsonString = requestVisitorEmail.getResponse();
+//                        Log.i("response", jsonString);
+                        JSONArray jsonArray = new JSONArray(jsonString);
+
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObj = (JSONObject) jsonArray.get(i);
+                            db_visitor_email = jsonObj.getString("visitor_email");
+
+                            if(email.equalsIgnoreCase(db_visitor_email)){
+                                visitor_found = true;
+                            }
+                        }
+
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                    if(visitor_found==false && host_found==true) {
+                        HttpRequest request = new HttpRequest("http://ruixian-ang97.000webhostapp.com/insertVisitor.php");
+                        request.setMethod("POST");
+                        request.addData("visitor_email", etEmail.getText().toString());
+                        request.addData("visitor_name", etName.getText().toString());
+                        request.addData("handphone_number", etNumber.getText().toString());
+                        request.execute();
+                        try {
+                            HttpRequest request1 = new HttpRequest("http://ruixian-ang97.000webhostapp.com/insertVisitorInfo.php");
+                            request1.setMethod("POST");
+                            request1.addData("visitor_email", etEmail.getText().toString());
+                            request1.addData("date_in", etDate.getText().toString());
+                            request1.addData("time_in", etTime.getText().toString());
+                            request1.addData("user_email", etHostEmail.getText().toString());
+                            request1.addData("sub_visitor", sub_visitor);
+                            sendSMSMessage();
+                            request1.execute();
+                            Toast.makeText(HostPreRegister.this, "Visitor inserted", Toast.LENGTH_SHORT).show();
+                            finish();
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else{
+                        if(visitor_found==true) {
+                            etEmail.setError("Email already exist in database");
+                        }
+                        if (host_found==false) {
+                            etHostEmail.setError("Invalid host email");
+                        }
                     }
                 }
             }
@@ -508,6 +568,8 @@ public class HostPreRegister extends AppCompatActivity {
                             Toast.LENGTH_LONG).show();
                 } catch(WriterException e){
                     e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "SMS NOT NOT NOT sent.",
+                            Toast.LENGTH_LONG).show();
                 }
             } else {
                 ActivityCompat.requestPermissions(this,
