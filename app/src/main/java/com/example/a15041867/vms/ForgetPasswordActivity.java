@@ -135,12 +135,6 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                                             Toast.makeText(ForgetPasswordActivity.this, message, Toast.LENGTH_LONG).show();
                                             Log.i("password", password);
                                             if (message.equalsIgnoreCase("Password reset Successfully")){
-                                                int permissionCheck = ContextCompat.checkSelfPermission(ForgetPasswordActivity.this,
-                                                        Manifest.permission.SEND_SMS);
-                                                if (permissionCheck != PermissionChecker.PERMISSION_GRANTED) {
-                                                    ActivityCompat.requestPermissions(ForgetPasswordActivity.this,new String[]{Manifest.permission.SEND_SMS},2);
-
-                                                }
                                                 SmsManager smsManager = SmsManager.getDefault();
                                                 smsManager.sendTextMessage(handphone_number, null," You have successfully reset your password. \nThis is your new default password. \nPlease login to your account to change the password.: " + password, null, null);
                                                 Toast.makeText(ForgetPasswordActivity.this,"Sent",Toast.LENGTH_LONG).show();

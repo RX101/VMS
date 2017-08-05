@@ -57,7 +57,7 @@ public class HostPreRegister extends AppCompatActivity {
     private String block,unit, apikey, sub_visitor;
     TextView tvSubVisitor;
     Intent i,intentAPI;
-    String db_visitor_email, db_host_email;
+    String db_visitor_email, db_host_email, useremail;
     EditText etNumber, etName, etEmail, etTime, etDate, etHostEmail,etSignInEmail, etSignInVisitUnit, etSignInVisitBlock, etSv2Sub1,etSv2Sub2,
             etSv3Sub1,etSv3Sub2, etSv3Sub3, etSv4Sub1, etSv4Sub2, etSv4Sub3, etSv4Sub4,
             etSv5Sub1, etSv5Sub2, etSv5Sub3, etSv5Sub4, etSv5Sub5 , TESTINGONLY;
@@ -84,7 +84,7 @@ public class HostPreRegister extends AppCompatActivity {
         final ImageView iv = (ImageView)findViewById(R.id.imageView);
 
         i = getIntent();
-        String useremail = i.getStringExtra("useremail");
+        useremail = i.getStringExtra("user_email");
         block = i.getStringExtra("block");
         unit = i.getStringExtra("unit");
 
@@ -107,16 +107,19 @@ public class HostPreRegister extends AppCompatActivity {
                     case (R.id.nav_pre_register):
                         i = new Intent(getApplicationContext(), HostPreRegister.class);
                         i.putExtra("apikey", apikey);
+                        i.putExtra("user_email",useremail);
                         startActivity(i);
                         break;
                     case (R.id.nav_cancel_pre_register):
                         i = new Intent(getApplicationContext(), HostCancelPreRegister.class);
                         i.putExtra("apikey", apikey);
+                        i.putExtra("user_email",useremail);
                         startActivity(i);
                         break;
                     case (R.id.nav_change_password):
                         i = new Intent(getApplicationContext(), HostChangePassword.class);
                         i.putExtra("apikey", apikey);
+                        i.putExtra("user_email",useremail);
                         startActivity(i);
                         break;
                 }
@@ -129,7 +132,7 @@ public class HostPreRegister extends AppCompatActivity {
             public void onClick(View v) {
                 MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
                 try {
-                    BitMatrix bitMatrix = multiFormatWriter.encode(String.valueOf(TESTINGONLY), BarcodeFormat.QR_CODE, 200, 200);
+                    BitMatrix bitMatrix = multiFormatWriter.encode(String.valueOf(TESTINGONLY.getText().toString()), BarcodeFormat.QR_CODE, 200, 200);
                     BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
                     Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
                     iv.setImageBitmap(bitmap);
@@ -586,10 +589,9 @@ public class HostPreRegister extends AppCompatActivity {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-
                 } else {
                     Toast.makeText(getApplicationContext(),
-                            "SMS faild, please try again.", Toast.LENGTH_LONG).show();
+                            "SMS failed, please try again.", Toast.LENGTH_LONG).show();
                     return;
                 }
             }

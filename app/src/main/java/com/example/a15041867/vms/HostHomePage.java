@@ -44,6 +44,7 @@ public class HostHomePage extends AppCompatActivity {
             public void onClick(View view) {
                 i = new Intent(HostHomePage.this, HostPreRegister.class);
                 i.putExtra("apikey",apikey);
+                i.putExtra("user_email",useremail);
                 startActivity(i);
             }
         });
