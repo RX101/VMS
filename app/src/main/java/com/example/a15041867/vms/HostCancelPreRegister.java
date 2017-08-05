@@ -101,7 +101,6 @@ public class HostCancelPreRegister extends AppCompatActivity {
                 return true;
             }
         });
-
     }
 
     @Override
@@ -109,6 +108,8 @@ public class HostCancelPreRegister extends AppCompatActivity {
         super.onResume();
         intentAPI = getIntent();
         apikey = intentAPI.getStringExtra("apikey");
+        useremail = intentAPI.getStringExtra("user_email");
+
         Log.i("Sign In Activity","" + apikey);
 
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -117,6 +118,7 @@ public class HostCancelPreRegister extends AppCompatActivity {
 
             intentAPI = getIntent();
             apikey = intentAPI.getStringExtra("apikey");
+            useremail = intentAPI.getStringExtra("user_email");
             //  useremail = i.getStringExtra("user_email");
             //    if(useremail==user.getUser_email()) {
 //               HttpRequest request3 = new HttpRequest("http//ruixian-ang97.000webhostapp.com/getUserByEmail.php");

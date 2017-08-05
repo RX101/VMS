@@ -41,8 +41,9 @@ public class HostChangePassword extends AppCompatActivity {
 
         intentAPI = getIntent();
         apikey = intentAPI.getStringExtra("apikey");
-        Log.i("Sign Out Activity","" + apikey);
         userEmail = intentAPI.getStringExtra("user_email");
+        Log.i("Sign Out Activity","" + apikey);
+
         nv = (NavigationView)findViewById(R.id.nvHostChangePassword);
 
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawerLayoutChangePassword);
@@ -70,8 +71,14 @@ public class HostChangePassword extends AppCompatActivity {
                         i.putExtra("user_email",userEmail);
                         startActivity(i);
                         break;
-                    case(R.id.nav_change_password):
-                        i= new Intent(getApplicationContext(),HostChangePassword.class);
+//                    case(R.id.nav_change_password):
+//                        i= new Intent(getApplicationContext(),HostChangePassword.class);
+//                        i.putExtra("apikey",apikey);
+//                        i.putExtra("user_email",userEmail);
+//                        startActivity(i);
+//                        break;
+                    case(R.id.log_out):
+                        i= new Intent(getApplicationContext(),MainActivity.class);
                         i.putExtra("apikey",apikey);
                         i.putExtra("user_email",userEmail);
                         startActivity(i);
