@@ -10,6 +10,7 @@ import android.content.Intent;
 
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -87,6 +88,7 @@ public class HostPreRegister extends AppCompatActivity {
         intentAPI = getIntent();
         apikey = intentAPI.getStringExtra("apikey");
         userEmail = intentAPI.getStringExtra("user_email");
+        Toast.makeText(this, userEmail, Toast.LENGTH_SHORT).show();
         i = getIntent();
 //        String useremail = i.getStringExtra("useremail");
         block = i.getStringExtra("block");
@@ -269,23 +271,31 @@ public class HostPreRegister extends AppCompatActivity {
                         try {
                             HttpRequest request1 = new HttpRequest("http://ruixian-ang97.000webhostapp.com/insertVisitorInfo.php");
                             request1.setMethod("POST");
-                            request1.addData("user_email",userEmail);
                             request1.addData("visitor_email", etEmail.getText().toString());
+                            request1.addData("user_email",userEmail);
+                            request1.addData("sub_visitor", sub_visitor);
                             request1.addData("date_in", etDate.getText().toString());
                             request1.addData("time_in", etTime.getText().toString());
-                            request1.addData("sub_visitor", sub_visitor);
-                            Toast.makeText(HostPreRegister.this, "Visitor inserted and a QR code has been sent to visitor", Toast.LENGTH_SHORT).show();
                             request1.execute();
+                            Toast.makeText(HostPreRegister.this, "Visitor inserted and a QR code has been sent to visitor", Toast.LENGTH_SHORT).show();
                             MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
                             BitMatrix bitMatrix = null;
                             try {
+
+
                                 BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
                                 bitMatrix = multiFormatWriter.encode(number + "\n" + name + "\n" + email + "\n" + time + "\n" + date, BarcodeFormat.QR_CODE, 200, 200);
                                 Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+                                iv.setImageBitmap(bitmap);
+//                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+//                                byte[] byteArray = stream.toByteArray();
+//                                String string = new String(byteArray, "UTF-8");
+//                                byte[] byteArray1 = string.getBytes("UTF-8");
+//                                Bitmap bmp = BitmapFactory.decodeByteArray(byteArray1, 0, byteArray1.length);
                                 SmsManager smsManager = SmsManager.getDefault();
-                                smsManager.sendTextMessage(number, null, "Qr code: "+bitmap, null, null);
+                                smsManager.sendTextMessage(number, null, " Qr code: " + iv, null, null);
                                 finish();
-
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }

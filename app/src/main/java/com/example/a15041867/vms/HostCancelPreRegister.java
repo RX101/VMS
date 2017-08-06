@@ -32,11 +32,12 @@ public class HostCancelPreRegister extends AppCompatActivity {
     private NavigationView nv;
     Intent i,intentAPI;
     ListView lv;
-    String apikey, db_host_email;
+    String apikey, db_host_email,check_host;
     Visitor visitor;
     String useremail;
     Boolean found = false;
     Boolean host_found = false;
+    Boolean correct_host = false;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -79,12 +80,12 @@ public class HostCancelPreRegister extends AppCompatActivity {
                         i.putExtra("user_email",useremail);
                         startActivity(i);
                         break;
-                    case (R.id.nav_cancel_pre_register):
-                        i = new Intent(getApplicationContext(), HostCancelPreRegister.class);
-                        i.putExtra("apikey",apikey);
-                        i.putExtra("user_email",useremail);
-                        startActivity(i);
-                        break;
+//                    case (R.id.nav_cancel_pre_register):
+//                        i = new Intent(getApplicationContext(), HostCancelPreRegister.class);
+//                        i.putExtra("apikey",apikey);
+//                        i.putExtra("user_email",useremail);
+//                        startActivity(i);
+//                        break;
                     case (R.id.nav_change_password):
                         i = new Intent(getApplicationContext(), HostChangePassword.class);
                         i.putExtra("apikey",apikey);
@@ -136,10 +137,9 @@ public class HostCancelPreRegister extends AppCompatActivity {
 //                   e.printStackTrace();
 //               }
 
-
             if (apikey != null) {
                 host_found = false;
-
+                correct_host = false;
                 HttpRequest requestHostEmail = new HttpRequest("https://ruixian-ang97.000webhostapp.com/getUser.php");
                 requestHostEmail.setMethod("POST");
                 requestHostEmail.addData("apikey",apikey);
@@ -153,13 +153,29 @@ public class HostCancelPreRegister extends AppCompatActivity {
 
                         if(useremail.equalsIgnoreCase(db_host_email)){
                             host_found = true;
-
                         }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                if(host_found==true) {
+                HttpRequest requestUserEmail = new HttpRequest("http://ruixian-ang97.000webhostapp.com/getVisitorInfo.php");
+                requestUserEmail.setMethod("POST");
+                requestUserEmail.addData("apikey", apikey);
+               requestUserEmail.execute();
+                try {
+                    String jsonStringUserEmail = requestUserEmail.getResponse();
+                    JSONArray jsonArrayUserEmail = new JSONArray(jsonStringUserEmail);
+                    for(int i = 0; i<jsonArrayUserEmail.length(); i++){
+                        JSONObject jsonObjectUserEmail = (JSONObject) jsonArrayUserEmail.get(i);
+                        check_host = jsonObjectUserEmail.getString("user_email");
+                        if(check_host.equals(useremail)){
+                            correct_host = true;
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if(host_found==true && correct_host==true) {
 
                     HttpRequest request = new HttpRequest("http://ruixian-ang97.000webhostapp.com/getVisitorInfo.php");
                     request.setMethod("POST");
