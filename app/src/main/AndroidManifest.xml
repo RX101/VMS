@@ -64,7 +64,8 @@
         <activity android:name=".DisplayVisitorInfoActivity" />
         <activity android:name=".DisplayUserInfoActivity" />
         <activity android:name=".SummaryInfoActivity" />
-        <activity android:name=".VisitorInfoByDateActivity"></activity>
+        <activity android:name=".VisitorInfoByDateActivity" />
+        <activity android:name=".VisitorFrequencyActivity"></activity>
     </application>
 
 </manifest>
