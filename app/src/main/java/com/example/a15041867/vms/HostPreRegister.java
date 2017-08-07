@@ -10,6 +10,8 @@ import android.content.Intent;
 
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -44,6 +46,7 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
 
 import static android.R.id.message;
@@ -51,22 +54,21 @@ import static android.R.id.message;
 
 public class HostPreRegister extends AppCompatActivity {
 
+    private static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 0;
+    TextView tvSubVisitor;
+    Intent i, intentAPI;
+    String db_visitor_email, db_host_email;
+    EditText etNumber, etName, etEmail, etTime, etDate, etHostEmail, etSignInEmail, etSignInVisitUnit, etSignInVisitBlock, etSv2Sub1, etSv2Sub2,
+            etSv3Sub1, etSv3Sub2, etSv3Sub3, etSv4Sub1, etSv4Sub2, etSv4Sub3, etSv4Sub4,
+            etSv5Sub1, etSv5Sub2, etSv5Sub3, etSv5Sub4, etSv5Sub5, TESTINGONLY;
+    Spinner spnNumVisitor;
+    Button btnSubmit, buttonGenerate;
+    ImageView iv;
+    Boolean visitor_found, host_found;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
     private NavigationView nv;
-    private String block,unit, apikey, sub_visitor;
-    TextView tvSubVisitor;
-    Intent i,intentAPI;
-    String db_visitor_email, db_host_email;
-    EditText etNumber, etName, etEmail, etTime, etDate, etHostEmail,etSignInEmail, etSignInVisitUnit, etSignInVisitBlock, etSv2Sub1,etSv2Sub2,
-            etSv3Sub1,etSv3Sub2, etSv3Sub3, etSv4Sub1, etSv4Sub2, etSv4Sub3, etSv4Sub4,
-            etSv5Sub1, etSv5Sub2, etSv5Sub3, etSv5Sub4, etSv5Sub5 , TESTINGONLY;
-    Spinner spnNumVisitor;
-    Button btnSubmit,buttonGenerate;
-    ImageView iv;
-    Boolean visitor_found, host_found;
-    private static final int MY_PERMISSIONS_REQUEST_SEND_SMS =0 ;
-
+    private String block, unit, apikey, sub_visitor, userEmail;
 
     @Override
 
@@ -76,15 +78,19 @@ public class HostPreRegister extends AppCompatActivity {
 
         tvSubVisitor = (TextView) findViewById(R.id.textViewSubVisitor);
         spnNumVisitor = (Spinner) findViewById(R.id.spinnerNumVisitor);
-        etTime = (EditText)findViewById(R.id.editTextTime);
-        etDate = (EditText)findViewById(R.id.editTextDate);
-        buttonGenerate = (Button)findViewById(R.id.buttonGeneragte);
-        TESTINGONLY = (EditText)findViewById(R.id.TESTINGONLY);
+        etTime = (EditText) findViewById(R.id.editTextTime);
+        etDate = (EditText) findViewById(R.id.editTextDate);
+        buttonGenerate = (Button) findViewById(R.id.buttonGeneragte);
+        TESTINGONLY = (EditText) findViewById(R.id.TESTINGONLY);
 
-        final ImageView iv = (ImageView)findViewById(R.id.imageView);
+        final ImageView iv = (ImageView) findViewById(R.id.imageView);
 
+        intentAPI = getIntent();
+        apikey = intentAPI.getStringExtra("apikey");
+        userEmail = intentAPI.getStringExtra("user_email");
+        Toast.makeText(this, userEmail, Toast.LENGTH_SHORT).show();
         i = getIntent();
-        String useremail = i.getStringExtra("useremail");
+//        String useremail = i.getStringExtra("useremail");
         block = i.getStringExtra("block");
         unit = i.getStringExtra("unit");
 
@@ -97,26 +103,45 @@ public class HostPreRegister extends AppCompatActivity {
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
 
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        intentAPI = getIntent();
         apikey = intentAPI.getStringExtra("apikey");
+
+        if (ContextCompat.checkSelfPermission(HostPreRegister.this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(HostPreRegister.this, Manifest.permission.SEND_SMS)) {
+                ActivityCompat.requestPermissions(HostPreRegister.this, new String[]{Manifest.permission.SEND_SMS}, 1);
+
+            } else {
+                ActivityCompat.requestPermissions(HostPreRegister.this, new String[]{Manifest.permission.SEND_SMS}, 1);
+            }
+        } else {
+
+        }
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
-                    case (R.id.nav_pre_register):
-                        i = new Intent(getApplicationContext(), HostPreRegister.class);
-                        i.putExtra("apikey", apikey);
-                        startActivity(i);
-                        break;
+//                    case (R.id.nav_pre_register):
+//                        i = new Intent(getApplicationContext(), HostPreRegister.class);
+//                        i.putExtra("apikey", apikey);
+//                        startActivity(i);
+//                        break;
                     case (R.id.nav_cancel_pre_register):
                         i = new Intent(getApplicationContext(), HostCancelPreRegister.class);
-                        i.putExtra("apikey", apikey);
+                        i.putExtra("apikey",apikey);
+                        i.putExtra("user_email",userEmail);
                         startActivity(i);
                         break;
                     case (R.id.nav_change_password):
                         i = new Intent(getApplicationContext(), HostChangePassword.class);
-                        i.putExtra("apikey", apikey);
+                        i.putExtra("apikey",apikey);
+                        i.putExtra("user_email",userEmail);
+                        startActivity(i);
+                        break;
+                    case (R.id.log_out):
+                        i = new Intent(getApplicationContext(), MainActivity.class);
+                        i.putExtra("apikey",apikey);
+                        i.putExtra("user_email",userEmail);
                         startActivity(i);
                         break;
                 }
@@ -133,33 +158,40 @@ public class HostPreRegister extends AppCompatActivity {
                     BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
                     Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
                     iv.setImageBitmap(bitmap);
-                }
-                catch(WriterException e){
+                } catch (WriterException e) {
                     e.printStackTrace();
                 }
             }
         });
         etDate.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //To show current date in the datepicker
-                    java.util.Calendar mcurrentDate = java.util.Calendar.getInstance();
-                    int mYear = mcurrentDate.get(java.util.Calendar.YEAR);
-                    int mMonth = mcurrentDate.get(java.util.Calendar.MONTH);
-                    int mDay = mcurrentDate.get(java.util.Calendar.DAY_OF_MONTH);
+            @Override
+            public void onClick(View v) {
+                //To show current date in the datepicker
+                final java.util.Calendar mcurrentDate = java.util.Calendar.getInstance();
+                int mYear = mcurrentDate.get(java.util.Calendar.YEAR);
+                int mMonth = mcurrentDate.get(java.util.Calendar.MONTH);
+                final int mDay = mcurrentDate.get(java.util.Calendar.DAY_OF_MONTH);
 
-                    DatePickerDialog mDatePicker;
-                    mDatePicker = new DatePickerDialog(HostPreRegister.this, new DatePickerDialog.OnDateSetListener() {
-                        public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
-                            // TODO Auto-generated method stub
+                //set today as the minimum date
+
+                final DatePickerDialog mDatePicker;
+                mDatePicker = new DatePickerDialog(HostPreRegister.this, new DatePickerDialog.OnDateSetListener() {
+                    public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
+                        // TODO Auto-generated method stub
                     /*      Your code   to get date and time    */
-                            selectedmonth = selectedmonth + 1;
+                        selectedmonth = selectedmonth + 1;
+                        if (mDay <= selectedday) {
                             etDate.setText("" + selectedyear + "/" + selectedmonth + "/" + selectedday);
+                        } else {
+                            Toast.makeText(HostPreRegister.this, "Please select a valid date", Toast.LENGTH_SHORT).show();
                         }
-                    }, mYear, mMonth, mDay);
-                    mDatePicker.setTitle("Select Date");
-                    mDatePicker.show();
-                }
+
+                    }
+                }, mYear, mMonth, mDay);
+
+                mDatePicker.setTitle("Select Date");
+                mDatePicker.show();
+            }
 
         });
 
@@ -173,7 +205,7 @@ public class HostPreRegister extends AppCompatActivity {
                 mTimePicker = new TimePickerDialog(HostPreRegister.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        etTime.setText( selectedHour + ":" + selectedMinute);
+                        etTime.setText(selectedHour + ":" + selectedMinute);
                     }
                 }, hour, minute, true);//Yes 24 hour time
                 mTimePicker.setTitle("Select Time");
@@ -190,76 +222,46 @@ public class HostPreRegister extends AppCompatActivity {
                 etEmail = (EditText) findViewById(R.id.editTextEmail);
                 etTime = (EditText) findViewById(R.id.editTextTime);
                 etDate = (EditText) findViewById(R.id.editTextDate);
-                etHostEmail = (EditText) findViewById(R.id.editTextHostEmail);
                 tvSubVisitor = (TextView) findViewById(R.id.textViewSubVisitor);
-
-                visitor_found = false;
-                host_found = false;
-
-                String number=etNumber.getText().toString();
-                String name =etName.getText().toString();
+                String number = etNumber.getText().toString();
+                String name = etName.getText().toString();
                 String email = etEmail.getText().toString();
                 String time = etTime.getText().toString();
                 String date = etDate.getText().toString();
-                String hostEmail = etHostEmail.getText().toString();
 
-                i = i.putExtra("user_email", hostEmail);
                 sub_visitor = tvSubVisitor.getText().toString();
-                if(!Patterns.EMAIL_ADDRESS.matcher(hostEmail).matches()){
-                    etHostEmail.setError("Invalid Email, Please try again.");
-                }else if (name.equals("")){
+
+                if (name.equals("")) {
                     etName.setError("Name field is empty");
-                }else if (number.equals("")){
-                    etNumber.setError("Number field is empty");
-                } else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                } else if (number.equals("")) {
+                    etNumber.setError("This field is empty");
+                } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                     etEmail.setError("Invalid Email, Please try again.");
-                }else if(date.equals("")) {
+                } else if (date.equals("")) {
                     etDate.setError("Time field is empty");
-                } else if(time.equals("")){
+                } else if (time.equals("")) {
                     etTime.setError("Date field is empty");
-                }else {
-                    HttpRequest requestHostEmail = new HttpRequest("https://ruixian-ang97.000webhostapp.com/getUser.php");
-                    requestHostEmail.setMethod("POST");
-                    requestHostEmail.addData("apikey",apikey);
-                    requestHostEmail.execute();
+                } else {
+                    HttpRequest requestVisitorEmail = new HttpRequest("https://ruixian-ang97.000webhostapp.com/getVisitor.php");
+                    requestVisitorEmail.setMethod("POST");
+                    requestVisitorEmail.addData("apikey", apikey);
+                    requestVisitorEmail.execute();
+                    visitor_found = false;
                     try {
-                        String jsonStringUser = requestHostEmail.getResponse();
-                        JSONArray jsonArrayUser = new JSONArray(jsonStringUser);
-                        for(int i = 0; i<jsonArrayUser.length(); i++){
-                            JSONObject jsonObject = (JSONObject) jsonArrayUser.get(i);
-                            db_host_email = jsonObject.getString("user_email");
-
-                            if(hostEmail.equalsIgnoreCase(db_host_email)){
-                                host_found = true;
-
+                        String jsonString = requestVisitorEmail.getResponse();
+//                        Log.i("response", jsonString);
+                        JSONArray jsonArray = new JSONArray(jsonString);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObj = (JSONObject) jsonArray.get(i);
+                            db_visitor_email = jsonObj.getString("visitor_email");
+                            if (email.equalsIgnoreCase(db_visitor_email)) {
+                                visitor_found = true;
                             }
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
-                    HttpRequest requestVisitorEmail= new HttpRequest("https://ruixian-ang97.000webhostapp.com/getVisitor.php");
-                    requestVisitorEmail.setMethod("POST");
-                    requestVisitorEmail.addData("apikey",apikey);
-                    requestVisitorEmail.execute();
-                    try {
-                        String jsonString = requestVisitorEmail.getResponse();
-//                        Log.i("response", jsonString);
-                        JSONArray jsonArray = new JSONArray(jsonString);
-
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject jsonObj = (JSONObject) jsonArray.get(i);
-                            db_visitor_email = jsonObj.getString("visitor_email");
-
-                            if(email.equalsIgnoreCase(db_visitor_email)){
-                                visitor_found = true;
-                            }
-                        }
-
-                    }catch(Exception e){
-                        e.printStackTrace();
-                    }
-                    if(visitor_found==false && host_found==true) {
+                    if(visitor_found==false) {
                         HttpRequest request = new HttpRequest("http://ruixian-ang97.000webhostapp.com/insertVisitor.php");
                         request.setMethod("POST");
                         request.addData("visitor_email", etEmail.getText().toString());
@@ -270,27 +272,46 @@ public class HostPreRegister extends AppCompatActivity {
                             HttpRequest request1 = new HttpRequest("http://ruixian-ang97.000webhostapp.com/insertVisitorInfo.php");
                             request1.setMethod("POST");
                             request1.addData("visitor_email", etEmail.getText().toString());
+                            request1.addData("user_email",userEmail);
+                            request1.addData("sub_visitor", sub_visitor);
                             request1.addData("date_in", etDate.getText().toString());
                             request1.addData("time_in", etTime.getText().toString());
-                            request1.addData("user_email", etHostEmail.getText().toString());
-                            request1.addData("sub_visitor", sub_visitor);
-                            sendSMSMessage();
                             request1.execute();
-                            Toast.makeText(HostPreRegister.this, "Visitor inserted", Toast.LENGTH_SHORT).show();
-                            finish();
+                            Toast.makeText(HostPreRegister.this, "Visitor inserted and a QR code has been sent to visitor", Toast.LENGTH_SHORT).show();
+                            MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+                            BitMatrix bitMatrix = null;
+                            try {
+
+
+                                BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+                                bitMatrix = multiFormatWriter.encode(number + "\n" + name + "\n" + email + "\n" + time + "\n" + date, BarcodeFormat.QR_CODE, 200, 200);
+                                Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+                                iv.setImageBitmap(bitmap);
+//                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+//                                byte[] byteArray = stream.toByteArray();
+//                                String string = new String(byteArray, "UTF-8");
+//                                byte[] byteArray1 = string.getBytes("UTF-8");
+//                                Bitmap bmp = BitmapFactory.decodeByteArray(byteArray1, 0, byteArray1.length);
+                                SmsManager smsManager = SmsManager.getDefault();
+                                smsManager.sendTextMessage(number, null, " Qr code: " + iv, null, null);
+                                finish();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
 
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+
                     }
                     else{
-                        if(visitor_found==true) {
-                            etEmail.setError("Email already exist in database");
-                        }
-                        if (host_found==false) {
-                            etHostEmail.setError("Invalid host email");
-                        }
+                        Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                     }
+                    //                    else{
+//                        Toast.makeText(getApplicationContext(), "Error occurred.",
+//                                Toast.LENGTH_LONG).show();
+//                    }
                 }
             }
         });
@@ -521,78 +542,97 @@ public class HostPreRegister extends AppCompatActivity {
     }
     //yo
 
-    protected void onStart(){
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case 1:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (ContextCompat.checkSelfPermission(HostPreRegister.this, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
+                        Toast.makeText(HostPreRegister.this, "Permission granted", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(this, "No Permission Granted", Toast.LENGTH_SHORT).show();
+                }
+        }
+    }
+
+    protected void onStart() {
         super.onStart();
 
 
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if(mToggle.onOptionsItemSelected(item)){
+        if (mToggle.onOptionsItemSelected(item)) {
             return true;
 
         }
         return super.onOptionsItemSelected(item);
     }
-    protected void sendSMSMessage() {
+//    protected void sendSMSMessage() {
+//
+//        if (ContextCompat.checkSelfPermission(this,
+//                Manifest.permission.SEND_SMS)
+//                != PackageManager.PERMISSION_GRANTED) {
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+//                    Manifest.permission.SEND_SMS)) {
+//                etNumber = (EditText) findViewById(R.id.editTextPhoneNumber);
+//                etName = (EditText) findViewById(R.id.editTextName);
+//                etEmail = (EditText) findViewById(R.id.editTextEmail);
+//                etTime = (EditText) findViewById(R.id.editTextTime);
+//                etDate = (EditText) findViewById(R.id.editTextDate);
+//                etHostEmail = (EditText) findViewById(R.id.editTextHostEmail);
+//                tvSubVisitor = (TextView) findViewById(R.id.textViewSubVisitor);
+//                String number=etNumber.getText().toString();
+//                String name =etName.getText().toString();
+//                String email = etEmail.getText().toString();
+//                String time = etTime.getText().toString();
+//                String date = etDate.getText().toString();
+//                String hostEmail = etHostEmail.getText().toString();
+//                MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+//                try{
+//                    BitMatrix bitMatrix = multiFormatWriter.encode(number+"\n"+name+"\n"+email+"\n"+time+"\n"+date+"\n"+hostEmail, BarcodeFormat.QR_CODE,200,200);
+//                    BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+//                    Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+//                    SmsManager smsManager = SmsManager.getDefault();
+//                    smsManager.sendTextMessage(number, null, String.valueOf(bitmap), null, null);
+////                    iv.setImageBitmap(bitmap);
+//                    Toast.makeText(getApplicationContext(), "SMS sent.",
+//                            Toast.LENGTH_LONG).show();
+//                } catch(WriterException e){
+//                    e.printStackTrace();
+//                    Toast.makeText(getApplicationContext(), "SMS NOT NOT NOT sent.",
+//                            Toast.LENGTH_LONG).show();
+//                }
+//            } else {
+//                ActivityCompat.requestPermissions(this,
+//                        new String[]{Manifest.permission.SEND_SMS},
+//                        MY_PERMISSIONS_REQUEST_SEND_SMS);
+//            }
+//        }
+//    }
+//
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {
+//        switch (requestCode) {
+//            case MY_PERMISSIONS_REQUEST_SEND_SMS: {
+//                if (grantResults.length > 0
+//                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//
+//
+//
+//                } else {
+//                    Toast.makeText(getApplicationContext(),
+//                            "SMS faild, please try again.", Toast.LENGTH_LONG).show();
+//                    return;
+//                }
+//            }
+//        }
+//
+//    }
 
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.SEND_SMS)
-                != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.SEND_SMS)) {
-                etNumber = (EditText) findViewById(R.id.editTextPhoneNumber);
-                etName = (EditText) findViewById(R.id.editTextName);
-                etEmail = (EditText) findViewById(R.id.editTextEmail);
-                etTime = (EditText) findViewById(R.id.editTextTime);
-                etDate = (EditText) findViewById(R.id.editTextDate);
-                etHostEmail = (EditText) findViewById(R.id.editTextHostEmail);
-                tvSubVisitor = (TextView) findViewById(R.id.textViewSubVisitor);
-                String number=etNumber.getText().toString();
-                String name =etName.getText().toString();
-                String email = etEmail.getText().toString();
-                String time = etTime.getText().toString();
-                String date = etDate.getText().toString();
-                String hostEmail = etHostEmail.getText().toString();
-                MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-                try{
-                    BitMatrix bitMatrix = multiFormatWriter.encode(number+"\n"+name+"\n"+email+"\n"+time+"\n"+date+"\n"+hostEmail, BarcodeFormat.QR_CODE,200,200);
-                    BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-                    Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
-                    SmsManager smsManager = SmsManager.getDefault();
-                    smsManager.sendTextMessage(number, null, String.valueOf(bitmap), null, null);
-//                    iv.setImageBitmap(bitmap);
-                    Toast.makeText(getApplicationContext(), "SMS sent.",
-                            Toast.LENGTH_LONG).show();
-                } catch(WriterException e){
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "SMS NOT NOT NOT sent.",
-                            Toast.LENGTH_LONG).show();
-                }
-            } else {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.SEND_SMS},
-                        MY_PERMISSIONS_REQUEST_SEND_SMS);
-            }
-        }
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_SEND_SMS: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-
-                } else {
-                    Toast.makeText(getApplicationContext(),
-                            "SMS faild, please try again.", Toast.LENGTH_LONG).show();
-                    return;
-                }
-            }
-        }
-
-    }
 }

@@ -1,10 +1,14 @@
 package com.example.a15041867.vms;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.PermissionChecker;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -52,9 +56,14 @@ public class MainActivity extends AppCompatActivity {
 //
 //                }
 
-        etLoginEmail.setText("manager@gmail.com");
-        etLoginPassword.setText("manager1234");
+        etLoginEmail.setText("host@gmail.com");
+        etLoginPassword.setText("host1234");
+        int permissionCheck = ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.SEND_SMS);
+        if (permissionCheck != PermissionChecker.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.SEND_SMS},2);
 
+        }
 
 
         tvForgetPassword.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
                         }catch (Exception e){
                             e.printStackTrace();
                         }
-                        Toast.makeText(MainActivity.this," " + userFound, Toast.LENGTH_LONG).show();
 
                         if(userFound == true){
                             HttpRequest request = new HttpRequest("https://ruixian-ang97.000webhostapp.com/doLogin.php");
