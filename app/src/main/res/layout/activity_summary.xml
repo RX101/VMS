@@ -33,32 +33,38 @@
                 android:weightSum="1">
 
                 <RadioButton
-                    android:id="@+id/radioButton5"
+                    android:id="@+id/noOfVisitors"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.07"
                     android:text="Number of visitors" />
 
                 <RadioButton
-                    android:id="@+id/radioButton4"
+                    android:id="@+id/timeSpan"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.08"
                     android:text="Busiest time span" />
 
                 <RadioButton
-                    android:id="@+id/radioButton3"
+                    android:id="@+id/frequency"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.11"
                     android:text="Frequency of visitors" />
 
                 <RadioButton
-                    android:id="@+id/radioButton2"
+                    android:id="@+id/details"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.10"
                     android:text="Details of visitors based on time span" />
+
+                <TextView
+                    android:id="@+id/tvErrorSum"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.07" />
 
             </RadioGroup>
 

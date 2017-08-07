@@ -139,24 +139,43 @@ public class DisplayUserInfoActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Log.d(TAG, "deleteRecordButtonClicked()...");
+                AlertDialog.Builder builder = new AlertDialog.Builder(DisplayUserInfoActivity.this);
+                builder.setTitle("Are you sure?")
+                        // Set text for the positive button and the corresponding
+                        //  OnClickListener when it is clicked
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                HttpRequest request = new HttpRequest("https://ruixian-ang97.000webhostapp.com/deleteUser.php");
+                                request.setMethod("POST");
+                                request.addData("apikey", apikey);
+                                request.addData("user_email", userEmail);
+                                request.execute();
 
-                HttpRequest request = new HttpRequest("https://ruixian-ang97.000webhostapp.com/deleteUser.php");
-                request.setMethod("POST");
-                request.addData("apikey", apikey);
-                request.addData("user_email", userEmail);
-                request.execute();
+                                showAlert("User Successfully Deleted");
+                                //Toast.makeText(DisplayUserInfoActivity.this, "Contact Deleted Successfully", Toast.LENGTH_SHORT).show();
 
-                showAlert("User Successfully Updated");
-                //Toast.makeText(DisplayUserInfoActivity.this, "Contact Deleted Successfully", Toast.LENGTH_SHORT).show();
+                                /******************************/
 
-                /******************************/
+                                try{
+                                    String jsonString = request.getResponse();
+                                    finish();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
 
-                try{
-                    String jsonString = request.getResponse();
-                    finish();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                            }
+                        })
+                        // Set text for the negative button and the corresponding
+                        //  OnClickListener when it is clicked
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Toast.makeText(DisplayUserInfoActivity.this, "You clicked no",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        });
+                // Create the AlertDialog object and return it
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
             }
         });
     }

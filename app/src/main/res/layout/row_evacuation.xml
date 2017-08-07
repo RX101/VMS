@@ -10,7 +10,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/tvNameEva"
+            android:id="@+id/tvEvaEmail"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -19,11 +19,11 @@
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/tvPhoneEva"
+            android:id="@+id/tvEvaUser"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textAlignment="viewStart"
+            android:textAlignment="textStart"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
     </LinearLayout>
@@ -34,12 +34,12 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/tvUserEmailEva"
+            android:id="@+id/tvEvaDateIn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textAlignment="viewStart"
             android:textColor="@android:color/black"
+            android:textAlignment="viewStart"
             android:textSize="18sp" />
 
         <TextView
@@ -47,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textAlignment="viewStart"
+            android:textAlignment="center"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
     </LinearLayout>
@@ -57,7 +57,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.09"
-        android:textAlignment="center"
+        android:textAlignment="viewStart"
         android:textColor="@android:color/black"
         android:textSize="18sp" />
 </LinearLayout>

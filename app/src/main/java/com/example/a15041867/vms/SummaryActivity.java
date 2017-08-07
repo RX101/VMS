@@ -13,6 +13,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -33,6 +36,7 @@ public class SummaryActivity extends AppCompatActivity {
     String apikey;
 
     Button btnSubmit, btnReset;
+    RadioGroup rgSummary;
     EditText etStartDate, etEndDate;
     Calendar myCalendar = Calendar.getInstance();
 
@@ -40,6 +44,9 @@ public class SummaryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_summary);
+
+        i = getIntent();
+        apikey = i.getStringExtra("api");
 
         session = new Session(this);
 //        if(!session.loggedin()){
@@ -92,10 +99,11 @@ public class SummaryActivity extends AppCompatActivity {
             }
         });
 
-        btnSubmit = (Button)findViewById(R.id.btnSubmit);
-        btnReset = (Button)findViewById(R.id.btnReset);
-        etStartDate = (EditText)findViewById(R.id.etStartDate);
-        etEndDate = (EditText)findViewById(R.id.etEndDate);
+        btnSubmit = (Button) findViewById(R.id.btnSubmit);
+        btnReset = (Button) findViewById(R.id.btnReset);
+        etStartDate = (EditText) findViewById(R.id.etStartDate);
+        etEndDate = (EditText) findViewById(R.id.etEndDate);
+        rgSummary = (RadioGroup) findViewById(R.id.rgSummary);
 
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
@@ -151,14 +159,58 @@ public class SummaryActivity extends AppCompatActivity {
                         // TODO Auto-generated method stub
                     /*      Your code   to get date and time    */
                         selectedmonth = selectedmonth + 1;
-                        etStartDate.setText(selectedyear + "-" + selectedmonth + "-" + selectedday);
+                        etEndDate.setText(selectedyear + "-" + selectedmonth + "-" + selectedday);
                     }
                 }, mYear, mMonth, mDay);
                 mDatePicker.setTitle("Select Date");
                 mDatePicker.show();
             }
         });
+
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(SummaryActivity.this, "submit button clicked", Toast.LENGTH_LONG).show();
+                int selectedButtonId = rgSummary.getCheckedRadioButtonId();
+                RadioButton rb = (RadioButton) findViewById(selectedButtonId);
+                String selectedPosition = rb.getText().toString();
+
+                if(selectedPosition.equalsIgnoreCase("number of visitors")){
+                    Toast.makeText(SummaryActivity.this, selectedPosition, Toast.LENGTH_LONG).show();
+                    i = new Intent(getApplicationContext(), SummaryInfoActivity.class);
+                    i.putExtra("api", apikey);
+                    i.putExtra("startDate", etStartDate.getText().toString());
+                    i.putExtra("endDate", etEndDate.getText().toString());
+                    i.putExtra("selectedSum", "no of visitors");
+                    startActivity(i);
+
+                }else if(selectedPosition.equalsIgnoreCase("busiest time span")){
+                    Toast.makeText(SummaryActivity.this, selectedPosition, Toast.LENGTH_LONG).show();
+                    i = new Intent(getApplicationContext(), SummaryInfoActivity.class);
+                    i.putExtra("api", apikey);
+                    i.putExtra("startDate", etStartDate.getText().toString());
+                    i.putExtra("endDate", etEndDate.getText().toString());
+                    i.putExtra("selectedSum", "busiest time span");
+                    startActivity(i);
+
+                }else if(selectedPosition.equalsIgnoreCase("frequency of visitors")){
+                    Toast.makeText(SummaryActivity.this, selectedPosition, Toast.LENGTH_LONG).show();
+
+                }else if(selectedPosition.equalsIgnoreCase("Details of visitors based on time span")){
+                    i = new Intent(getApplicationContext(), VisitorInfoByDateActivity.class);
+                    i.putExtra("api", apikey);
+                    i.putExtra("startDate", etStartDate.getText().toString());
+                   // Toast.makeText(SummaryActivity.this, etStartDate.getText().toString(), Toast.LENGTH_LONG).show();
+                    i.putExtra("endDate", etEndDate.getText().toString());
+                    startActivity(i);
+                }
+            }
+        });
     }
+
+        // Get the Id of the selected radio button in the RadioGroup
+
+
 
     private void updateLabel() {
 
@@ -166,6 +218,7 @@ public class SummaryActivity extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
         etStartDate.setText(sdf.format(myCalendar.getTime()));
+        etEndDate.setText(sdf.format(myCalendar.getTime()));
     }
 
     @Override

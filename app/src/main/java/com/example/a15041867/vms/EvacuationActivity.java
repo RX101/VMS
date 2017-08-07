@@ -120,13 +120,11 @@ public class EvacuationActivity extends AppCompatActivity {
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jObj = jsonArray.getJSONObject(i);
                         Visitor visitor = new Visitor();
-                        visitor.setVisitor_email(jObj.getString("visitor_name"));
-                        visitor.setVisitor_name(jObj.getString("handphone_number"));
-                        visitor.setVisitor_name(jObj.getString("visitor_email"));
-                        visitor.setVisitor_phone_number(jObj.getString("time_in"));
-                        visitor.setVisitor_phone_number(jObj.getString("date_in"));
-                        visitor.setVisitor_phone_number(jObj.getString("user_email"));
-                        visitor.setVisitor_phone_number(jObj.getString("sub_visitor"));
+                        visitor.setVisitor_email(jObj.getString("visitor_email"));
+                        visitor.setUser_email(jObj.getString("user_email"));
+                        visitor.setDate_in(jObj.getString("date_in"));
+                        visitor.setTime_in(jObj.getString("time_in"));
+                        visitor.setSub_visitors(jObj.getString("sub_visitor"));
                         evacuationList.add(visitor);
                     }
 

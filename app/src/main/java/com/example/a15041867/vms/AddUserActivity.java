@@ -1,14 +1,20 @@
 package com.example.a15041867.vms;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.MenuItem;
@@ -19,6 +25,12 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -32,7 +44,7 @@ public class AddUserActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mToggle;
     private Toolbar mToolbar;
     private NavigationView nv;
-    private String apikey, db_email;
+    private String apikey, db_email, handphone, password;
     Intent i;
     private boolean EmailFound=false;
 
@@ -108,7 +120,7 @@ public class AddUserActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String name = etName.getText().toString();
                 String email = etEmail.getText().toString();
-                String handphone = etHandphone.getText().toString();
+                handphone = etHandphone.getText().toString();
                 String block = etBlock.getText().toString();
                 String unit = etUnit.getText().toString();
 
@@ -129,7 +141,7 @@ public class AddUserActivity extends AppCompatActivity {
                     char c = chars[random.nextInt(chars.length)];
                     sb.append(c);
                 }
-                String password = sb.toString();
+                password = sb.toString();
                 String userapikey = name + password;
 
                 i = getIntent();
@@ -183,12 +195,11 @@ public class AddUserActivity extends AppCompatActivity {
                     request.addData("password", password);
                     request.addData("apikey", userapikey);
                     request.execute();
+                    sendSMSMessage();
                     showAlert("User Added Successfully");
                     //Toast.makeText(AddUserActivity.this, "Contact Added Successfully", Toast.LENGTH_SHORT).show();
 
                     /******************************/
-
-
                     try{
                         String jsonString = request.getResponse();
                         Log.d(TAG, "jsonString: " + jsonString);
@@ -228,5 +239,17 @@ public class AddUserActivity extends AppCompatActivity {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    protected void sendSMSMessage() {
+        try{
+            String message = "Your password is " + password;
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(handphone, null, message, null, null);
+            Toast.makeText(AddUserActivity.this, "SMS sent.", Toast.LENGTH_LONG).show();
+        } catch (Exception ex) {
+            Toast.makeText(AddUserActivity.this,ex.getMessage().toString(), Toast.LENGTH_LONG).show();
+            ex.printStackTrace();
+        }
     }
 }

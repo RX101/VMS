@@ -40,9 +40,9 @@ public class EvacuationArrayAdapter extends ArrayAdapter<Visitor> {
             row = inflater.inflate(layoutResourceId, parent, false);
 
             holder = new evacuationHolder();
-            holder.Name = (TextView)row.findViewById(R.id.tvNameEva);
-            holder.HandPhone = (TextView)row.findViewById(R.id.tvPhoneEva);
-            holder.userEmail = (TextView)row.findViewById(R.id.tvUserEmailEva);
+            holder.visitorEmail = (TextView)row.findViewById(R.id.tvEvaEmail);
+            holder.userEmail = (TextView)row.findViewById(R.id.tvEvaUser);
+            holder.dateIn = (TextView)row.findViewById(R.id.tvEvaDateIn);
             holder.timeIn = (TextView)row.findViewById(R.id.tvTimeEva);
             holder.subVisitors = (TextView)row.findViewById(R.id.tvSubVisitorsEva);
 
@@ -56,9 +56,9 @@ public class EvacuationArrayAdapter extends ArrayAdapter<Visitor> {
 
         Visitor visitor = evacuationList.get(position);
         //String name = visitor.getVisitor_name();
-        holder.Name.setText(visitor.getVisitor_name());
-        holder.HandPhone.setText(visitor.getVisitor_phone_number());
+        holder.visitorEmail.setText(visitor.getVisitor_email());
         holder.userEmail.setText(visitor.getUser_email());
+        holder.dateIn.setText(visitor.getDate_in());
         holder.timeIn.setText(visitor.getTime_in());
         holder.subVisitors.setText(visitor.getSub_visitors());
         //Toast.makeText(DisplayVisitorInfoActivity.this,subVisitors, Toast.LENGTH_LONG).show();
@@ -68,9 +68,9 @@ public class EvacuationArrayAdapter extends ArrayAdapter<Visitor> {
 
     static class evacuationHolder
     {
-        TextView Name;
-        TextView HandPhone;
+        TextView visitorEmail;
         TextView userEmail;
+        TextView dateIn;
         TextView timeIn;
         TextView subVisitors;
 
