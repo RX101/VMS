@@ -135,6 +135,21 @@ public class VisitorInfoActivity extends AppCompatActivity {
                 VisitorInfoArrayAdapter arrayAdapter = new VisitorInfoArrayAdapter(this, R.layout.row_visitor, visitorList);
                 lv = (ListView) findViewById(R.id.lvVisitorInfo);
                 lv.setAdapter(arrayAdapter);
+                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View arg1, int arg2, long arg3) {
+                        // Toast.makeText(UserInfoActivity.this,"ddwedwe",Toast.LENGTH_LONG).show();
+                        Visitor visitor = (Visitor) parent.getItemAtPosition(arg2);
+
+                        i = new Intent(getApplicationContext(), DisplayVisitorInfoActivity.class);
+                        i.putExtra("apikey", apikey);
+                        i.putExtra("visitor_email", visitor.getVisitor_email());
+                        i.putExtra("visitor_name", visitor.getVisitor_name());
+                        i.putExtra("handphone_number", visitor.getVisitor_phone_number());
+                        startActivity(i);
+                    }
+                });
 
 
             } else {
