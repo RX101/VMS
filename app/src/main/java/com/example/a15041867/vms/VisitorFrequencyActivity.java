@@ -9,33 +9,31 @@ import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class VisitorInfoByDateActivity extends AppCompatActivity {
-    private static final String TAG = "VisitorInfoByDateActivity";
+public class VisitorFrequencyActivity extends AppCompatActivity {
 
+    ListView lvFrequency;
+    ArrayList<String> alVisitors = new ArrayList<String>();
+    ArrayAdapter<String> aaVisitors;
     Intent i;
-
     String apikey, startDate, endDate;
-    ListView lv;
-    ArrayList<Visitor> visitorList = new ArrayList<Visitor>();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_visitor_info_by_date);
+        setContentView(R.layout.activity_visitor_frequency);
 
-        lv = (ListView)findViewById(R.id.lvVisInfoDate);
+        lvFrequency = (ListView)findViewById(R.id.lvFrequency);
 
-        visitorList.clear();
-        // Check if there is network access
+        alVisitors.clear();
+
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
@@ -49,7 +47,7 @@ public class VisitorInfoByDateActivity extends AppCompatActivity {
 
             /******************************/
             if (apikey != null) {
-                HttpRequest request = new HttpRequest("https://ruixian-ang97.000webhostapp.com/getVisitorsByDate.php");
+                HttpRequest request = new HttpRequest("https://ruixian-ang97.000webhostapp.com/getFrequencyOfVisitors.php");
                 request.setMethod("POST");
                 request.addData("apikey", apikey);
                 request.addData("start_date", "'" + startDate + "'");
@@ -64,21 +62,17 @@ public class VisitorInfoByDateActivity extends AppCompatActivity {
                     // Populate the arraylist personList
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jObj = jsonArray.getJSONObject(i);
-                        Visitor visitor = new Visitor();
-                        visitor.setVisitor_email(jObj.getString("visitor_email"));
-                        visitor.setSub_visitors(jObj.getString("sub_visitor"));
-                        visitor.setUser_email(jObj.getString("user_email"));
-                        visitorList.add(visitor);
+                        String email = jObj.getString("visitor_email");
+                        String count = jObj.getString("count(visitor_email)");
+                        alVisitors.add(email + "\n"  + "Number of times visited:  " + count);
                     }
+                    aaVisitors = new ArrayAdapter<String>(VisitorFrequencyActivity.this, android.R.layout.simple_list_item_1, alVisitors);
+                    lvFrequency.setAdapter(aaVisitors);
+                    aaVisitors.notifyDataSetChanged();
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-                VisitorInfoDateArrayAdapter arrayAdapter = new VisitorInfoDateArrayAdapter(this, R.layout.row_visitor_info_date, visitorList);
-                lv = (ListView)findViewById(R.id.lvVisInfoDate);
-                lv.setAdapter(arrayAdapter);
-
 
             } else {
                 // AlertBox
@@ -88,7 +82,6 @@ public class VisitorInfoByDateActivity extends AppCompatActivity {
             // AlertBox
             showAlert("No network connection!");
         }
-
     }
 
     private void showAlert(String msg){
@@ -99,7 +92,7 @@ public class VisitorInfoByDateActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         // if this button is clicked, close
                         // current activity
-                        VisitorInfoByDateActivity.this.finish();
+                        VisitorFrequencyActivity.this.finish();
                     }
                 });
 

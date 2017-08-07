@@ -8,17 +8,26 @@
         android:id="@+id/tvVisEmailDat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.05" />
+        android:layout_weight="0.05"
+        android:textAlignment="viewStart"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/tvSubVisDat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.05" />
+        android:layout_weight="0.05"
+        android:textAlignment="viewStart"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/tvUserDat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.05" />
+        android:layout_weight="0.05"
+        android:textAlignment="viewStart"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
 </LinearLayout>
