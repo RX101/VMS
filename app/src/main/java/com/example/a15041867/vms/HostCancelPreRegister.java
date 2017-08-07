@@ -138,44 +138,50 @@ public class HostCancelPreRegister extends AppCompatActivity {
 //               }
 
             if (apikey != null) {
-                host_found = false;
-                correct_host = false;
-                HttpRequest requestHostEmail = new HttpRequest("https://ruixian-ang97.000webhostapp.com/getUser.php");
+                HttpRequest requestHostEmail = new HttpRequest("https://ruixian-ang97.000webhostapp.com/getVisitorInfoByUserEmail.php");
                 requestHostEmail.setMethod("POST");
                 requestHostEmail.addData("apikey",apikey);
+                requestHostEmail.addData("user_email",useremail);
                 requestHostEmail.execute();
-                try {
-                    String jsonStringUser = requestHostEmail.getResponse();
-                    JSONArray jsonArrayUser = new JSONArray(jsonStringUser);
-                    for(int i = 0; i<jsonArrayUser.length(); i++){
-                        JSONObject jsonObject = (JSONObject) jsonArrayUser.get(i);
-                        db_host_email = jsonObject.getString("user_email");
-
-                        if(useremail.equalsIgnoreCase(db_host_email)){
-                            host_found = true;
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                HttpRequest requestUserEmail = new HttpRequest("http://ruixian-ang97.000webhostapp.com/getVisitorInfo.php");
-                requestUserEmail.setMethod("POST");
-                requestUserEmail.addData("apikey", apikey);
-               requestUserEmail.execute();
-                try {
-                    String jsonStringUserEmail = requestUserEmail.getResponse();
-                    JSONArray jsonArrayUserEmail = new JSONArray(jsonStringUserEmail);
-                    for(int i = 0; i<jsonArrayUserEmail.length(); i++){
-                        JSONObject jsonObjectUserEmail = (JSONObject) jsonArrayUserEmail.get(i);
-                        check_host = jsonObjectUserEmail.getString("user_email");
-                        if(check_host.equals(useremail)){
-                            correct_host = true;
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                if(host_found==true && correct_host==true) {
+//                host_found = false;
+//                correct_host = false;
+//                HttpRequest requestHostEmail = new HttpRequest("https://ruixian-ang97.000webhostapp.com/getUser.php");
+//                requestHostEmail.setMethod("POST");
+//                requestHostEmail.addData("apikey",apikey);
+//                requestHostEmail.execute();
+//                try {
+//                    String jsonStringUser = requestHostEmail.getResponse();
+//                    JSONArray jsonArrayUser = new JSONArray(jsonStringUser);
+//                    for(int i = 0; i<jsonArrayUser.length(); i++){
+//                        JSONObject jsonObject = (JSONObject) jsonArrayUser.get(i);
+//                        db_host_email = jsonObject.getString("user_email");
+//
+//                        if(useremail.equalsIgnoreCase(db_host_email)){
+//                            host_found = true;
+//                        }
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                HttpRequest requestUserEmail = new HttpRequest("http://ruixian-ang97.000webhostapp.com/getVisitorInfo.php");
+//                requestUserEmail.setMethod("POST");
+//                requestUserEmail.addData("apikey", apikey);
+//                requestUserEmail.execute();
+//                try {
+//                    String jsonStringUserEmail = requestUserEmail.getResponse();
+//                    JSONArray jsonArrayUserEmail = new JSONArray(jsonStringUserEmail);
+//                    for(int i = 0; i<jsonArrayUserEmail.length(); i++){
+//                        JSONObject jsonObjectUserEmail = (JSONObject) jsonArrayUserEmail.get(i);
+//                        String HostEmailFromVisitorInfoTable = jsonObjectUserEmail.getString("user_email");
+//                        //useremail is email from user table
+//                        if(HostEmailFromVisitorInfoTable.equals(useremail)){
+//                            correct_host = true;
+//                        }
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//                if(host_found==true && correct_host==true) {
 
                     HttpRequest request = new HttpRequest("http://ruixian-ang97.000webhostapp.com/getVisitorInfo.php");
                     request.setMethod("POST");
@@ -269,7 +275,7 @@ public class HostCancelPreRegister extends AppCompatActivity {
                         }
 
                     });
-                }
+
 
             } else {
                 Toast.makeText(HostCancelPreRegister.this, "API is null", Toast.LENGTH_LONG).show();
