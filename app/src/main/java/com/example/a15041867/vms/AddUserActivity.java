@@ -156,8 +156,10 @@ public class AddUserActivity extends AppCompatActivity {
                 password = sb.toString();
                 String userapikey = name + password;
 
-                if (name.equals("")){
+                if (name.equals("")) {
                     etName.setError("Name field is empty");
+                }else if(email.equals("")){
+                        etEmail.setError("Please key in your email");
                 }else if (handphone.equals("")){
                     etHandphone.setError("Handphone Number field is empty");
                 }else if(block.equals("")) {
@@ -166,10 +168,7 @@ public class AddUserActivity extends AppCompatActivity {
                     etUnit.setError("Unit is empty");
                 } else if(selectedPosition.equals("")){
                     tvError.setText("Please select your role");
-                }else if(email.equals("")){
-                    etEmail.setError("Please key in your email");
-                }
-                else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                } else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
                     etEmail.setError("Invalid Email, Please try again.");
                 }else {
                     HttpRequest requestUserDetails= new HttpRequest("https://ruixian-ang97.000webhostapp.com/getUser.php");
