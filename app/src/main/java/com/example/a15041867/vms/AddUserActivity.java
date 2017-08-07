@@ -60,6 +60,9 @@ public class AddUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_user);
 
+        i = getIntent();
+        apikey = i.getStringExtra("api");
+
         session = new Session(this);
 //        if(!session.loggedin()){
 //            logout();
@@ -83,22 +86,27 @@ public class AddUserActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()) {
                     case(R.id.nav_visitor_info):
                         i = new Intent(getApplicationContext(),VisitorInfoActivity.class);
+                        i.putExtra("api", apikey);
                         startActivity(i);
                         break;
                     case(R.id.nav_user_info):
                         i= new Intent(getApplicationContext(),UserInfoActivity.class);
+                        i.putExtra("api", apikey);
                         startActivity(i);
                         break;
                     case(R.id.nav_summary):
                         i= new Intent(getApplicationContext(),SummaryActivity.class);
+                        i.putExtra("api", apikey);
                         startActivity(i);
                         break;
                     case(R.id.nav_evacuation):
                         i= new Intent(getApplicationContext(),EvacuationActivity.class);
+                        i.putExtra("api", apikey);
                         startActivity(i);
                         break;
                     case(R.id.log_out):
                         i= new Intent(getApplicationContext(),MainActivity.class);
+                        i.putExtra("api", apikey);
                         startActivity(i);
                         break;
                 }
@@ -128,8 +136,12 @@ public class AddUserActivity extends AppCompatActivity {
                 // Get the Id of the selected radio button in the RadioGroup
                 int selectedButtonId = rgRoles.getCheckedRadioButtonId();
                 // Get the radio button object from the Id we had gotten above
-                RadioButton rb = (RadioButton) findViewById(selectedButtonId);
-                String selectedPosition = rb.getText().toString();
+                String selectedPosition = "";
+                if(selectedButtonId != -1){
+                    RadioButton rb = (RadioButton) findViewById(selectedButtonId);
+                    selectedPosition= rb.getText().toString();
+                }
+
 
                 Random rand = new Random();
                 //Java random passcode generator alphanumeric
@@ -144,35 +156,10 @@ public class AddUserActivity extends AppCompatActivity {
                 password = sb.toString();
                 String userapikey = name + password;
 
-                i = getIntent();
-                apikey = i.getStringExtra("apikey");
-
-                HttpRequest requestUserDetails= new HttpRequest("https://ruixian-ang97.000webhostapp.com/getUser.php");
-                requestUserDetails.setMethod("POST");
-                requestUserDetails.addData("apikey",apikey);
-                requestUserDetails.execute();
-                try{
-                    String jsonString2 = requestUserDetails.getResponse();
-                    Log.i("response", jsonString2);
-                    JSONArray jsonArray = new JSONArray(jsonString2);
-
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject jsonObj = (JSONObject) jsonArray.get(i);
-                        db_email = jsonObj.getString("user_email");
-
-                        if(email.equalsIgnoreCase(db_email)){
-                            EmailFound = true;
-                        }
-                    }
-
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
-
-                if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-                    etEmail.setError("Invalid Email, Please try again.");
-                }else if (name.equals("")){
+                if (name.equals("")) {
                     etName.setError("Name field is empty");
+                }else if(email.equals("")){
+                        etEmail.setError("Please key in your email");
                 }else if (handphone.equals("")){
                     etHandphone.setError("Handphone Number field is empty");
                 }else if(block.equals("")) {
@@ -180,33 +167,62 @@ public class AddUserActivity extends AppCompatActivity {
                 } else if(unit.equals("")) {
                     etUnit.setError("Unit is empty");
                 } else if(selectedPosition.equals("")){
-                    tvError.setError("Please select your role");
-                }else if(EmailFound == true) {
-                    etEmail.setError("Please use a different email address");
+                    tvError.setText("Please select your role");
+                } else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                    etEmail.setError("Invalid Email, Please try again.");
                 }else {
-                    HttpRequest request = new HttpRequest("https://ruixian-ang97.000webhostapp.com/addUser.php");
-                    request.setMethod("POST");
-                    request.addData("user_email", email);
-                    request.addData("name", name);
-                    request.addData("handphone_number", handphone);
-                    request.addData("position", selectedPosition);
-                    request.addData("block", block);
-                    request.addData("unit",unit);
-                    request.addData("password", password);
-                    request.addData("apikey", userapikey);
-                    request.execute();
-                    sendSMSMessage();
-                    showAlert("User Added Successfully");
-                    //Toast.makeText(AddUserActivity.this, "Contact Added Successfully", Toast.LENGTH_SHORT).show();
-
-                    /******************************/
+                    HttpRequest requestUserDetails= new HttpRequest("https://ruixian-ang97.000webhostapp.com/getUser.php");
+                    requestUserDetails.setMethod("POST");
+                    requestUserDetails.addData("apikey",apikey);
+                    requestUserDetails.execute();
+                    EmailFound = false;
                     try{
-                        String jsonString = request.getResponse();
-                        Log.d(TAG, "jsonString: " + jsonString);
+                        String jsonString2 = requestUserDetails.getResponse();
+                        Log.i("response", jsonString2);
+                        JSONArray jsonArray = new JSONArray(jsonString2);
 
-                        finish();
-                    } catch (Exception e) {
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObj = (JSONObject) jsonArray.get(i);
+                            db_email = jsonObj.getString("user_email");
+                            if(email.equalsIgnoreCase(db_email)){
+                                EmailFound = true;
+                            }
+                        }
+
+                    }catch(Exception e){
                         e.printStackTrace();
+                    }
+
+                    if(EmailFound==false){
+                        HttpRequest request = new HttpRequest("https://ruixian-ang97.000webhostapp.com/addUser.php");
+                        request.setMethod("POST");
+                        request.addData("user_email", email);
+                        request.addData("name", name);
+                        request.addData("handphone_number", handphone);
+                        request.addData("position", selectedPosition);
+                        request.addData("block", block);
+                        request.addData("unit",unit);
+                        request.addData("password", password);
+                        request.addData("apikey", userapikey);
+                        request.execute();
+                        sendSMSMessage();
+                        showAlert("User Added Successfully");
+                        //Toast.makeText(AddUserActivity.this, "Contact Added Successfully", Toast.LENGTH_SHORT).show();
+
+                        /******************************/
+                        try{
+                            String jsonString = request.getResponse();
+                            Log.d(TAG, "jsonString: " + jsonString);
+
+                            finish();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                    else{
+                        etEmail.setError("Please use a different email");
+                        Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
                     }
                 }
             }

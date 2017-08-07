@@ -126,7 +126,7 @@ public class SummaryActivity extends AppCompatActivity {
                 Calendar mcurrentDate = Calendar.getInstance();
                 int mYear = mcurrentDate.get(Calendar.YEAR);
                 int mMonth = mcurrentDate.get(Calendar.MONTH);
-                int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
+                final int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
 
                 DatePickerDialog mDatePicker;
                 mDatePicker = new DatePickerDialog(SummaryActivity.this, new DatePickerDialog.OnDateSetListener() {
@@ -134,7 +134,12 @@ public class SummaryActivity extends AppCompatActivity {
                         // TODO Auto-generated method stub
                     /*      Your code   to get date and time    */
                         selectedmonth = selectedmonth + 1;
-                        etStartDate.setText(selectedyear + "-" + selectedmonth + "-" + selectedday);
+                        if (mDay >= selectedday) {
+                            etStartDate.setText(selectedyear + "-" + selectedmonth + "-" + selectedday);
+                        } else {
+                            Toast.makeText(SummaryActivity.this, "Please select a valid date", Toast.LENGTH_SHORT).show();
+                            etStartDate.setError("You have selected an invalid date");
+                        }
                     }
                 }, mYear, mMonth, mDay);
                 mDatePicker.setTitle("Select Date");
@@ -151,7 +156,7 @@ public class SummaryActivity extends AppCompatActivity {
                 Calendar mcurrentDate = Calendar.getInstance();
                 int mYear = mcurrentDate.get(Calendar.YEAR);
                 int mMonth = mcurrentDate.get(Calendar.MONTH);
-                int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
+                final int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
 
                 DatePickerDialog mDatePicker;
                 mDatePicker = new DatePickerDialog(SummaryActivity.this, new DatePickerDialog.OnDateSetListener() {
@@ -159,7 +164,13 @@ public class SummaryActivity extends AppCompatActivity {
                         // TODO Auto-generated method stub
                     /*      Your code   to get date and time    */
                         selectedmonth = selectedmonth + 1;
-                        etEndDate.setText(selectedyear + "-" + selectedmonth + "-" + selectedday);
+                        if (mDay >= selectedday) {
+                            etEndDate.setText(selectedyear + "-" + selectedmonth + "-" + selectedday);
+                        } else {
+                            Toast.makeText(SummaryActivity.this, "Please select a valid date", Toast.LENGTH_SHORT).show();
+                            etEndDate.setError("You have selected an invalid date");
+                        }
+
                     }
                 }, mYear, mMonth, mDay);
                 mDatePicker.setTitle("Select Date");
