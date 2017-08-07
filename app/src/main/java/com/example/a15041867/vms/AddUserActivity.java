@@ -180,7 +180,7 @@ public class AddUserActivity extends AppCompatActivity {
                 } else if(unit.equals("")) {
                     etUnit.setError("Unit is empty");
                 } else if(selectedPosition.equals("")){
-                    tvError.setError("Please select your role");
+                    tvError.setText("Please select your role");
                 }else if(EmailFound == true) {
                     etEmail.setError("Please use a different email address");
                 }else {
