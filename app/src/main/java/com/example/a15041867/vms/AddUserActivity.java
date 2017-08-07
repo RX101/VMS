@@ -46,7 +46,7 @@ public class AddUserActivity extends AppCompatActivity {
     private NavigationView nv;
     private String apikey, db_email, handphone, password;
     Intent i;
-    private boolean EmailFound=false;
+    private boolean EmailFound;
 
     private static final String TAG = "AddUserActivity";
 
@@ -126,6 +126,8 @@ public class AddUserActivity extends AppCompatActivity {
         btnAddUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                EmailFound = false;
+
                 String name = etName.getText().toString();
                 String email = etEmail.getText().toString();
                 handphone = etHandphone.getText().toString();

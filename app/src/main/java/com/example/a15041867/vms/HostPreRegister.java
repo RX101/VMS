@@ -61,16 +61,16 @@ import static android.R.id.message;
 public class HostPreRegister extends AppCompatActivity {
 
     private static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 0;
-    TextView tvSubVisitor;
-    Intent i, intentAPI;
-    String db_visitor_email, db_host_email;
-    EditText etNumber, etName, etEmail, etTime, etDate, etHostEmail, etSignInEmail, etSignInVisitUnit, etSignInVisitBlock, etSv2Sub1, etSv2Sub2,
+    private TextView tvSubVisitor;
+    private Intent i, intentAPI;
+    private String db_visitor_email, db_host_email;
+    private EditText etNumber, etName, etEmail, etTime, etDate, etHostEmail, etSignInEmail, etSignInVisitUnit, etSignInVisitBlock, etSv2Sub1, etSv2Sub2,
             etSv3Sub1, etSv3Sub2, etSv3Sub3, etSv4Sub1, etSv4Sub2, etSv4Sub3, etSv4Sub4,
             etSv5Sub1, etSv5Sub2, etSv5Sub3, etSv5Sub4, etSv5Sub5, TESTINGONLY;
-    Spinner spnNumVisitor;
-    Button btnSubmit, buttonGenerate;
-    ImageView iv;
-    Boolean visitor_found, host_found;
+    private Spinner spnNumVisitor;
+    private Button btnSubmit, buttonGenerate;
+    private ImageView iv;
+    private Boolean visitor_found, host_found;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
     private NavigationView nv;

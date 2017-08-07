@@ -95,6 +95,9 @@ public class RegisterActivity extends AppCompatActivity {
                         i.putExtra("user_email",userEmail);
                         startActivity(i);
                         break;
+                    case(R.id.nav_log_out):
+                        logout();
+                        break;
                 }
                 return true;
             }
@@ -223,5 +226,10 @@ public class RegisterActivity extends AppCompatActivity {
         apikey = intentAPI.getStringExtra("api");
         userEmail = intentAPI.getStringExtra("user_email");
         Log.i("Register Activity :","" + apikey + userEmail);
+    }
+
+    public void logout(){
+        Intent intentLogout = new Intent(getBaseContext(),MainActivity.class);
+        startActivity(intentLogout);
     }
 }

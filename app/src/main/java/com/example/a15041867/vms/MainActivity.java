@@ -56,8 +56,8 @@ public class MainActivity extends AppCompatActivity {
 //
 //                }
 
-        etLoginEmail.setText("host@gmail.com");
-        etLoginPassword.setText("host1234");
+        etLoginEmail.setText("security@gmail.com");
+        etLoginPassword.setText("security1234");
         int permissionCheck = ContextCompat.checkSelfPermission(MainActivity.this,
                 Manifest.permission.SEND_SMS);
         if (permissionCheck != PermissionChecker.PERMISSION_GRANTED) {
@@ -178,4 +178,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }

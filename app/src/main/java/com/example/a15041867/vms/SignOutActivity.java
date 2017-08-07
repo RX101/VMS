@@ -114,6 +114,10 @@ public class SignOutActivity extends AppCompatActivity {
                         i.putExtra("user_email",userEmail);
                         startActivity(i);
                         break;
+                    case(R.id.nav_log_out):
+                        logout();
+                        break;
+
                 }
                 return true;
             }
@@ -258,5 +262,10 @@ public class SignOutActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    public void logout(){
+        Intent intentLogout = new Intent(getBaseContext(),MainActivity.class);
+        startActivity(intentLogout);
     }
 }
