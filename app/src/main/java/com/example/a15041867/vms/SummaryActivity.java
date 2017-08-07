@@ -134,12 +134,7 @@ public class SummaryActivity extends AppCompatActivity {
                         // TODO Auto-generated method stub
                     /*      Your code   to get date and time    */
                         selectedmonth = selectedmonth + 1;
-                        if (mDay >= selectedday) {
-                            etStartDate.setText(selectedyear + "-" + selectedmonth + "-" + selectedday);
-                        } else {
-                            Toast.makeText(SummaryActivity.this, "Please select a valid date", Toast.LENGTH_SHORT).show();
-                            etStartDate.setError("You have selected an invalid date");
-                        }
+                        etStartDate.setText(selectedyear + "-" + selectedmonth + "-" + selectedday);
                     }
                 }, mYear, mMonth, mDay);
                 mDatePicker.setTitle("Select Date");
@@ -154,8 +149,8 @@ public class SummaryActivity extends AppCompatActivity {
                 // TODO Auto-generated method stub
                 //To show current date in the datepicker
                 Calendar mcurrentDate = Calendar.getInstance();
-                int mYear = mcurrentDate.get(Calendar.YEAR);
-                int mMonth = mcurrentDate.get(Calendar.MONTH);
+                final int mYear = mcurrentDate.get(Calendar.YEAR);
+                final int mMonth = mcurrentDate.get(Calendar.MONTH);
                 final int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
 
                 DatePickerDialog mDatePicker;
@@ -163,14 +158,9 @@ public class SummaryActivity extends AppCompatActivity {
                     public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
                         // TODO Auto-generated method stub
                     /*      Your code   to get date and time    */
-                        selectedmonth = selectedmonth + 1;
-                        if (mDay >= selectedday) {
-                            etEndDate.setText(selectedyear + "-" + selectedmonth + "-" + selectedday);
-                        } else {
-                            Toast.makeText(SummaryActivity.this, "Please select a valid date", Toast.LENGTH_SHORT).show();
-                            etEndDate.setError("You have selected an invalid date");
-                        }
 
+                        selectedmonth = selectedmonth + 1;
+                        etEndDate.setText(selectedyear + "-" + selectedmonth + "-" + selectedday);
                     }
                 }, mYear, mMonth, mDay);
                 mDatePicker.setTitle("Select Date");

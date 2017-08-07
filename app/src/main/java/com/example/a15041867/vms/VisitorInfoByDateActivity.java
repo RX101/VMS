@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -44,19 +45,20 @@ public class VisitorInfoByDateActivity extends AppCompatActivity {
             apikey = i.getStringExtra("api");
             startDate = i.getStringExtra("startDate");
             endDate = i.getStringExtra("endDate");
+            //Toast.makeText(getBaseContext(),startDate +  "\n" + endDate,Toast.LENGTH_LONG).show();
 
             /******************************/
             if (apikey != null) {
                 HttpRequest request = new HttpRequest("https://ruixian-ang97.000webhostapp.com/getVisitorsByDate.php");
                 request.setMethod("POST");
                 request.addData("apikey", apikey);
-                request.addData("start_date", startDate);
-                request.addData("end_date", endDate);
+                request.addData("start_date", "'" + startDate + "'");
+                request.addData("end_date", "'" + endDate + "'");
                 request.execute();
 
                 try {
                     String jsonString = request.getResponse();
-
+                    Log.i("testing", jsonString);
                     JSONArray jsonArray = new JSONArray(jsonString);
 
                     // Populate the arraylist personList
