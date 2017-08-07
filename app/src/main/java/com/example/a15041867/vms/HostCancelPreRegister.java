@@ -138,11 +138,11 @@ public class HostCancelPreRegister extends AppCompatActivity {
 //               }
 
             if (apikey != null) {
-                HttpRequest requestHostEmail = new HttpRequest("https://ruixian-ang97.000webhostapp.com/getVisitorInfoByUserEmail.php");
-                requestHostEmail.setMethod("POST");
-                requestHostEmail.addData("apikey",apikey);
-                requestHostEmail.addData("user_email",useremail);
-                requestHostEmail.execute();
+//                HttpRequest requestHostEmail = new HttpRequest("https://ruixian-ang97.000webhostapp.com/getVisitorInfoByUserEmail.php");
+//                requestHostEmail.setMethod("POST");
+//                requestHostEmail.addData("apikey",apikey);
+//                requestHostEmail.addData("user_email",useremail);
+//                requestHostEmail.execute();
 //                host_found = false;
 //                correct_host = false;
 //                HttpRequest requestHostEmail = new HttpRequest("https://ruixian-ang97.000webhostapp.com/getUser.php");
@@ -183,9 +183,10 @@ public class HostCancelPreRegister extends AppCompatActivity {
 //                }
 //                if(host_found==true && correct_host==true) {
 
-                    HttpRequest request = new HttpRequest("http://ruixian-ang97.000webhostapp.com/getVisitorInfo.php");
+                    HttpRequest request = new HttpRequest("http://ruixian-ang97.000webhostapp.com/getVisitorInfoByUserEmail.php");
                     request.setMethod("POST");
                     request.addData("apikey", apikey);
+                request.addData("user_email",useremail);
                     request.execute();
 //                   try {
 //                       String jsonString = request.getResponse();
@@ -247,8 +248,8 @@ public class HostCancelPreRegister extends AppCompatActivity {
                                     HostCancelPreRegister.this);
                             alertdialog.setTitle("Selected Visitor \n" + todelete.getVisitor_name());
                             alertdialog.setMessage("" + todelete.getVisitor_email());
-                            alertdialog.setPositiveButton("Cancel", null);
-                            alertdialog.setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+                            alertdialog.setNegativeButton("Cancel", null);
+                            alertdialog.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     HttpRequest request = new HttpRequest("http://ruixian-ang97.000webhostapp.com/deleteVisitor.php");
                                     request.setMethod("POST");

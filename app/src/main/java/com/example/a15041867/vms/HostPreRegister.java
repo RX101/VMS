@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -45,8 +46,13 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Calendar;
 
 import static android.R.id.message;
@@ -75,6 +81,8 @@ public class HostPreRegister extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host_pre_register);
+
+
 
         tvSubVisitor = (TextView) findViewById(R.id.textViewSubVisitor);
         spnNumVisitor = (Spinner) findViewById(R.id.spinnerNumVisitor);
@@ -223,9 +231,9 @@ public class HostPreRegister extends AppCompatActivity {
                 etTime = (EditText) findViewById(R.id.editTextTime);
                 etDate = (EditText) findViewById(R.id.editTextDate);
                 tvSubVisitor = (TextView) findViewById(R.id.textViewSubVisitor);
-                String number = etNumber.getText().toString();
+                final String number = etNumber.getText().toString();
                 String name = etName.getText().toString();
-                String email = etEmail.getText().toString();
+                final String email = etEmail.getText().toString();
                 String time = etTime.getText().toString();
                 String date = etDate.getText().toString();
 
@@ -262,51 +270,74 @@ public class HostPreRegister extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     if(visitor_found==false) {
-                        HttpRequest request = new HttpRequest("http://ruixian-ang97.000webhostapp.com/insertVisitor.php");
-                        request.setMethod("POST");
-                        request.addData("visitor_email", etEmail.getText().toString());
-                        request.addData("visitor_name", etName.getText().toString());
-                        request.addData("handphone_number", etNumber.getText().toString());
-                        request.execute();
-                        try {
-                            HttpRequest request1 = new HttpRequest("http://ruixian-ang97.000webhostapp.com/insertVisitorInfo.php");
-                            request1.setMethod("POST");
-                            request1.addData("visitor_email", etEmail.getText().toString());
-                            request1.addData("user_email",userEmail);
-                            request1.addData("sub_visitor", sub_visitor);
-                            request1.addData("date_in", etDate.getText().toString());
-                            request1.addData("time_in", etTime.getText().toString());
-                            request1.execute();
-                            Toast.makeText(HostPreRegister.this, "Visitor inserted and a QR code has been sent to visitor", Toast.LENGTH_SHORT).show();
-                            MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-                            BitMatrix bitMatrix = null;
-                            try {
 
-
-                                BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-                                bitMatrix = multiFormatWriter.encode(number + "\n" + name + "\n" + email + "\n" + time + "\n" + date, BarcodeFormat.QR_CODE, 200, 200);
-                                Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
-                                iv.setImageBitmap(bitmap);
+                        final android.app.AlertDialog.Builder alertdialog = new android.app.AlertDialog.Builder(
+                                HostPreRegister.this);
+                        alertdialog.setTitle("Save Visitor");
+                        alertdialog.setMessage("Are you sure you want to save visitor?");
+                        alertdialog.setNegativeButton("Cancel", null);
+                        alertdialog.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                HttpRequest request = new HttpRequest("http://ruixian-ang97.000webhostapp.com/insertVisitor.php");
+                                request.setMethod("POST");
+                                request.addData("visitor_email", etEmail.getText().toString());
+                                request.addData("visitor_name", etName.getText().toString());
+                                request.addData("handphone_number", etNumber.getText().toString());
+                                request.execute();
+                                try {
+                                    HttpRequest request1 = new HttpRequest("http://ruixian-ang97.000webhostapp.com/insertVisitorInfo.php");
+                                    request1.setMethod("POST");
+                                    request1.addData("visitor_email", etEmail.getText().toString());
+                                    request1.addData("user_email",userEmail);
+                                    request1.addData("sub_visitor", sub_visitor);
+                                    request1.addData("date_in", etDate.getText().toString());
+                                    request1.addData("time_in", etTime.getText().toString());
+                                    request1.execute();
+                                    Toast.makeText(HostPreRegister.this, "Visitor Saved", Toast.LENGTH_SHORT).show();
+                                    android.app.AlertDialog.Builder alertdialogQR = new android.app.AlertDialog.Builder(HostPreRegister.this);
+                                    alertdialogQR.setTitle("Send QR Code");
+                                    alertdialogQR.setMessage("Do you want to send QR code to " + etEmail.getText().toString()+ "?");
+                                    alertdialogQR.setNegativeButton("Cancel",null);
+                                    alertdialogQR.setPositiveButton("Send", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+                                            BitMatrix bitMatrix = null;
+                                            Visitor visitor = new Visitor();
+                                            int idd = visitor.getId();
+                                            try {
+                                                BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+                                                bitMatrix = multiFormatWriter.encode(String.valueOf(idd), BarcodeFormat.QR_CODE, 200, 200);
+                                                Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+                                                iv.setImageBitmap(bitmap);
+                                                share(bitmap,"Qr Code",email);
+                                                Toast.makeText(HostPreRegister.this, "Qr code sending", Toast.LENGTH_SHORT).show();
 //                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
 //                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
 //                                byte[] byteArray = stream.toByteArray();
 //                                String string = new String(byteArray, "UTF-8");
 //                                byte[] byteArray1 = string.getBytes("UTF-8");
 //                                Bitmap bmp = BitmapFactory.decodeByteArray(byteArray1, 0, byteArray1.length);
-                                SmsManager smsManager = SmsManager.getDefault();
-                                smsManager.sendTextMessage(number, null, " Qr code: " + iv, null, null);
-                                finish();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                                                //SmsManager smsManager = SmsManager.getDefault();
+                                               // smsManager.sendTextMessage(number, null, " Qr code: " + iv, null, null);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
+                                    alertdialogQR.show();
 
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                             }
+                        });
+                        alertdialog.show();
+
 
                     }
                     else{
-                        Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                        etEmail.setError("Email already exist!");
                     }
                     //                    else{
 //                        Toast.makeText(getApplicationContext(), "Error occurred.",
@@ -572,6 +603,32 @@ public class HostPreRegister extends AppCompatActivity {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void share(Bitmap bitmap, String filename, String email){
+
+        try {
+            File file = new File(getApplicationContext().getExternalCacheDir(),filename + ".png");
+            FileOutputStream fOut = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+            fOut.flush();
+            fOut.close();
+            file.setReadable(true,false);
+            Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+            String EmailList [] = {email};
+            intent.putExtra(Intent.EXTRA_EMAIL, EmailList);
+            intent.putExtra(Intent.EXTRA_SUBJECT, "QR Code");
+            intent.putExtra(Intent.EXTRA_TEXT,"Please show the QR code when signing in");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(intent.EXTRA_STREAM, Uri.fromFile(file));
+            intent.setType("message/rfc822");
+            startActivity(Intent.createChooser(intent,"Choose an Email Client: "));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 //    protected void sendSMSMessage() {
 //

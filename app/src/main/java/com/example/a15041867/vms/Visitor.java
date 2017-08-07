@@ -5,6 +5,7 @@ package com.example.a15041867.vms;
  */
 
 public class Visitor {
+    private int id;
     private String visitor_name;
     private String visitor_phone_number;
     private String visitor_email;
@@ -38,6 +39,9 @@ public class Visitor {
         return visitor_name;
     }
 
+    public int getId(){
+        return id;
+    }
     public String getVisitor_phone_number(){
         return visitor_phone_number;
     }
