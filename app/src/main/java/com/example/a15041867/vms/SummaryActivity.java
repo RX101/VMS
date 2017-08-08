@@ -134,12 +134,7 @@ public class SummaryActivity extends AppCompatActivity {
                         // TODO Auto-generated method stub
                     /*      Your code   to get date and time    */
                         selectedmonth = selectedmonth + 1;
-                        if (mDay >= selectedday) {
-                            etStartDate.setText(selectedyear + "-" + selectedmonth + "-" + selectedday);
-                        } else {
-                            Toast.makeText(SummaryActivity.this, "Please select a valid date", Toast.LENGTH_SHORT).show();
-                            etStartDate.setError("You have selected an invalid date");
-                        }
+                        etStartDate.setText(selectedyear + "-" + selectedmonth + "-" + selectedday);
                     }
                 }, mYear, mMonth, mDay);
                 mDatePicker.setTitle("Select Date");
@@ -154,8 +149,8 @@ public class SummaryActivity extends AppCompatActivity {
                 // TODO Auto-generated method stub
                 //To show current date in the datepicker
                 Calendar mcurrentDate = Calendar.getInstance();
-                int mYear = mcurrentDate.get(Calendar.YEAR);
-                int mMonth = mcurrentDate.get(Calendar.MONTH);
+                final int mYear = mcurrentDate.get(Calendar.YEAR);
+                final int mMonth = mcurrentDate.get(Calendar.MONTH);
                 final int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
 
                 DatePickerDialog mDatePicker;
@@ -163,14 +158,9 @@ public class SummaryActivity extends AppCompatActivity {
                     public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
                         // TODO Auto-generated method stub
                     /*      Your code   to get date and time    */
-                        selectedmonth = selectedmonth + 1;
-                        if (mDay >= selectedday) {
-                            etEndDate.setText(selectedyear + "-" + selectedmonth + "-" + selectedday);
-                        } else {
-                            Toast.makeText(SummaryActivity.this, "Please select a valid date", Toast.LENGTH_SHORT).show();
-                            etEndDate.setError("You have selected an invalid date");
-                        }
 
+                        selectedmonth = selectedmonth + 1;
+                        etEndDate.setText(selectedyear + "-" + selectedmonth + "-" + selectedday);
                     }
                 }, mYear, mMonth, mDay);
                 mDatePicker.setTitle("Select Date");
@@ -187,7 +177,7 @@ public class SummaryActivity extends AppCompatActivity {
                 String selectedPosition = rb.getText().toString();
 
                 if(selectedPosition.equalsIgnoreCase("number of visitors")){
-                    Toast.makeText(SummaryActivity.this, selectedPosition, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(SummaryActivity.this, selectedPosition, Toast.LENGTH_LONG).show();
                     i = new Intent(getApplicationContext(), SummaryInfoActivity.class);
                     i.putExtra("api", apikey);
                     i.putExtra("startDate", etStartDate.getText().toString());
@@ -196,7 +186,7 @@ public class SummaryActivity extends AppCompatActivity {
                     startActivity(i);
 
                 }else if(selectedPosition.equalsIgnoreCase("busiest time span")){
-                    Toast.makeText(SummaryActivity.this, selectedPosition, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(SummaryActivity.this, selectedPosition, Toast.LENGTH_LONG).show();
                     i = new Intent(getApplicationContext(), SummaryInfoActivity.class);
                     i.putExtra("api", apikey);
                     i.putExtra("startDate", etStartDate.getText().toString());
@@ -205,7 +195,13 @@ public class SummaryActivity extends AppCompatActivity {
                     startActivity(i);
 
                 }else if(selectedPosition.equalsIgnoreCase("frequency of visitors")){
-                    Toast.makeText(SummaryActivity.this, selectedPosition, Toast.LENGTH_LONG).show();
+
+                    i = new Intent(getApplicationContext(), VisitorFrequencyActivity.class);
+                    i.putExtra("api", apikey);
+                    i.putExtra("startDate", etStartDate.getText().toString());
+                    // Toast.makeText(SummaryActivity.this, etStartDate.getText().toString(), Toast.LENGTH_LONG).show();
+                    i.putExtra("endDate", etEndDate.getText().toString());
+                    startActivity(i);
 
                 }else if(selectedPosition.equalsIgnoreCase("Details of visitors based on time span")){
                     i = new Intent(getApplicationContext(), VisitorInfoByDateActivity.class);
@@ -217,6 +213,15 @@ public class SummaryActivity extends AppCompatActivity {
                 }
             }
         });
+
+        btnReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                etStartDate.setText(" ");
+                etEndDate.setText(" ");
+                rgSummary.clearCheck();
+            }
+        });
     }
 
         // Get the Id of the selected radio button in the RadioGroup
@@ -225,7 +230,7 @@ public class SummaryActivity extends AppCompatActivity {
 
     private void updateLabel() {
 
-        String myFormat = "yy-MM-dd"; //In which you need put here
+        String myFormat = "yyyy-MM-dd"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
         etStartDate.setText(sdf.format(myCalendar.getTime()));

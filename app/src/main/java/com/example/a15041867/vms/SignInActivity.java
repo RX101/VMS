@@ -1,12 +1,16 @@
 package com.example.a15041867.vms;
 
+import android.*;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -14,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +28,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.vision.barcode.Barcode;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -37,6 +44,8 @@ public class SignInActivity extends AppCompatActivity {
     TextView tvRegister, tvSubVisitor;
     Spinner spnNumVisitor;
     Button btnSignIn;
+    public static final int REQUEST_CODE = 100;
+    public static final int PERMISSION_REQUEST = 200;
     private  Session session;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
@@ -62,6 +71,7 @@ public class SignInActivity extends AppCompatActivity {
         btnSignIn = (Button) findViewById(R.id.buttonSignIn);
         spnNumVisitor = (Spinner)findViewById(R.id.spinnerNumVisitor);
         tvSubVisitor = (TextView)findViewById(R.id.textViewSubVisitor);
+
 
         session = new Session(this);
 
@@ -113,8 +123,19 @@ public class SignInActivity extends AppCompatActivity {
                         i.putExtra("user_email",userEmail);
                         startActivity(i);
                         break;
+                    case(R.id.nav_log_out):
+                        logout();
+                        break;
                 }
                 return true;
+            }
+        });
+
+        etSignInEmail.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+
+                return false;
             }
         });
         spnNumVisitor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -351,12 +372,16 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
+        if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.CAMERA}, PERMISSION_REQUEST);
+        }
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(SignInActivity.this, ScanActivity.class);
+                startActivityForResult(intent, REQUEST_CODE);
             }
         });
 
@@ -507,6 +532,41 @@ public class SignInActivity extends AppCompatActivity {
         apikey = intentAPI.getStringExtra("api");
         userEmail = intentAPI.getStringExtra("user_email");
         Log.i("Sign In Activity","" + apikey + userEmail);
+    }
+
+    public void logout(){
+        Intent intentLogout = new Intent(SignInActivity.this,MainActivity.class);
+        startActivity(intentLogout);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQUEST_CODE && resultCode == RESULT_OK){
+            if(data != null){
+                final Barcode barcode = data.getParcelableExtra("barcode");
+                String visitInfo_id = barcode.displayValue;
+                HttpRequest requestSignInQR= new HttpRequest("https://ruixian-ang97.000webhostapp.com/doSignInWithQR.php");
+                requestSignInQR.setMethod("POST");
+                requestSignInQR.addData("apikey",apikey);
+                requestSignInQR.addData("id",visitInfo_id);
+                requestSignInQR.execute();
+                try{
+                    String jsonString1 = requestSignInQR.getResponse();
+                    Log.i("response", jsonString1);
+                    JSONObject jsonObject1 = new JSONObject(jsonString1);
+                    String msg = jsonObject1.getString("message");
+                    Toast.makeText(SignInActivity.this,msg,Toast.LENGTH_LONG).show();
+                    etSignInEmail.setText("");
+                    etSignInVisitUnit.setText("");
+                    tvSubVisitor.setText("");
+                    etSignInVisitBlock.setText("");
+                    spnNumVisitor.setSelection(0);
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
 
