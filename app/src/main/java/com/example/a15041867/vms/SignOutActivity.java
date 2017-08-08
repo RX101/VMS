@@ -25,6 +25,8 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.google.android.gms.vision.barcode.Barcode;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -42,6 +44,8 @@ public class SignOutActivity extends AppCompatActivity {
     private Intent i, intentAPI;
     private ArrayList<CurrentVisitor> al;
     private  ArrayAdapter aa;
+    public static final int REQUEST_CODE = 101;
+    public static final int PERMISSION_REQUEST = 201;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +73,8 @@ public class SignOutActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(SignOutActivity.this, ScanActivity.class);
+                startActivityForResult(intent, REQUEST_CODE);
             }
         });
 
@@ -267,5 +271,30 @@ public class SignOutActivity extends AppCompatActivity {
     public void logout(){
         Intent intentLogout = new Intent(getBaseContext(),MainActivity.class);
         startActivity(intentLogout);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQUEST_CODE && resultCode == RESULT_OK){
+            if(data != null){
+                final Barcode barcode = data.getParcelableExtra("barcode");
+                String visitInfo_id = barcode.displayValue;
+                HttpRequest requestSignInQR= new HttpRequest("https://ruixian-ang97.000webhostapp.com/doSignOutWithQR.php");
+                requestSignInQR.setMethod("POST");
+                requestSignInQR.addData("apikey",apikey);
+                requestSignInQR.addData("id",visitInfo_id);
+                requestSignInQR.execute();
+                try{
+                    String jsonString1 = requestSignInQR.getResponse();
+                    Log.i("response", jsonString1);
+                    JSONObject jsonObject1 = new JSONObject(jsonString1);
+                    String msg = jsonObject1.getString("message");
+                    Toast.makeText(SignOutActivity.this,msg,Toast.LENGTH_LONG).show();
+
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
