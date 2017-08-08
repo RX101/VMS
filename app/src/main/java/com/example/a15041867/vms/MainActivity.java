@@ -55,9 +55,6 @@ public class MainActivity extends AppCompatActivity {
 //                    finish();
 //
 //                }
-
-        etLoginEmail.setText("host@gmail.com");
-        etLoginPassword.setText("host1234");
         int permissionCheck = ContextCompat.checkSelfPermission(MainActivity.this,
                 Manifest.permission.SEND_SMS);
         if (permissionCheck != PermissionChecker.PERMISSION_GRANTED) {

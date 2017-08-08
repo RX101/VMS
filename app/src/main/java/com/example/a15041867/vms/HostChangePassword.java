@@ -47,7 +47,6 @@ public class HostChangePassword extends AppCompatActivity {
         nv = (NavigationView)findViewById(R.id.nvHostChangePassword);
 
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawerLayoutChangePassword);
-//        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.close, R.string.close);
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
@@ -71,12 +70,6 @@ public class HostChangePassword extends AppCompatActivity {
                         i.putExtra("user_email",userEmail);
                         startActivity(i);
                         break;
-//                    case(R.id.nav_change_password):
-//                        i= new Intent(getApplicationContext(),HostChangePassword.class);
-//                        i.putExtra("apikey",apikey);
-//                        i.putExtra("user_email",userEmail);
-//                        startActivity(i);
-//                        break;
                     case(R.id.log_out):
                         i= new Intent(getApplicationContext(),MainActivity.class);
                         i.putExtra("apikey",apikey);
@@ -103,18 +96,14 @@ public class HostChangePassword extends AppCompatActivity {
                     etConfirmPassword.setError("New password and confirm password is not matches.");
                 }else {
 
-                    // Check if there is network access
                     ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
                     NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
                     if (networkInfo != null && networkInfo.isConnected()) {
-
-                        /******************************/
                         if (apikey != null) {
 
 
-                            //Create the Dialog Builder
                             AlertDialog.Builder myBuilder = new AlertDialog.Builder(HostChangePassword.this);
-                            //Set the dialog details
+
                             myBuilder.setTitle("Change Password:");
                             myBuilder.setMessage("Are you sure to change password ? ");
                             myBuilder.setPositiveButton("Change Password", new DialogInterface.OnClickListener() {

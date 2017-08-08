@@ -23,6 +23,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -60,18 +61,18 @@ import static android.R.id.message;
 
 public class HostPreRegister extends AppCompatActivity {
 
-    private static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 0;
+    private static final String TAG = "HostPreRegister";
     TextView tvSubVisitor;
     Intent i, intentAPI;
-    String db_visitor_email, db_host_email;
-    EditText etNumber, etName, etEmail, etTime, etDate, etHostEmail, etSignInEmail, etSignInVisitUnit, etSignInVisitBlock, etSv2Sub1, etSv2Sub2,
+    String db_visitor_email;
+    EditText etNumber, etName, etEmail, etTime, etDate, etSv2Sub1, etSv2Sub2,
             etSv3Sub1, etSv3Sub2, etSv3Sub3, etSv4Sub1, etSv4Sub2, etSv4Sub3, etSv4Sub4,
             etSv5Sub1, etSv5Sub2, etSv5Sub3, etSv5Sub4, etSv5Sub5, TESTINGONLY;
     Spinner spnNumVisitor;
     Button btnSubmit, buttonGenerate;
-    ImageView iv;
-    Boolean visitor_found, host_found;
+    Boolean visitor_found;
     private DrawerLayout mDrawerLayout;
+    private int getid;
     private ActionBarDrawerToggle mToggle;
     private NavigationView nv;
     private String block, unit, apikey, sub_visitor, userEmail;
@@ -88,15 +89,10 @@ public class HostPreRegister extends AppCompatActivity {
         spnNumVisitor = (Spinner) findViewById(R.id.spinnerNumVisitor);
         etTime = (EditText) findViewById(R.id.editTextTime);
         etDate = (EditText) findViewById(R.id.editTextDate);
-        buttonGenerate = (Button) findViewById(R.id.buttonGeneragte);
-        TESTINGONLY = (EditText) findViewById(R.id.TESTINGONLY);
-
-        final ImageView iv = (ImageView) findViewById(R.id.imageView);
 
         intentAPI = getIntent();
         apikey = intentAPI.getStringExtra("apikey");
         userEmail = intentAPI.getStringExtra("user_email");
-        Toast.makeText(this, userEmail, Toast.LENGTH_SHORT).show();
         i = getIntent();
 //        String useremail = i.getStringExtra("useremail");
         block = i.getStringExtra("block");
@@ -115,16 +111,6 @@ public class HostPreRegister extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         apikey = intentAPI.getStringExtra("apikey");
 
-        if (ContextCompat.checkSelfPermission(HostPreRegister.this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(HostPreRegister.this, Manifest.permission.SEND_SMS)) {
-                ActivityCompat.requestPermissions(HostPreRegister.this, new String[]{Manifest.permission.SEND_SMS}, 1);
-
-            } else {
-                ActivityCompat.requestPermissions(HostPreRegister.this, new String[]{Manifest.permission.SEND_SMS}, 1);
-            }
-        } else {
-
-        }
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -157,20 +143,6 @@ public class HostPreRegister extends AppCompatActivity {
             }
         });
 
-        buttonGenerate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-                try {
-                    BitMatrix bitMatrix = multiFormatWriter.encode(String.valueOf(TESTINGONLY), BarcodeFormat.QR_CODE, 200, 200);
-                    BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-                    Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
-                    iv.setImageBitmap(bitmap);
-                } catch (WriterException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
         etDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -200,7 +172,6 @@ public class HostPreRegister extends AppCompatActivity {
                 mDatePicker.setTitle("Select Date");
                 mDatePicker.show();
             }
-
         });
 
         etTime.setOnClickListener(new View.OnClickListener() {
@@ -293,42 +264,42 @@ public class HostPreRegister extends AppCompatActivity {
                                     request1.addData("date_in", etDate.getText().toString());
                                     request1.addData("time_in", etTime.getText().toString());
                                     request1.execute();
-                                    Toast.makeText(HostPreRegister.this, "Visitor Saved", Toast.LENGTH_SHORT).show();
-                                    android.app.AlertDialog.Builder alertdialogQR = new android.app.AlertDialog.Builder(HostPreRegister.this);
-                                    alertdialogQR.setTitle("Send QR Code");
-                                    alertdialogQR.setMessage("Do you want to send QR code to " + etEmail.getText().toString()+ "?");
-                                    alertdialogQR.setNegativeButton("Cancel",null);
-                                    alertdialogQR.setPositiveButton("Send", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-                                            BitMatrix bitMatrix = null;
-                                            Visitor visitor = new Visitor();
-                                            int idd = visitor.getId();
-                                            try {
-                                                BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-                                                bitMatrix = multiFormatWriter.encode(String.valueOf(idd), BarcodeFormat.QR_CODE, 200, 200);
-                                                Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
-                                                iv.setImageBitmap(bitmap);
-                                                share(bitmap,"Qr Code",email);
-                                                Toast.makeText(HostPreRegister.this, "Qr code sending", Toast.LENGTH_SHORT).show();
-//                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-//                                byte[] byteArray = stream.toByteArray();
-//                                String string = new String(byteArray, "UTF-8");
-//                                byte[] byteArray1 = string.getBytes("UTF-8");
-//                                Bitmap bmp = BitmapFactory.decodeByteArray(byteArray1, 0, byteArray1.length);
-                                                //SmsManager smsManager = SmsManager.getDefault();
-                                               // smsManager.sendTextMessage(number, null, " Qr code: " + iv, null, null);
-                                            } catch (Exception e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                    });
-                                    alertdialogQR.show();
+                                    try {
+                                        String jsonString1 = request1.getResponse();
+                                        Log.d(TAG, "jsonString" + jsonString1);
+                                        JSONObject jsonObj1 = new JSONObject(jsonString1);
+                                        getid = jsonObj1.getInt("id");
+                                        Log.d(TAG,"jsonString" + getid);
 
+                                    }catch (Exception e){
+                                        e.printStackTrace();
+                                    }
+                                        Toast.makeText(HostPreRegister.this, "Visitor Saved", Toast.LENGTH_SHORT).show();
+                                        final android.app.AlertDialog.Builder alertdialogQR = new android.app.AlertDialog.Builder(HostPreRegister.this);
+                                        alertdialogQR.setTitle("Send QR Code");
+                                        alertdialogQR.setMessage("Do you want to send QR code to " + etEmail.getText().toString() + "?");
+                                        alertdialogQR.setNegativeButton("Cancel", null);
+                                        alertdialogQR.setPositiveButton("Send", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+                                                BitMatrix bitMatrix = null;
+                                                BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+                                                try {
+                                                    bitMatrix = multiFormatWriter.encode(String.valueOf(getid), BarcodeFormat.QR_CODE, 200, 200);
+                                                    Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+                                                    share(bitmap, "Qr Code", etEmail.getText().toString());
+                                                    Toast.makeText(HostPreRegister.this, "Qr code sending", Toast.LENGTH_SHORT).show();
+                                                } catch (WriterException e) {
+                                                    e.printStackTrace();
+                                                }
+                                                finish();
+                                            }
+                                        });
+                                        alertdialogQR.show();
                                 } catch (Exception e) {
                                     e.printStackTrace();
+                                    Toast.makeText(HostPreRegister.this, "Error occurred", Toast.LENGTH_SHORT).show();
                                 }
                              }
                         });
@@ -339,10 +310,6 @@ public class HostPreRegister extends AppCompatActivity {
                     else{
                         etEmail.setError("Email already exist!");
                     }
-                    //                    else{
-//                        Toast.makeText(getApplicationContext(), "Error occurred.",
-//                                Toast.LENGTH_LONG).show();
-//                    }
                 }
             }
         });
@@ -571,23 +538,6 @@ public class HostPreRegister extends AppCompatActivity {
 
         });
     }
-    //yo
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case 1:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (ContextCompat.checkSelfPermission(HostPreRegister.this, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
-                        Toast.makeText(HostPreRegister.this, "Permission granted", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(this, "No Permission Granted", Toast.LENGTH_SHORT).show();
-                }
-        }
-    }
-
     protected void onStart() {
         super.onStart();
 
@@ -630,66 +580,8 @@ public class HostPreRegister extends AppCompatActivity {
         }
 
     }
-//    protected void sendSMSMessage() {
-//
-//        if (ContextCompat.checkSelfPermission(this,
-//                Manifest.permission.SEND_SMS)
-//                != PackageManager.PERMISSION_GRANTED) {
-//            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-//                    Manifest.permission.SEND_SMS)) {
-//                etNumber = (EditText) findViewById(R.id.editTextPhoneNumber);
-//                etName = (EditText) findViewById(R.id.editTextName);
-//                etEmail = (EditText) findViewById(R.id.editTextEmail);
-//                etTime = (EditText) findViewById(R.id.editTextTime);
-//                etDate = (EditText) findViewById(R.id.editTextDate);
-//                etHostEmail = (EditText) findViewById(R.id.editTextHostEmail);
-//                tvSubVisitor = (TextView) findViewById(R.id.textViewSubVisitor);
-//                String number=etNumber.getText().toString();
-//                String name =etName.getText().toString();
-//                String email = etEmail.getText().toString();
-//                String time = etTime.getText().toString();
-//                String date = etDate.getText().toString();
-//                String hostEmail = etHostEmail.getText().toString();
-//                MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-//                try{
-//                    BitMatrix bitMatrix = multiFormatWriter.encode(number+"\n"+name+"\n"+email+"\n"+time+"\n"+date+"\n"+hostEmail, BarcodeFormat.QR_CODE,200,200);
-//                    BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-//                    Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
-//                    SmsManager smsManager = SmsManager.getDefault();
-//                    smsManager.sendTextMessage(number, null, String.valueOf(bitmap), null, null);
-////                    iv.setImageBitmap(bitmap);
-//                    Toast.makeText(getApplicationContext(), "SMS sent.",
-//                            Toast.LENGTH_LONG).show();
-//                } catch(WriterException e){
-//                    e.printStackTrace();
-//                    Toast.makeText(getApplicationContext(), "SMS NOT NOT NOT sent.",
-//                            Toast.LENGTH_LONG).show();
-//                }
-//            } else {
-//                ActivityCompat.requestPermissions(this,
-//                        new String[]{Manifest.permission.SEND_SMS},
-//                        MY_PERMISSIONS_REQUEST_SEND_SMS);
-//            }
-//        }
-//    }
-//
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {
-//        switch (requestCode) {
-//            case MY_PERMISSIONS_REQUEST_SEND_SMS: {
-//                if (grantResults.length > 0
-//                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//
-//
-//
-//                } else {
-//                    Toast.makeText(getApplicationContext(),
-//                            "SMS faild, please try again.", Toast.LENGTH_LONG).show();
-//                    return;
-//                }
-//            }
-//        }
-//
-//    }
 
+    private void bitmapbitmap(int id){
+
+    }
 }

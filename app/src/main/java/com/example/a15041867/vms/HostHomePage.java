@@ -27,18 +27,11 @@ public class HostHomePage extends AppCompatActivity {
         btnCancel = (Button)findViewById(R.id.buttonCancel);
         btnChange = (Button)findViewById(R.id.buttonChangePassword);
 
-        //        HttpRequest requestVisitorDetails= new HttpRequest("https://ruixian-ang97.000webhostapp.com/getVisitor.php");
-////                    HttpRequest request= new HttpRequest("https://ruixian-ang97.000webhostapp.com/getVisitor.php?apikey=d2bfa8e8b749d2772a21edee7b70a2b3");
-//        requestVisitorDetails.setMethod("POST");
-//        requestVisitorDetails.addData("apikey",apikey);
-//        requestVisitorDetails.execute();
-
         intentAPI = getIntent();
         apikey = intentAPI.getStringExtra("api");
 
-        //Toast.makeText(HostHomePage.this,apikey,Toast.LENGTH_LONG).show();
-//ps
-        Toast.makeText(HostHomePage.this,useremail,Toast.LENGTH_SHORT).show();
+
+        Toast.makeText(HostHomePage.this,"Welcome "+useremail,Toast.LENGTH_LONG).show();
         btnPreregister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
