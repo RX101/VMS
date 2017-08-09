@@ -72,10 +72,9 @@ public class HostPreRegister extends AppCompatActivity {
     Button btnSubmit, buttonGenerate;
     Boolean visitor_found;
     private DrawerLayout mDrawerLayout;
-    private int getid;
     private ActionBarDrawerToggle mToggle;
     private NavigationView nv;
-    private String block, unit, apikey, sub_visitor, userEmail;
+    private String block, unit, apikey, sub_visitor, userEmail, getid;
 
     @Override
 
@@ -268,7 +267,7 @@ public class HostPreRegister extends AppCompatActivity {
                                         String jsonString1 = request1.getResponse();
                                         Log.d(TAG, "jsonString" + jsonString1);
                                         JSONObject jsonObj1 = new JSONObject(jsonString1);
-                                        getid = jsonObj1.getInt("id");
+                                        getid = jsonObj1.getString("id");
                                         Log.d(TAG,"jsonString" + getid);
 
                                     }catch (Exception e){
