@@ -13,10 +13,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.SearchView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -31,6 +34,7 @@ public class EvacuationActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mToggle;
     private Toolbar mToolbar;
     private NavigationView nv;
+    private EvacuationArrayAdapter arrayAdapter;
 
     Intent i;
     String apikey;
@@ -132,7 +136,7 @@ public class EvacuationActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                EvacuationArrayAdapter arrayAdapter = new EvacuationArrayAdapter(this, R.layout.row_evacuation, evacuationList);
+                arrayAdapter = new EvacuationArrayAdapter(this, R.layout.row_evacuation, evacuationList);
                 lv = (ListView) findViewById(R.id.lvEvacuation);
                 lv.setAdapter(arrayAdapter);
             } else {
@@ -163,6 +167,27 @@ public class EvacuationActivity extends AppCompatActivity {
 
         // show it
         alertDialog.show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_search, menu);
+        MenuItem item = menu.findItem(R.id.menuSearch);
+        SearchView searchView = (SearchView) item.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                arrayAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

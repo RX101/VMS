@@ -110,7 +110,7 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String email = etRegisterEmail.getText().toString();
+                final String email = etRegisterEmail.getText().toString().trim();
                 final String hp = etRegisterHP.getText().toString();
                 final String name = etRegisterName.getText().toString();
 
@@ -139,19 +139,19 @@ public class RegisterActivity extends AppCompatActivity {
                             visitor_name = jsonObj.getString("visitor_name");
                             handphone_number = jsonObj.getString("handphone_number");
 
-                            if(name.equals(visitor_name)){
+                            if(name.equalsIgnoreCase(visitor_name)){
                                 recordFound=true;
                                 etRegisterName.setError("Visitor name already exist,Please try another one");
-                                Toast.makeText(RegisterActivity.this,"Record: "+ i,Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(RegisterActivity.this,"Record: "+ i,Toast.LENGTH_SHORT).show();
 
-                            } else if (hp.equals(handphone_number)){
+                            } else if (hp.equalsIgnoreCase(handphone_number)){
                                 recordFound=true;
                                 etRegisterHP.setError("Handphone Number has been registered in database,Please try another one");
-                                Toast.makeText(RegisterActivity.this,"Record: "+ i,Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(RegisterActivity.this,"Record: "+ i,Toast.LENGTH_SHORT).show();
                             } else if(email.equals(visitor_email)){
                                 recordFound=true;
                                 etRegisterEmail.setError("Email already exist,Please try another one");
-                                Toast.makeText(RegisterActivity.this,"Record: "+ i,Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(RegisterActivity.this,"Record: "+ i,Toast.LENGTH_SHORT).show();
                             }
                         }
 

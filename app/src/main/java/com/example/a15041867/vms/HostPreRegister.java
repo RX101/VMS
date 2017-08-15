@@ -107,6 +107,7 @@ public class HostPreRegister extends AppCompatActivity {
         mToggle.syncState();
 
 
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         apikey = intentAPI.getStringExtra("apikey");
 

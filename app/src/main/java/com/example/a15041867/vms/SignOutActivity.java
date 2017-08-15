@@ -222,7 +222,7 @@ public class SignOutActivity extends AppCompatActivity {
                         AlertDialog.Builder myBuilder = new AlertDialog.Builder(SignOutActivity.this);
                         //Set the dialog details
                         myBuilder.setTitle("Confirmation Sign Out information:");
-                        myBuilder.setMessage("Are you sure to sign out ? ");
+                        myBuilder.setMessage("Are you sure to sign out "+ currentVisitor +" ? ");
                         myBuilder.setPositiveButton("Sign Out", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {

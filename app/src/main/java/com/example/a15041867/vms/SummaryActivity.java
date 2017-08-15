@@ -39,6 +39,7 @@ public class SummaryActivity extends AppCompatActivity {
     RadioGroup rgSummary;
     EditText etStartDate, etEndDate;
     Calendar myCalendar = Calendar.getInstance();
+    DatePickerDialog mDatePicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +129,7 @@ public class SummaryActivity extends AppCompatActivity {
                 int mMonth = mcurrentDate.get(Calendar.MONTH);
                 final int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog mDatePicker;
+
                 mDatePicker = new DatePickerDialog(SummaryActivity.this, new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
                         // TODO Auto-generated method stub
@@ -154,8 +155,8 @@ public class SummaryActivity extends AppCompatActivity {
                 final int mMonth = mcurrentDate.get(Calendar.MONTH);
                 final int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog mDatePicker;
-                mDatePicker = new DatePickerDialog(SummaryActivity.this, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog mDatePicker2;
+                mDatePicker2 = new DatePickerDialog(SummaryActivity.this, new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
                         // TODO Auto-generated method stub
                     /*      Your code   to get date and time    */
@@ -164,9 +165,10 @@ public class SummaryActivity extends AppCompatActivity {
                         etEndDate.setText(selectedyear + "-" + selectedmonth + "-" + selectedday);
                     }
                 }, mYear, mMonth, mDay);
-                mDatePicker.getDatePicker().setMaxDate((System.currentTimeMillis()));
-                mDatePicker.setTitle("Select Date");
-                mDatePicker.show();
+                mDatePicker2.getDatePicker().setMaxDate((System.currentTimeMillis()));
+                mDatePicker2.getDatePicker().setMinDate(mDatePicker.getDatePicker().getMinDate());
+                mDatePicker2.setTitle("Select Date");
+                mDatePicker2.show();
             }
         });
 
