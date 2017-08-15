@@ -38,6 +38,8 @@ public class HostHomePage extends AppCompatActivity {
                 i = new Intent(HostHomePage.this, HostPreRegister.class);
                 i.putExtra("apikey",apikey);
                 i.putExtra("user_email",useremail);
+                i.putExtra("block",block);
+                i.putExtra("block",unit);
                 startActivity(i);
             }
         });

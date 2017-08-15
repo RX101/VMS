@@ -94,8 +94,8 @@ public class HostPreRegister extends AppCompatActivity {
         userEmail = intentAPI.getStringExtra("user_email");
         i = getIntent();
 //        String useremail = i.getStringExtra("useremail");
-        block = i.getStringExtra("block");
-        unit = i.getStringExtra("unit");
+//        block = i.getStringExtra("block");
+//        unit = i.getStringExtra("unit");
 
         nv = (NavigationView) findViewById(R.id.nvPreRegister);
 
@@ -147,7 +147,7 @@ public class HostPreRegister extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //To show current date in the datepicker
-                final java.util.Calendar mcurrentDate = java.util.Calendar.getInstance();
+               Calendar mcurrentDate = Calendar.getInstance();
                 int mYear = mcurrentDate.get(java.util.Calendar.YEAR);
                 int mMonth = mcurrentDate.get(java.util.Calendar.MONTH);
                 final int mDay = mcurrentDate.get(java.util.Calendar.DAY_OF_MONTH);
@@ -160,15 +160,11 @@ public class HostPreRegister extends AppCompatActivity {
                         // TODO Auto-generated method stub
                     /*      Your code   to get date and time    */
                         selectedmonth = selectedmonth + 1;
-                        if (mDay <= selectedday) {
-                            etDate.setText("" + selectedyear + "/" + selectedmonth + "/" + selectedday);
-                        } else {
-                            Toast.makeText(HostPreRegister.this, "Please select a valid date", Toast.LENGTH_SHORT).show();
-                        }
+                        etDate.setText(selectedyear + "-" + selectedmonth + "-" + selectedday);
 
                     }
                 }, mYear, mMonth, mDay);
-
+                mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
                 mDatePicker.setTitle("Select Date");
                 mDatePicker.show();
             }
@@ -217,9 +213,9 @@ public class HostPreRegister extends AppCompatActivity {
                 } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                     etEmail.setError("Invalid Email, Please try again.");
                 } else if (date.equals("")) {
-                    etDate.setError("Time field is empty");
+                    etDate.setError("Date field is empty");
                 } else if (time.equals("")) {
-                    etTime.setError("Date field is empty");
+                    etTime.setError("Field field is empty");
                 } else {
                     HttpRequest requestVisitorEmail = new HttpRequest("https://ruixian-ang97.000webhostapp.com/getVisitor.php");
                     requestVisitorEmail.setMethod("POST");
