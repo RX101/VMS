@@ -129,7 +129,6 @@ public class SummaryActivity extends AppCompatActivity {
                 final int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
 
                 DatePickerDialog mDatePicker;
-
                 mDatePicker = new DatePickerDialog(SummaryActivity.this, new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
                         // TODO Auto-generated method stub
@@ -138,11 +137,6 @@ public class SummaryActivity extends AppCompatActivity {
                         etStartDate.setText(selectedyear + "-" + selectedmonth + "-" + selectedday);
                     }
                 }, mYear, mMonth, mDay);
-
-                Calendar now = Calendar.getInstance(); //Create a Calendar object with current date/time
-                String date = now.get(Calendar.YEAR)+ "/"+
-                        (now.get(Calendar.MONTH)+1) + "/" +
-                        now.get(Calendar.DAY_OF_MONTH);
                 mDatePicker.getDatePicker().setMaxDate((System.currentTimeMillis()));
                 mDatePicker.setTitle("Select Date");
                 mDatePicker.show();
@@ -170,6 +164,7 @@ public class SummaryActivity extends AppCompatActivity {
                         etEndDate.setText(selectedyear + "-" + selectedmonth + "-" + selectedday);
                     }
                 }, mYear, mMonth, mDay);
+                mDatePicker.getDatePicker().setMaxDate((System.currentTimeMillis()));
                 mDatePicker.setTitle("Select Date");
                 mDatePicker.show();
             }
