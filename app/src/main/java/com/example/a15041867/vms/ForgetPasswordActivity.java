@@ -46,9 +46,6 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         etForgetPasswordEmail = (EditText)findViewById(R.id.etForgetPasswordEmail);
         etForgetPasswordHandphoneNumber = (EditText)findViewById(R.id.etForgetPasswordHandphoneNumber);
         btnForgetPasswordSubmit = (Button)findViewById(R.id.btnForgetPasswordSubmit);
-        etForgetPasswordHandphoneNumber.setText("87981651");
-        etForgetPasswordEmail.setText("security@gmail.com");
-
 
 
         btnForgetPasswordSubmit.setOnClickListener(new View.OnClickListener() {
