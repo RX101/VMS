@@ -108,10 +108,10 @@ public class DisplayUserInfoActivity extends AppCompatActivity {
                     EditText etuserBlock = (EditText)findViewById(R.id.etBlock);
                     EditText etuserUnit = (EditText)findViewById(R.id.etUnit);
 
-                    request.addData("name", etuserName.getText().toString());
-                    request.addData("handphone_number", etuserPhoneNumber.getText().toString());
-                    request.addData("block", etuserBlock.getText().toString());
-                    request.addData("unit", etuserUnit.getText().toString());
+                    request.addData("name", etuserName.getText().toString().trim());
+                    request.addData("handphone_number", etuserPhoneNumber.getText().toString().trim());
+                    request.addData("block", etuserBlock.getText().toString().trim());
+                    request.addData("unit", etuserUnit.getText().toString().trim());
 
 
                     RadioGroup rg = (RadioGroup)findViewById(R.id.rgRole);

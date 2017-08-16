@@ -128,11 +128,11 @@ public class AddUserActivity extends AppCompatActivity {
             public void onClick(View view) {
                 EmailFound = false;
 
-                String name = etName.getText().toString();
-                String email = etEmail.getText().toString();
-                handphone = etHandphone.getText().toString();
-                String block = etBlock.getText().toString();
-                String unit = etUnit.getText().toString();
+                String name = etName.getText().toString().trim();
+                String email = etEmail.getText().toString().trim();
+                handphone = etHandphone.getText().toString().trim();
+                String block = etBlock.getText().toString().trim();
+                String unit = etUnit.getText().toString().trim();
 
 
                 // Get the Id of the selected radio button in the RadioGroup
