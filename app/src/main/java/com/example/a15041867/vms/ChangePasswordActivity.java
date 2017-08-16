@@ -105,9 +105,9 @@ public class ChangePasswordActivity extends AppCompatActivity {
         btnChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                 oldPassword = etOldPassword.getText().toString();
-                 newPassword = etNewPassword.getText().toString();
-                 confirmPassword = etConfirmPassword.getText().toString();
+                 oldPassword = etOldPassword.getText().toString().trim();
+                 newPassword = etNewPassword.getText().toString().trim();
+                 confirmPassword = etConfirmPassword.getText().toString().trim();
                 if(oldPassword.equals("")){
                     etOldPassword.setError("Please enter your old password.");
                 }else if(newPassword.equals("")){

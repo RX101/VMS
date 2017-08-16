@@ -103,16 +103,13 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        String email = etRegisterEmail.getText().toString();
-        String hp = etRegisterHP.getText().toString();
-        String name = etRegisterName.getText().toString();
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final String email = etRegisterEmail.getText().toString().trim();
-                final String hp = etRegisterHP.getText().toString();
-                final String name = etRegisterName.getText().toString();
+                final String hp = etRegisterHP.getText().toString().trim();
+                final String name = etRegisterName.getText().toString().trim();
 
                 if(name.equals("")){
                     etRegisterName.setError("Name is empty");

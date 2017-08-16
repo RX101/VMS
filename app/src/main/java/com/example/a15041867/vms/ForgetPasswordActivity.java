@@ -56,8 +56,8 @@ public class ForgetPasswordActivity extends AppCompatActivity {
             public void onClick(View view) {
                 emailFound = false;
                 hpFound = false;
-                email  =etForgetPasswordEmail.getText().toString();
-                handphone_number = etForgetPasswordHandphoneNumber.getText().toString();
+                email  =etForgetPasswordEmail.getText().toString().trim();
+                handphone_number = etForgetPasswordHandphoneNumber.getText().toString().trim();
                 if(etForgetPasswordEmail.equals("")){
                     etForgetPasswordEmail.setError("Please enter user email");
                 }else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
