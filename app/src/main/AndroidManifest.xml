@@ -65,6 +65,7 @@
         <activity android:name=".DisplayVisitorInfoActivity" />
         <activity android:name=".DisplayUserInfoActivity" />
         <activity android:name=".SummaryInfoActivity" />
+        <activity android:name=".VisitorFrequencyActivity" />
         <activity android:name=".ScanActivity" />
         <activity android:name=".VisitorInfoByDateActivity"></activity>
     </application>
