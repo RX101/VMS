@@ -103,6 +103,8 @@ public class HostCancelPreRegister extends AppCompatActivity {
         intentAPI = getIntent();
         apikey = intentAPI.getStringExtra("apikey");
         useremail = intentAPI.getStringExtra("user_email");
+        alVisitor.clear();
+        arrayAdapter.notifyDataSetChanged();
 
         Log.i("Sign In Activity","" + apikey);
 

@@ -580,4 +580,5 @@ public class HostPreRegister extends AppCompatActivity {
     private void bitmapbitmap(int id){
 
     }
+
 }

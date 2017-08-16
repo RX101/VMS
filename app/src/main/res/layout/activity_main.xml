@@ -18,7 +18,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="90dp"
                 android:text="Email: "
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                 android:textSize="20dp"/>
 
             <EditText
@@ -36,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Password: "
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:textSize="20dp"/>
 
             <EditText
