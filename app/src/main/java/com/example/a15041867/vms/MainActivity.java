@@ -3,8 +3,11 @@ package com.example.a15041867.vms;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.icu.text.LocaleDisplayNames;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -35,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private Session session;
     Intent i, intentLogin;
     boolean userFound;
+    private String shareAPI, shareUserEmail, sharePosition, pst;
 
 
 
@@ -50,11 +54,28 @@ public class MainActivity extends AppCompatActivity {
         tvForgetPassword = (TextView) findViewById(R.id.textViewForgetPassword);
         tvErrorMessage = (TextView) findViewById(R.id.textViewErrorMessage);
         session = new Session(this);
-        //               if(session.loggedin()) {
-//                    startActivity(i);
-//                    finish();
+//        if(session.loggedin()) {
+//            if(pst.equals("security staff")){
+//                intentLogin = new Intent(getApplicationContext(), SignInActivity.class);
+//            }else if(pst.equals("manager")){
+//                intentLogin = new Intent(getApplicationContext(), UserInfoActivity.class);
+//            }else if(pst.equals("host")) {
+//                intentLogin = new Intent(getApplicationContext(), HostHomePage.class);
+//            }else if(pst.equals("position")){
+//                Toast.makeText(getBaseContext(),"Position",Toast.LENGTH_LONG).show();
+//            }else{
+//                Toast.makeText(getBaseContext(),"Login failed",Toast.LENGTH_LONG).show();
+//            }
 //
-//                }
+//            intentLogin.putExtra("api", shareAPI);
+//            intentLogin.putExtra("user_email", shareUserEmail);
+//            startActivity(intentLogin);
+//            finish();
+//        }
+
+        etLoginEmail.setText("manager@gmail.com");
+        etLoginPassword.setText("manager1234");
+
         int permissionCheck = ContextCompat.checkSelfPermission(MainActivity.this,
                 Manifest.permission.SEND_SMS);
         if (permissionCheck != PermissionChecker.PERMISSION_GRANTED) {
@@ -76,6 +97,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+//        SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(this);
+//        shareAPI=prefs.getString("apikey","null");
+//        shareUserEmail = prefs.getString("useremail","null");
+//        pst = prefs.getString("sharePosition","position");
+        Log.d("Position",pst + "\n" + shareAPI);
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -142,20 +169,29 @@ public class MainActivity extends AppCompatActivity {
                                     String unit = jsonObj.getString("unit");
                                     if (position.equals("security staff")) {
                                         intentLogin = new Intent(getApplicationContext(), SignInActivity.class);
-
+//                                        session.setLoggedin(true);
+//                                        sharePosition = "security staff";
                                     } else if (position.equals("manager")) {
                                         intentLogin = new Intent(getApplicationContext(), UserInfoActivity.class);
-
+//                                        session.setLoggedin(true);
+//                                        sharePosition = "manager";
                                     } else if (position.equals("host")) {
                                         intentLogin = new Intent(getApplicationContext(), HostHomePage.class);
-                                        intentLogin.putExtra("block", block);
-                                        intentLogin.putExtra("unit", unit);
-
-
+//                                        session.setLoggedin(true);
+//                                        sharePosition = "host";
                                     }
                                     intentLogin.putExtra("api", apiKey);
                                     intentLogin.putExtra("user_email", useremail);
                                     startActivity(intentLogin);
+//                                    //Open Shaared Preference
+//                                    SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+//                                    //create a edit Shared Preference
+//                                    SharedPreferences.Editor prefEdit = prefs.edit();
+//                                    //set a key-value pair in preferences editor
+//                                    prefEdit.putString("apikey",apiKey);
+//                                    prefEdit.putString("useremail",useremail);
+//                                    prefEdit.putString("sharePosition",sharePosition);
+//                                    prefEdit.commit();
 
                                 } else {
                                     tvErrorMessage.setText("Incorrect Password, please try again");
@@ -175,4 +211,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 }

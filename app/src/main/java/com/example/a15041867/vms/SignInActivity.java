@@ -79,7 +79,7 @@ public class SignInActivity extends AppCompatActivity {
         apikey = intentAPI.getStringExtra("api");
         userEmail = intentAPI.getStringExtra("user_email");
         Log.i("Sign In Activity","" + apikey);
-        //        if(!session.loggedin()){
+//                if(!session.loggedin()){
 //            logout();
 //        }
 
@@ -141,7 +141,9 @@ public class SignInActivity extends AppCompatActivity {
         spnNumVisitor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(spnNumVisitor.getSelectedItemPosition() == 1){
+                if(spnNumVisitor.getSelectedItemPosition() == 0){
+                    tvSubVisitor.setText("null");
+                } else if(spnNumVisitor.getSelectedItemPosition() == 1){
                     //Inflate the input.xml layout file
                     LayoutInflater inflater = (LayoutInflater)getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     View viewDialog = inflater.inflate(R.layout.sub_visitor2,null);
@@ -535,6 +537,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     public void logout(){
+//        session.setLoggedin(false);
         Intent intentLogout = new Intent(SignInActivity.this,MainActivity.class);
         startActivity(intentLogout);
     }

@@ -12,11 +12,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -30,6 +33,7 @@ public class HostCancelPreRegister extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
     private NavigationView nv;
+    private VisitorArrayAdapter arrayAdapter;
     Intent i,intentAPI;
     ListView lv;
     String apikey;
@@ -133,7 +137,7 @@ public class HostCancelPreRegister extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                final VisitorArrayAdapter arrayAdapter = new VisitorArrayAdapter(this, R.layout.row_visitor_info, alVisitor);
+                arrayAdapter = new VisitorArrayAdapter(this, R.layout.row_visitor_info, alVisitor);
                 lv.setAdapter(arrayAdapter);
                 arrayAdapter.notifyDataSetChanged();
                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -172,6 +176,26 @@ public class HostCancelPreRegister extends AppCompatActivity {
                 Toast.makeText(HostCancelPreRegister.this, "API is null", Toast.LENGTH_LONG).show();
             }
         }
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_search, menu);
+        MenuItem item = menu.findItem(R.id.menuSearch);
+        SearchView searchView = (SearchView) item.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                arrayAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
     }
 }
 

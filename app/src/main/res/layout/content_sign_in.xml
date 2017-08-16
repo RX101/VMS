@@ -88,14 +88,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:text="Sub Visitor :" />
+                android:layout_marginBottom="20dp"
+                android:text="Sub Visitor :"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
-                android:text=""
-                android:id="@+id/textViewSubVisitor"/>
+                android:text="null"
+                android:id="@+id/textViewSubVisitor"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
 
 
         </LinearLayout>
@@ -110,8 +112,6 @@
         android:textSize="20dp"
         android:textColor="@color/colorPrimary"
         android:id="@+id/textViewRegister"/>
-
-
 
     <Button
         android:layout_width="match_parent"
