@@ -73,8 +73,8 @@ public class MainActivity extends AppCompatActivity {
 //            finish();
 //        }
 
-        etLoginEmail.setText("manager@gmail.com");
-        etLoginPassword.setText("manager1234");
+        etLoginEmail.setText("security@gmail.com");
+        etLoginPassword.setText("security1234");
 
         int permissionCheck = ContextCompat.checkSelfPermission(MainActivity.this,
                 Manifest.permission.SEND_SMS);
@@ -111,8 +111,8 @@ public class MainActivity extends AppCompatActivity {
                 // Check if there is network access
                 ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-                String email = etLoginEmail.getText().toString();
-                String password = etLoginPassword.getText().toString();
+                String email = etLoginEmail.getText().toString().trim();
+                String password = etLoginPassword.getText().toString().trim();
 
                 if (networkInfo != null && networkInfo.isConnected()) {
 
@@ -147,8 +147,8 @@ public class MainActivity extends AppCompatActivity {
                         if(userFound == true){
                             HttpRequest request = new HttpRequest("https://ruixian-ang97.000webhostapp.com/doLogin.php");
                             request.setMethod("POST");
-                            request.addData("email", etLoginEmail.getText().toString());
-                            request.addData("password", etLoginPassword.getText().toString());
+                            request.addData("email", etLoginEmail.getText().toString().trim());
+                            request.addData("password", etLoginPassword.getText().toString().trim());
                             request.execute();
                             /******************************/
 

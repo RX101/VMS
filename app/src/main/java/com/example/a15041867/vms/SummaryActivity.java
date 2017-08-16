@@ -166,7 +166,6 @@ public class SummaryActivity extends AppCompatActivity {
                     }
                 }, mYear, mMonth, mDay);
                 mDatePicker2.getDatePicker().setMaxDate((System.currentTimeMillis()));
-                mDatePicker2.getDatePicker().setMinDate(mDatePicker.getDatePicker().getMinDate());
                 mDatePicker2.setTitle("Select Date");
                 mDatePicker2.show();
             }
