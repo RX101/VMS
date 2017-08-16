@@ -95,41 +95,55 @@ public class DisplayUserInfoActivity extends AppCompatActivity {
 
                 Log.d(TAG, "updateButtonClicked()...");
 
-                HttpRequest request= new HttpRequest("https://ruixian-ang97.000webhostapp.com/updateUser.php");
-                request.setMethod("POST");
-                request.addData("apikey", apikey);
-                request.addData("user_email", userEmail);
+                EditText etuserName = (EditText)findViewById(R.id.etUserName);
+                EditText etuserPhoneNumber = (EditText)findViewById(R.id.etPhoneNumber);
+                EditText etuserBlock = (EditText)findViewById(R.id.etBlock);
+                EditText etuserUnit = (EditText)findViewById(R.id.etUnit);
+
+                String name = etuserName.getText().toString().trim();
+                String handphone = etuserPhoneNumber.getText().toString().trim();
+                String block = etuserBlock.getText().toString().trim();
+                String unit = etuserUnit.getText().toString().trim();
+
+                if (name.equals("")) {
+                    etuserName.setError("Name field is empty");
+                }else if(handphone.equals("")) {
+                    etuserPhoneNumber.setError("Handphone Number field is empty");
+                }else if(block.equals("")) {
+                    etuserBlock.setError("Block is empty");
+                } else if(unit.equals("")) {
+                    etuserUnit.setError("Unit is empty");
+                } else {
+                    HttpRequest request= new HttpRequest("https://ruixian-ang97.000webhostapp.com/updateUser.php");
+                    request.setMethod("POST");
+                    request.addData("apikey", apikey);
+                    request.addData("user_email", userEmail);
+
+                    try{
+
+                        request.addData("name", name);
+                        request.addData("handphone_number", handphone);
+                        request.addData("block", block);
+                        request.addData("unit", unit);
 
 
-                try{
+                        RadioGroup rg = (RadioGroup)findViewById(R.id.rgRole);
+                        int selectedButtonId = rg.getCheckedRadioButtonId();
+                        // Get the radio button object from the Id we had gotten above
+                        RadioButton rbRole = (RadioButton) findViewById(selectedButtonId);
+                        String role = (String) rbRole.getText();
+                        request.addData("position", role.toLowerCase());
 
-                    EditText etuserName = (EditText)findViewById(R.id.etUserName);
-                    EditText etuserPhoneNumber = (EditText)findViewById(R.id.etPhoneNumber);
-                    EditText etuserBlock = (EditText)findViewById(R.id.etBlock);
-                    EditText etuserUnit = (EditText)findViewById(R.id.etUnit);
+                        request.execute();
 
-                    request.addData("name", etuserName.getText().toString().trim());
-                    request.addData("handphone_number", etuserPhoneNumber.getText().toString().trim());
-                    request.addData("block", etuserBlock.getText().toString().trim());
-                    request.addData("unit", etuserUnit.getText().toString().trim());
+                        //Toast.makeText(DisplayUserInfoActivity.this, "Contact details successfully updated", Toast.LENGTH_SHORT).show();
+                        showAlert("User Successfully Updated");
 
-
-                    RadioGroup rg = (RadioGroup)findViewById(R.id.rgRole);
-                    int selectedButtonId = rg.getCheckedRadioButtonId();
-                    // Get the radio button object from the Id we had gotten above
-                    RadioButton rbRole = (RadioButton) findViewById(selectedButtonId);
-                    String role = (String) rbRole.getText();
-                    request.addData("position", role.toLowerCase());
-
-                    request.execute();
-
-                    //Toast.makeText(DisplayUserInfoActivity.this, "Contact details successfully updated", Toast.LENGTH_SHORT).show();
-                    showAlert("User Successfully Updated");
-
-                    finish();
-                } catch (Exception e) {
-                    showAlert("User Update Unsuccessfully");
-                    e.printStackTrace();
+                        finish();
+                    } catch (Exception e) {
+                        showAlert("User Update Unsuccessfully");
+                        e.printStackTrace();
+                    }
                 }
             }
         });
